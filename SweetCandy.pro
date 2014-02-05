@@ -26,3 +26,6 @@ HEADERS += \
     bonbon.h \
     niveau.h \
     case.h
+
+RESOURCES += \
+    ressources.qrc
