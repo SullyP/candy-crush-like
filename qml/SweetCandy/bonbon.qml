@@ -1,7 +1,11 @@
 import QtQuick 2.0
 import sweetcandy.bonbon 1.0
 
-Rectangle {
-    width: 100
-    height: 62
+Bonbon{
+    id: candy
+    Rectangle{
+        width:120
+        height: 120
+    }
 }
+
