@@ -28,8 +28,8 @@ public:
         RayureV,
         Emballe
     }Type;
-    Bonbon(QObject *parent=0);
-    Bonbon(QObject *parent,Couleur c,Type t);
+    Bonbon();
+    Bonbon(Couleur c,Type t);
     Couleur getCouleur() const;
     Type getType() const;
 

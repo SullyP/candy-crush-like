@@ -16,7 +16,8 @@ class Niveau : public QObject
     Q_PROPERTY(int nb_mvt READ getNb_mvt)
 
 public:
-    explicit Niveau(QObject *parent = 0);
+    Niveau();
+    Niveau(int num_niveau,int score_objectif, QList<Case> liste, int nb_col, int nb_lign, int nb_mvt);
     int getNum_niveau() const;
     int getScore() const;
     int getScore_objectif() const;

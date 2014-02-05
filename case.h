@@ -15,7 +15,8 @@ class Case : public QObject
     Q_PROPERTY(bool vide READ estVide)
 
 public:
-    explicit Case(QObject *parent = 0);
+    Case ();
+    Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon);
     bool estVide() const;
     Bonbon* getBonbon();
     bool estDebut() const;

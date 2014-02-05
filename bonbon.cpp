@@ -1,11 +1,11 @@
 #include "bonbon.h"
 
-Bonbon::Bonbon(QObject *parent=0): QObject (parent){
-    couleur=Aucune;
+Bonbon::Bonbon(){
+    couleur=Rouge;
     type=Normal;
 }
 
-Bonbon::Bonbon(QObject *parent,Bonbon::Couleur c,Bonbon::Type t){
+Bonbon::Bonbon(Bonbon::Couleur c,Bonbon::Type t){
     couleur=c;
     type=t;
 }
