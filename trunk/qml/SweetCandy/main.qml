@@ -7,6 +7,15 @@ Rectangle {
     state: "mainMenu"
     property int margePixel: 30
 
+    Image {
+        id: background
+        source:"qrc:/images/fondEcran"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectCrop
+        sourceSize.height: this.height
+        sourceSize.width: this.width
+
+    }
     Rectangle {
         id: ecranGauche
         width: 200
@@ -16,38 +25,36 @@ Rectangle {
         anchors.left: ecran.left
 
     }
+
+
     Rectangle {
-        id: ecranDroit
-        width: ecran.width-ecranGauche.width
-        height: ecran.height
-        color: "black"
-        anchors.top: ecran.top
-        anchors.left: ecranGauche.right
+        id: grilleJeux
+        x: ((ecran.width-this.width-ecranGauche.width)/2)+ecranGauche.width //permet de centrer la grille de jeux
+        y: (ecran.height-this.height)/2 //permet de centrer la grille de jeux
+        width: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
+        height: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
+        color: "red"
+        property bool test : true
 
-        Rectangle {
-            id: grilleJeux
-            x: margePixel
-            y: margePixel
-            width: Math.min(parent.height,parent.width)-2*margePixel
-            height: Math.min(parent.height,parent.width)-2*margePixel
-            color: "red"
-            property int nbColonne: 9
-
-            MouseArea{
-                anchors.fill: parent
+        MouseArea{
+            anchors.fill: parent
 
 
 
-                onClicked: {
-
-                        grilleJeux.color="purple"
-
-                        grilleJeux.color="yellow"
+            onClicked: {
+                if(grilleJeux.test){
+                    grilleJeux.color="green"
+                    grilleJeux.test=false
+                }else{
+                    grilleJeux.color="purple"
+                    grilleJeux.test=true
                 }
             }
         }
 
 
+
     }
 
 }
+

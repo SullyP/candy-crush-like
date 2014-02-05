@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="fondEcran">images/fondEcran.svg</file>
+    </qresource>
+</RCC>
