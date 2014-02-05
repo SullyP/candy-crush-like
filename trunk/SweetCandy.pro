@@ -20,7 +20,7 @@ include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
 OTHER_FILES += \
-    qml/SweetCandy/MainForm.qml
+    qml/SweetCandy/main.qml
 
 HEADERS += \
     bonbon.h \

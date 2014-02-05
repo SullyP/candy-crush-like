@@ -5,6 +5,10 @@ Bonbon::Bonbon(){
     type=Normal;
 }
 
+Bonbon::Bonbon(Bonbon& bonbon){
+    Bonbon(bonbon.couleur, bonbon.type);
+}
+
 Bonbon::Bonbon(Bonbon::Couleur c,Bonbon::Type t){
     couleur=c;
     type=t;
