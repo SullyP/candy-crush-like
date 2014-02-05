@@ -17,6 +17,7 @@ class Niveau : public QObject
 
 public:
     Niveau();
+    Niveau(Niveau& niveau);
     Niveau(int num_niveau,int score_objectif, QList<Case> liste, int nb_col, int nb_lign, int nb_mvt);
     int getNum_niveau() const;
     int getScore() const;

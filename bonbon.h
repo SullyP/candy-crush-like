@@ -29,6 +29,7 @@ public:
         Emballe
     }Type;
     Bonbon();
+    Bonbon(Bonbon& bonbon);
     Bonbon(Couleur c,Type t);
     Couleur getCouleur() const;
     Type getType() const;

@@ -16,6 +16,7 @@ class Case : public QObject
 
 public:
     Case ();
+    Case (Case& c);
     Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon);
     bool estVide() const;
     Bonbon* getBonbon();
