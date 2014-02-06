@@ -16,7 +16,7 @@ public:
         Rouge,
         Jaune,
         Vert,
-        Bleue,
+        Bleu,
         Violet,
         Rose,
         Aucune
@@ -26,7 +26,7 @@ public:
         Bombe,
         RayureH,
         RayureV,
-        Emballe
+        Sucre
     }Type;
     Bonbon();
     Bonbon(Bonbon& bonbon);
