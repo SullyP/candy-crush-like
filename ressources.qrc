@@ -1,5 +1,30 @@
 <RCC>
     <qresource prefix="/images">
         <file alias="fondEcran">images/fondEcran.svg</file>
+        <file alias="bleu">images/bleu.svg</file>
+        <file alias="bleuRayureH">images/bleuRayureH.svg</file>
+        <file alias="bleuRayureV">images/bleuRayureV.svg</file>
+        <file alias="bleuSucre">images/bleuSucre.svg</file>
+        <file alias="bombe">images/bombe.svg</file>
+        <file alias="jaune">images/jaune.svg</file>
+        <file alias="jauneRayureH">images/jauneRayureH.svg</file>
+        <file alias="jauneRayureV">images/jauneRayureV.svg</file>
+        <file alias="jauneSucre">images/jauneSucre.svg</file>
+        <file alias="rose">images/rose.svg</file>
+        <file alias="roseRayureH">images/roseRayureH.svg</file>
+        <file alias="roseRayureV">images/roseRayureV.svg</file>
+        <file alias="roseSucre">images/roseSucre.svg</file>
+        <file alias="rouge">images/rouge.svg</file>
+        <file alias="rougeRayureH">images/rougeRayureH.svg</file>
+        <file alias="rougeRayureV">images/rougeRayureV.svg</file>
+        <file alias="rougeSucre">images/rougeSucre.svg</file>
+        <file alias="vert">images/vert.svg</file>
+        <file alias="vertRayureH">images/vertRayureH.svg</file>
+        <file alias="vertRayureV">images/vertRayureV.svg</file>
+        <file alias="vertSucre">images/vertSucre.svg</file>
+        <file alias="violet">images/violet.svg</file>
+        <file alias="violetRayureH">images/violetRayureH.svg</file>
+        <file alias="violetRayureV">images/violetRayureV.svg</file>
+        <file alias="violetSucre">images/violetSucre.svg</file>
     </qresource>
 </RCC>
