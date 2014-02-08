@@ -11,4 +11,5 @@ int Controleur::getTailleBonbon() const{
 
 void Controleur::setTailleBonbon(int taille){
     tailleBonbon=taille;
+    emit tailleBonbonChanged();
 }

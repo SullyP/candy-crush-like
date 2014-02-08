@@ -10,7 +10,7 @@
 class Controleur : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int tailleBonbon READ getTailleBonbon WRITE setTailleBonbon)
+    Q_PROPERTY(int tailleBonbon READ getTailleBonbon WRITE setTailleBonbon NOTIFY tailleBonbonChanged)
 public:
     explicit Controleur(QObject *parent = 0);
     int getTailleBonbon() const;
@@ -18,7 +18,7 @@ public:
 private:
     int tailleBonbon;
 signals:
-
+    void tailleBonbonChanged();
 public slots:
 
 };
