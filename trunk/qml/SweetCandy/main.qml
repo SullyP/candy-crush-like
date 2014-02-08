@@ -37,6 +37,10 @@ Rectangle {
         onWidthChanged:{
             controleur.tailleBonbon=width;
         }
+        Text{
+            anchors.centerIn: parent
+            text:controleur.tailleBonbon
+        }
 
         /*MouseArea {
             anchors.fill: parent;
