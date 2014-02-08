@@ -7,10 +7,6 @@ Case::Case(){
     this->bonbon=NULL;
 }
 
-Case::Case (Case& c){
-    Case(c.debut, c.fin, c.franchissable, c.bonbon);
-}
-
 Case::Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon){
     this->debut=debut;
     this->fin=fin;

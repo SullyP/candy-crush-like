@@ -4,16 +4,18 @@
 #include "case.h"
 #include "bonbon.h"
 #include "niveau.h"
+#include "controleur.h"
+#include "vue.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    qmlRegisterType<Case>("sweetcandy.case", 1, 0, "Case");
-    qmlRegisterType<Bonbon>("sweetcandy.bonbon", 1, 0, "Bonbon");
-    qmlRegisterType<Niveau>("sweetcandy.niveau", 1, 0, "Niveau");
+
+    Controleur controleur;
 
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/SweetCandy/main.qml"));
+    viewer.rootContext()->setContextProperty("controleur", &controleur);
     viewer.showExpanded();
     viewer.setMinimumSize(QSize(600,400));
 
