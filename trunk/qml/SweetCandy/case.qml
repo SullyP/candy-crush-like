@@ -1,6 +1,7 @@
 import QtQuick 2.0
+import sweetcandy.case 1.0
 
-Item{
+Case{
     id: caseBonbon
     property int colonne : 0
     property int ligne : 0
