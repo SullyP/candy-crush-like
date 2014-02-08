@@ -10,12 +10,13 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
+    qmlRegisterType<Case>("sweetcandy.case", 1, 0, "Case");
+    qmlRegisterType<Bonbon>("sweetcandy.bonbon", 1, 0, "Bonbon");
     Controleur controleur;
 
     QtQuick2ApplicationViewer viewer;
-    viewer.setMainQmlFile(QStringLiteral("qml/SweetCandy/main.qml"));
     viewer.rootContext()->setContextProperty("controleur", &controleur);
+    viewer.setMainQmlFile(QStringLiteral("qml/SweetCandy/main.qml"));
     viewer.showExpanded();
     viewer.setMinimumSize(QSize(600,400));
 

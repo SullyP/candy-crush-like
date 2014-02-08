@@ -1,11 +1,12 @@
 import QtQuick 2.0
+import sweetcandy.bonbon 1.0
 
-Item{
+Bonbon{
     id: bonbon
     property int colonne : 0
     property int ligne : 0
-    property string type: controleur.getType(colonne,ligne)
-    property string couleur: controleur.getCouleur(colonne,ligne)
+    property string type: Bonbon.type
+    property string couleur: Bonbon.couleur
 
     x: colonne*controleur.tailleBonbon
     y: ligne*controleur.tailleBonbon
