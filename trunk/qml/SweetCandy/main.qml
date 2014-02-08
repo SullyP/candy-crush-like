@@ -13,9 +13,9 @@ Rectangle {
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         sourceSize.height: this.height
-        sourceSize.width: this.width
 
     }
+
     Rectangle {
         id: ecranGauche
         width: 200
@@ -27,30 +27,21 @@ Rectangle {
     }
 
 
-    Rectangle {
+    Item {
         id: grilleJeux
         x: ((ecran.width-this.width-ecranGauche.width)/2)+ecranGauche.width //permet de centrer la grille de jeux
         y: (ecran.height-this.height)/2 //permet de centrer la grille de jeux
         width: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
         height: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
-        color: "red"
-        property bool test : true
 
-        MouseArea{
-            anchors.fill: parent
-
-
-
-            onClicked: {
-                if(grilleJeux.test){
-                    grilleJeux.color="green"
-                    grilleJeux.test=false
-                }else{
-                    grilleJeux.color="purple"
-                    grilleJeux.test=true
-                }
-            }
+        onWidthChanged:{
+            controleur.tailleBonbon=width;
         }
+
+        /*MouseArea {
+            anchors.fill: parent;
+            onClicked: Game.handleClick(mouse.x,mouse.y);
+        }*/
 
 
 

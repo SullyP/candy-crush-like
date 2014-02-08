@@ -10,7 +10,9 @@ QML_IMPORT_PATH =
 SOURCES += main.cpp \
     bonbon.cpp \
     niveau.cpp \
-    case.cpp
+    case.cpp \
+    vue.cpp \
+    controleur.cpp
 
 # Installation path
 # target.path =
@@ -20,12 +22,15 @@ include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
 OTHER_FILES += \
-    qml/SweetCandy/main.qml
+    qml/SweetCandy/main.qml \
+    qml/SweetCandy/case.qml
 
 HEADERS += \
     bonbon.h \
     niveau.h \
-    case.h
+    case.h \
+    vue.h \
+    controleur.h
 
 RESOURCES += \
     ressources.qrc
