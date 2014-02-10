@@ -9,7 +9,7 @@ Niveau::Niveau(){
     this->nb_mvt=0;
 }
 
-Niveau::Niveau(int num_niveau,int score_objectif, QList<Case> liste, int nb_col, int nb_lign, int nb_mvt){
+Niveau::Niveau(int num_niveau,int score_objectif, QList<Case*> liste, int nb_col, int nb_lign, int nb_mvt){
     this->score=0;
     this->num_niveau=num_niveau;
     this->score_objectif=score_objectif;

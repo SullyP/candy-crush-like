@@ -23,7 +23,8 @@ qtcAddDeployment()
 
 OTHER_FILES += \
     qml/SweetCandy/main.qml \
-    qml/SweetCandy/case.qml
+    qml/SweetCandy/Caase.qml \
+    qml/SweetCandy/Boonbon.qml
 
 HEADERS += \
     bonbon.h \

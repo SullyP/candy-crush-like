@@ -2,6 +2,7 @@
 #define CONTROLEUR_H
 
 #include <QObject>
+#include "qtquick2applicationviewer.h"
 #include "case.h"
 #include "bonbon.h"
 #include "niveau.h"
@@ -15,8 +16,11 @@ public:
     explicit Controleur(QObject *parent = 0);
     int getTailleBonbon() const;
     void setTailleBonbon(int taille);
+    const QtQuick2ApplicationViewer* viewer;
+    void newNiveau();
 private:
     int tailleBonbon;
+    Niveau niveau;
 signals:
     void tailleBonbonChanged();
 public slots:
