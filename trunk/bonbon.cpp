@@ -1,23 +1,32 @@
 #include "bonbon.h"
 
-Bonbon::Bonbon(){
-    couleur=Rouge;
-    type=Normal;
+
+Bonbon::Bonbon(QQuickItem *parent) :
+    QQuickItem(parent)
+{
+    setType(Normal);
+    setCouleur(Rouge);
 }
 
-Bonbon::Bonbon(Bonbon& bonbon){
-    Bonbon(bonbon.couleur, bonbon.type);
-}
 
 Bonbon::Bonbon(Bonbon::Couleur c,Bonbon::Type t){
     couleur=c;
     type=t;
 }
-
-Bonbon::Couleur Bonbon::getCouleur() const{
-    return couleur;
+QString Bonbon::getCouleur() const{
+    return "Rouge";
 }
 
-Bonbon::Type Bonbon::getType() const{
-    return type;
+QString Bonbon::getType() const{
+    return "Normal";
+}
+
+void Bonbon::setType(Bonbon::Type type){
+    this->type=type;
+    emit typeChanged();
+}
+
+void Bonbon::setCouleur(Bonbon::Couleur couleur){
+    this->couleur=couleur;
+    emit couleurChanged();
 }

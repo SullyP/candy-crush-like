@@ -9,7 +9,7 @@ class Niveau
 
 public:
     Niveau();
-    Niveau(int num_niveau,int score_objectif, QList<Case> liste, int nb_col, int nb_lign, int nb_mvt);
+    Niveau(int num_niveau,int score_objectif, QList<Case*> liste, int nb_col, int nb_lign, int nb_mvt);
     int getNum_niveau() const;
     int getScore() const;
     int getScore_objectif() const;
@@ -21,7 +21,7 @@ private:
     int num_niveau;
     int score;
     int score_objectif;
-    QList<Case> liste;
+    QList<Case*> liste;
     int nb_col;
     int nb_lign;
     int nb_mvt;

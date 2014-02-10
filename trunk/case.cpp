@@ -1,14 +1,13 @@
 #include "case.h"
 
-Case::Case(){
+
+Case::Case(QQuickItem *parent) :
+    QQuickItem(parent)
+{
     this->debut=false;
     this->fin=false;
     this->franchissable=false;
     this->bonbon=NULL;
-}
-
-Case::Case (Case& c){
-    Case(c.debut, c.fin, c.franchissable, c.bonbon);
 }
 
 Case::Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon){
@@ -37,4 +36,9 @@ bool Case::estFin() const{
 
 bool Case::estFranchissable() const{
     return franchissable;
+}
+
+void Case::setBonbon(Bonbon* bonbon){
+    this->bonbon=bonbon;
+
 }
