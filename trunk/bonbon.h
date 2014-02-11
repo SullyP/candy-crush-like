@@ -9,8 +9,8 @@ class Bonbon : public QQuickItem
     Q_OBJECT
     Q_ENUMS(Type)
     Q_ENUMS(Couleur)
-    Q_PROPERTY(QString couleur READ getCouleur NOTIFY couleurChanged)
-    Q_PROPERTY(QString type READ getType NOTIFY typeChanged)
+    Q_PROPERTY(Couleur couleur READ getCouleur NOTIFY couleurChanged)
+    Q_PROPERTY(Type type READ getType NOTIFY typeChanged)
 
 public:
     typedef enum{
@@ -31,8 +31,8 @@ public:
     }Type;
     Bonbon(QQuickItem *parent = 0);
     Bonbon(Couleur c,Type t);
-    QString getCouleur() const;
-    QString getType() const;
+    Couleur getCouleur() const;
+    Type getType() const;
     void setType(Type type);
     void setCouleur(Couleur couleur);
 

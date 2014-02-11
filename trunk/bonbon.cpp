@@ -13,12 +13,12 @@ Bonbon::Bonbon(Bonbon::Couleur c,Bonbon::Type t){
     couleur=c;
     type=t;
 }
-QString Bonbon::getCouleur() const{
-    return "Rouge";
+Bonbon::Couleur Bonbon::getCouleur() const{
+    return couleur;
 }
 
-QString Bonbon::getType() const{
-    return "Normal";
+Bonbon::Type Bonbon::getType() const{
+    return type;
 }
 
 void Bonbon::setType(Bonbon::Type type){
