@@ -30,7 +30,7 @@ void Controleur::newNiveau(){
             curCell->setParentItem(qobject_cast<QQuickItem *>(viewer->rootObject()));
 
             Bonbon* bonbec = qobject_cast<Bonbon *>(component2.create());
-            bonbec->setType(Bonbon::Normal);
+            bonbec->setType(Bonbon::Sucre);
             bonbec->setCouleur(Bonbon::Bleu);
             bonbec->setProperty("ligne",QVariant(i));
             bonbec->setProperty("colonne",QVariant(j));
