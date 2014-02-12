@@ -12,10 +12,12 @@ class Controleur : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int tailleBonbon READ getTailleBonbon WRITE setTailleBonbon NOTIFY tailleBonbonChanged)
+    Q_PROPERTY(int nbColonne READ getNbColonne)
 public:
     explicit Controleur(QObject *parent = 0);
     int getTailleBonbon() const;
     void setTailleBonbon(int taille);
+    int getNbColonne() const;
     const QtQuick2ApplicationViewer* viewer;
     void newNiveau();
 private:

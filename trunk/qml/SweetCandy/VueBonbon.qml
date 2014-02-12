@@ -5,6 +5,11 @@ Bonbon{
     property int colonne: 0
     property int ligne: 0
 
+    /* Permet d'avoir une image nette à partir de l'image vectorielle,
+    sans utiliser trop de ressources (couplé à 'onWidthChanged' et 'SourceSize', cf. plus bas) */
+    property int niveauResolution: 0
+    property int resolution: 37+niveauResolution
+
     x: colonne*controleur.tailleBonbon
     y: ligne*controleur.tailleBonbon
     width: controleur.tailleBonbon
@@ -72,7 +77,16 @@ Bonbon{
         }
 
         anchors.fill: parent
-        sourceSize.height: this.height
-        sourceSize.width: this.width
+        sourceSize.height: resolution
+        sourceSize.width: resolution
+
+        onWidthChanged: {
+            if(controleur.tailleBonbon!=resolution){
+                var nivResol = Math.round((controleur.tailleBonbon/10)-(37/10))*10;
+                if(nivResol!=niveauResolution){
+                    niveauResolution=nivResol;
+                }
+            }
+        }
     }
 }

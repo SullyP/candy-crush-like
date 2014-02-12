@@ -12,45 +12,46 @@ Rectangle {
         source:"qrc:/images/fondEcran"
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
-        sourceSize.height: this.height
-
+        sourceSize.height: 800
     }
 
-    Rectangle {
-        id: ecranGauche
-        width: 200
-        height: ecran.height
-        color: "yellow"
-        anchors.top: ecran.top
-        anchors.left: ecran.left
+    Item{
+        id:jeux
+        anchors.fill: parent
+        anchors.margins: margePixel
 
-    }
-
-
-    Item {
-        id: grilleJeux
-        x: ((ecran.width-this.width-ecranGauche.width)/2)+ecranGauche.width //permet de centrer la grille de jeux
-        y: (ecran.height-this.height)/2 //permet de centrer la grille de jeux
-        width: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
-        height: Math.min(ecran.height,ecran.width-ecranGauche.width)-2*margePixel
-
-        onWidthChanged:{
-            controleur.tailleBonbon=width;
-        }
-
-        Text{
+        Item{
             anchors.centerIn: parent
-            text:controleur.tailleBonbon
+            height: parent.height
+            width: Math.min(parent.height+200,parent.width)
+
+            Rectangle {
+                id: infoJeux
+                width: 200
+                color: "yellow"
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+            }
+
+            Item {
+                id: grilleJeux
+                objectName: "grilleDeJeux"
+                height:this.width
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.left: infoJeux.right
+
+                onWidthChanged:{
+                    controleur.tailleBonbon=width/controleur.nbColonne;
+                }
+
+                /*MouseArea {
+                    anchors.fill: parent;
+                    onClicked: Game.handleClick(mouse.x,mouse.y);
+                }*/
+            }
         }
-
-        /*MouseArea {
-            anchors.fill: parent;
-            onClicked: Game.handleClick(mouse.x,mouse.y);
-        }*/
-
-
-
     }
-
 }
 

@@ -11,8 +11,8 @@ SOURCES += main.cpp \
     bonbon.cpp \
     niveau.cpp \
     case.cpp \
-    vue.cpp \
-    controleur.cpp
+    controleur.cpp \
+    vue.cpp
 
 # Installation path
 # target.path =
@@ -23,15 +23,15 @@ qtcAddDeployment()
 
 OTHER_FILES += \
     qml/SweetCandy/main.qml \
-    qml/SweetCandy/Caase.qml \
-    qml/SweetCandy/Boonbon.qml
+    qml/SweetCandy/VueBonbon.qml \
+    qml/SweetCandy/VueCase.qml
 
 HEADERS += \
     bonbon.h \
     niveau.h \
     case.h \
-    vue.h \
-    controleur.h
+    controleur.h \
+    vue.h
 
 RESOURCES += \
     ressources.qrc
