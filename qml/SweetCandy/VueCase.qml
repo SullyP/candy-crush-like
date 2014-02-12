@@ -10,8 +10,7 @@ CaseB{
         y:ligne*controleur.tailleBonbon
         width: controleur.tailleBonbon
         height: controleur.tailleBonbon
-        color: "black"
-        opacity: 0.5
-        radius: 5
+        color: "grey"
+        radius: controleur.tailleBonbon/6
     }
 }
