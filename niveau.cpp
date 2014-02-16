@@ -43,3 +43,56 @@ int Niveau::getNb_lign() const{
 int Niveau::getNb_mvt() const{
     return nb_mvt;
 }
+
+//premiere case ling=0 col=0.
+bool Niveau::estVide (int lign, int col){
+    return (liste.at((lign*nb_col) + col) == NULL);
+}
+
+//Pour vérifier s'il y a combo sur le bonbon de la case et les 2 suivants sur la ligne.
+bool Niveau::comboHorizontal (int lign, int col){
+    int i=(lign*nb_col) + col;
+    if (col+2<nb_col && col+1<nb_col){
+        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+1)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i+2)->getBonbon()->getCouleur()){
+            return true;
+        }
+    }
+    return false;
+}
+
+//Pour vérifier s'il y a combo sur le bonbon de la case et les 2 suivants sur la colonne.
+bool Niveau::comboVertical(int lign, int col){
+    int i=(lign*nb_col) + col;
+    if (lign+2<nb_lign && lign+1<nb_lign){
+        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+nb_col)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i+nb_col*2)->getBonbon()->getCouleur()){
+            return true;
+        }
+    }
+    return false;
+}
+
+//combo en L
+bool Niveau::comboCoinHG (int lign, int col){
+    return (comboHorizontal(lign, col)+ comboVertical(lign, col));
+}
+
+bool Niveau::comboCoinHD(int lign, int col){
+    if (col+2<nb_col && col+1<nb_col){
+        return (comboHorizontal(lign, col)+ comboVertical(lign, col+2));
+    }
+    else return false;
+}
+
+bool Niveau::comboCoinBG(int lign, int col){
+    if (lign+2<nb_lign && lign+1<nb_lign){
+        return (comboHorizontal(lign+2, col)+ comboVertical(lign, col));
+    }
+    else return false;
+}
+
+bool Niveau::comboCoinBD(int lign, int col){
+    if (2<=col){
+        return (comboHorizontal(lign, col-2)+ comboVertical(lign, col));
+    }
+    else return false;
+}
