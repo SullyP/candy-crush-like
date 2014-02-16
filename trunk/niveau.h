@@ -16,6 +16,13 @@ public:
     int getNb_col() const;
     int getNb_lign() const;
     int getNb_mvt() const;
+    bool estVide (int lign, int col);
+    bool comboHorizontal (int lign, int col);
+    bool comboVertical (int lign, int col);
+    bool comboCoinHG (int lign, int col);
+    bool comboCoinHD (int lign, int col);
+    bool comboCoinBG (int lign, int col);
+    bool comboCoinBD (int lign, int col);
 
 private:
     int num_niveau;
