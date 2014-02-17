@@ -35,3 +35,7 @@ HEADERS += \
 
 RESOURCES += \
     ressources.qrc
+
+ICON = SweetCandyIconeLinux.png
+macx: ICON = SweetCandyIconeMac.icns
+win32: RC_FILE = SweetCandy.rc
