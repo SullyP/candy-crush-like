@@ -29,10 +29,7 @@ public:
     //combo
     bool comboHorizontal (int lign, int col);
     bool comboVertical (int lign, int col);
-    bool comboCoinHG (int lign, int col);
-    bool comboCoinHD (int lign, int col);
-    bool comboCoinBG (int lign, int col);
-    bool comboCoinBD (int lign, int col);
+    bool combo (int lign, int col);
 
     //Ajout/Suppresion Bonbon/Case
     void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
