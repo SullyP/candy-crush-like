@@ -42,3 +42,15 @@ void Case::setBonbon(Bonbon* bonbon){
     this->bonbon=bonbon;
 
 }
+
+void Case::setFin(bool fin){
+    this->fin=fin;
+}
+
+void Case::setDebut(bool debut){
+    this->debut=debut;
+}
+
+void Case::setFranchissable(bool franchissable){
+    this->franchissable=franchissable;
+}

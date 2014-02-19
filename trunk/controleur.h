@@ -7,6 +7,7 @@
 #include "bonbon.h"
 #include "niveau.h"
 #include "vue.h"
+#include "global.h"
 
 class Controleur : public QObject
 {
@@ -18,7 +19,6 @@ public:
     int getTailleBonbon() const;
     void setTailleBonbon(int taille);
     int getNbColonne() const;
-    const QtQuick2ApplicationViewer* viewer;
     void newNiveau();
 private:
     int tailleBonbon;
