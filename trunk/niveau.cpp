@@ -105,9 +105,9 @@ bool Niveau::comboVertical(int lign, int col){
     return false;
 }
 
-//Conbo final
+//Combo final
 // vérifie horizontalement et verticalement si le bonbon indiqué fait parti d'un combo
-bool Niveau::Combo (int lign, int col){
+bool Niveau::combo (int lign, int col){
     return (comboHorizontal(lign, col) || comboVertical(lign, col));
 }
 
