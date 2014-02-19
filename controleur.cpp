@@ -12,6 +12,10 @@ Controleur::Controleur(QObject *parent) :
     niveau=Niveau(1,10000,liste,9,9,30);
 }
 
+int Controleur::getResolutionBonbon() const{
+    return resolutionBonbon;
+}
+
 int Controleur::getTailleBonbon() const{
     return tailleBonbon;
 }
@@ -20,7 +24,20 @@ void Controleur::setTailleBonbon(int taille){
     if(taille!=tailleBonbon){
         tailleBonbon=taille;
         emit tailleBonbonChanged();
+
+        //3 niveau de resolution 45 , 75 et 105 px
+        if(taille<60 && resolutionBonbon!=45){
+            resolutionBonbon=45;
+            emit resolutionBonbonChanged();
+        }else if(taille>90 && resolutionBonbon!=105){
+            resolutionBonbon=105;
+            emit resolutionBonbonChanged();
+        }else if(resolutionBonbon!=75){
+            resolutionBonbon=75;
+            emit resolutionBonbonChanged();
+        }
     }
+
 }
 
 int Controleur::getNbColonne() const{
@@ -35,41 +52,41 @@ void Controleur::newNiveau(){
             Bonbon::Type type;
             int temp = rand() % 4;
             switch(temp){
-                case 0:
-                    type=Bonbon::Normal;
-                    break;
-                case 1:
-                    type=Bonbon::RayureH;
-                    break;
-                case 2:
-                    type=Bonbon::RayureV;
-                    break;
-                default:
-                    type=Bonbon::Sucre;
+            case 0:
+                type=Bonbon::Normal;
+                break;
+            case 1:
+                type=Bonbon::RayureH;
+                break;
+            case 2:
+                type=Bonbon::RayureV;
+                break;
+            default:
+                type=Bonbon::Sucre;
             }
             temp = rand() % 7;
             switch(temp){
-                case 0:
-                    color=Bonbon::Rouge;
-                    break;
-                case 1:
-                    color=Bonbon::Jaune;
-                    break;
-                case 2:
-                    color=Bonbon::Vert;
-                    break;
-                case 3:
-                    color=Bonbon::Bleu;
-                    break;
-                case 4:
-                    color=Bonbon::Violet;
-                    break;
-                case 5:
-                    color=Bonbon::Rose;
-                    break;
-                default:
-                    color=Bonbon::Aucune;
-                    type=Bonbon::Bombe;
+            case 0:
+                color=Bonbon::Rouge;
+                break;
+            case 1:
+                color=Bonbon::Jaune;
+                break;
+            case 2:
+                color=Bonbon::Vert;
+                break;
+            case 3:
+                color=Bonbon::Bleu;
+                break;
+            case 4:
+                color=Bonbon::Violet;
+                break;
+            case 5:
+                color=Bonbon::Rose;
+                break;
+            default:
+                color=Bonbon::Aucune;
+                type=Bonbon::Bombe;
             }
 
             niveau.ajouterBonbon(i,j,color,type);
