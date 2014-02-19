@@ -138,6 +138,7 @@ void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool fran
         curCell->setProperty("colonne",QVariant(colonne));
         curCell->setParent(GlobalGrille);
         curCell->setParentItem(GlobalGrille);
+        liste[index(ligne,colonne)]=curCell;
     }
 }
 
