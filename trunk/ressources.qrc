@@ -5,7 +5,6 @@
         <file alias="bleuRayureH">images/bleuRayureH.svg</file>
         <file alias="bleuRayureV">images/bleuRayureV.svg</file>
         <file alias="bleuSucre">images/bleuSucre.svg</file>
-        <file alias="bombe">images/bombe.svg</file>
         <file alias="jaune">images/jaune.svg</file>
         <file alias="jauneRayureH">images/jauneRayureH.svg</file>
         <file alias="jauneRayureV">images/jauneRayureV.svg</file>
@@ -26,5 +25,6 @@
         <file alias="violetRayureH">images/violetRayureH.svg</file>
         <file alias="violetRayureV">images/violetRayureV.svg</file>
         <file alias="violetSucre">images/violetSucre.svg</file>
+        <file alias="bombe">images/bombe.svg</file>
     </qresource>
 </RCC>
