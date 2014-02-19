@@ -72,8 +72,10 @@ Bonbon{
                 break;
             }
 
-
-            return "qrc:/images/" + couleurString + typeString
+            if(typeString=="bombe")
+                return "qrc:/images/bombe"
+            else
+                return "qrc:/images/" + couleurString + typeString
         }
 
         anchors.fill: parent
