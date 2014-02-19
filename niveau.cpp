@@ -20,6 +20,7 @@ Niveau::Niveau(int num_niveau,int score_objectif, QList<Case*> liste, int nb_col
 
 }
 
+//Get and Set////////////////////////////////////////////////////////////////////////
 int Niveau::getNum_niveau() const{
     return num_niveau;
 }
@@ -44,11 +45,24 @@ int Niveau::getNb_mvt() const{
     return nb_mvt;
 }
 
+
 //premiere case ling=0 col=0.
+//Indique s'il n'y a pas de case définie
 bool Niveau::estVide (int lign, int col){
     return (liste.at((lign*nb_col) + col) == NULL);
 }
 
+//Indique s'il y a un bonbon dans la case
+bool Niveau::sansBonbon (int lign, int col){
+    return (estVide(lign, col) || liste.at((lign*nb_col) + col)->getBonbon()==NULL);
+}
+
+// Retourne l'id de la case
+int Niveau::index(int lign, int col){
+    return (lign*nb_col) + col;
+}
+
+//Combo///////////////////////////////////////////////////////////////////////////////////////
 //Pour vérifier s'il y a combo sur le bonbon de la case et les 2 suivants sur la ligne.
 bool Niveau::comboHorizontal (int lign, int col){
     int i=(lign*nb_col) + col;
@@ -95,4 +109,49 @@ bool Niveau::comboCoinBD(int lign, int col){
         return (comboHorizontal(lign, col-2)+ comboVertical(lign, col));
     }
     else return false;
+}
+
+//Ajout/Suppresion Bonbon/Case //////////////////////////////////////////////////////////////////
+void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbon::Type type=Bonbon.Normal){
+    if(!estVide(ligne,colonne) && sansBonbon(ligne,colonne)){
+        QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueBonbon.qml"));
+        Bonbon* bonbec = qobject_cast<Bonbon *>(component.create());
+        bonbec->setType(type);
+        bonbec->setCouleur(couleur);
+        bonbec->setProperty("ligne",QVariant(ligne));
+        bonbec->setProperty("colonne",QVariant(colonne));
+        bonbec->setParent(GlobalGrille);
+        bonbec->setParentItem(GlobalGrille);
+        liste.at(index(ligne,colonne))->setBonbon(bonbec);
+    }
+}
+
+void Niveau::ajouterCase(int ligne, int colonne, bool debut=false, bool fin=false, bool franchissable=true){
+    if(estVide(ligne,colonne)){
+        QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueCase.qml"));
+        Case *curCell = qobject_cast<Case *>(component.create());
+        curCell->setDebut(debut);
+        curCell->setFin(fin);
+        curCell->setFranchissable(franchissable);
+        curCell->setBonbon(NULL);
+        curCell->setProperty("ligne",QVariant(ligne));
+        curCell->setProperty("colonne",QVariant(colonne));
+        curCell->setParent(GlobalGrille);
+        curCell->setParentItem(GlobalGrille);
+    }
+}
+
+void Niveau::supprimerBonbon(int ligne, int colonne){
+    if(!estVide(ligne,colonne) && !sansBonbon(ligne,colonne)){
+        liste.at(index(ligne,colonne))->getBonbon()->destroyed();
+        liste.at(index(ligne,colonne))->setBonbon(NULL);
+    }
+}
+
+void Niveau::supprimerCase(int ligne, int colonne){
+    if(!estVide(ligne,colonne)){
+        supprimerBonbon(ligne,colonne);
+        liste.at(index(ligne,colonne))->destroyed();
+        liste.at(index(ligne,colonne))=NULL;
+    }
 }

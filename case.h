@@ -22,6 +22,9 @@ public:
     bool estFin() const;
     bool estFranchissable() const;
     void setBonbon(Bonbon* bonbon);
+    void setFin(bool fin);
+    void setDebut(bool debut);
+    void setFranchissable(bool franchissable);
 
 private:
     Bonbon* bonbon;

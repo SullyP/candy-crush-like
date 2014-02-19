@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     niveau.cpp \
     case.cpp \
     controleur.cpp \
-    vue.cpp
+    vue.cpp \
+    global.cpp
 
 # Installation path
 # target.path =
@@ -31,7 +32,8 @@ HEADERS += \
     niveau.h \
     case.h \
     controleur.h \
-    vue.h
+    vue.h \
+    global.h
 
 RESOURCES += \
     ressources.qrc

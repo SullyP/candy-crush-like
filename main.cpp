@@ -6,6 +6,7 @@
 #include "niveau.h"
 #include "controleur.h"
 #include "vue.h"
+#include "global.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,12 +16,13 @@ int main(int argc, char *argv[])
     Controleur controleur;
 
     QtQuick2ApplicationViewer viewer;
-    controleur.viewer=&viewer;
     viewer.rootContext()->setContextProperty("controleur", &controleur);
     viewer.setMainQmlFile(QStringLiteral("qml/SweetCandy/main.qml"));
     viewer.showExpanded();
     viewer.setMinimumSize(QSize(600,400));
 
+    GlobalViewer=&viewer;
+    GlobalGrille = GlobalViewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
     controleur.newNiveau();
 
     return app.exec();
