@@ -112,7 +112,7 @@ bool Niveau::comboCoinBD(int lign, int col){
 }
 
 //Ajout/Suppresion Bonbon/Case //////////////////////////////////////////////////////////////////
-void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbon::Type type=Bonbon.Normal){
+void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbon::Type type){
     if(!estVide(ligne,colonne) && sansBonbon(ligne,colonne)){
         QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueBonbon.qml"));
         Bonbon* bonbec = qobject_cast<Bonbon *>(component.create());
@@ -126,7 +126,7 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
     }
 }
 
-void Niveau::ajouterCase(int ligne, int colonne, bool debut=false, bool fin=false, bool franchissable=true){
+void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool franchissable){
     if(estVide(ligne,colonne)){
         QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueCase.qml"));
         Case *curCell = qobject_cast<Case *>(component.create());
@@ -152,6 +152,6 @@ void Niveau::supprimerCase(int ligne, int colonne){
     if(!estVide(ligne,colonne)){
         supprimerBonbon(ligne,colonne);
         liste.at(index(ligne,colonne))->destroyed();
-        liste.at(index(ligne,colonne))=NULL;
+        liste[index(ligne,colonne)]=NULL;
     }
 }
