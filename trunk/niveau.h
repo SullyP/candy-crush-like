@@ -3,6 +3,8 @@
 
 #include<QList>
 #include"case.h"
+#include"bonbon.h"
+#include"global.h"
 
 class Niveau
 {
@@ -33,7 +35,7 @@ public:
     bool comboCoinBD (int lign, int col);
 
     //Ajout/Suppresion Bonbon/Case
-    void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type=Bonbon.Normal);
+    void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
     void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);
     void supprimerBonbon(int lign, int col);
     void supprimerCase(int lign, int col);
