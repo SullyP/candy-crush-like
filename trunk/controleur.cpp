@@ -9,7 +9,7 @@ Controleur::Controleur(QObject *parent) :
             liste.push_back(NULL);
         }
     }
-    niveau=Niveau(1,10000,liste,9,9,30);
+    niveau=NULL;
 }
 
 int Controleur::getResolutionBonbon() const{
@@ -41,56 +41,16 @@ void Controleur::setTailleBonbon(int taille){
 }
 
 int Controleur::getNbColonne() const{
-    return niveau.getNb_col();
+    if(niveau!=NULL)
+        return niveau->getNb_col();
+    else
+        return 1;
 }
 
-void Controleur::newNiveau(){
-    for(int i=0;i<9;i++){
-        for(int j=0;j<9;j++){
-            niveau.ajouterCase(i,j);
-            Bonbon::Couleur color;
-            Bonbon::Type type;
-            int temp = rand() % 4;
-            switch(temp){
-            case 0:
-                type=Bonbon::Normal;
-                break;
-            case 1:
-                type=Bonbon::RayureH;
-                break;
-            case 2:
-                type=Bonbon::RayureV;
-                break;
-            default:
-                type=Bonbon::Sucre;
-            }
-            temp = rand() % 7;
-            switch(temp){
-            case 0:
-                color=Bonbon::Rouge;
-                break;
-            case 1:
-                color=Bonbon::Jaune;
-                break;
-            case 2:
-                color=Bonbon::Vert;
-                break;
-            case 3:
-                color=Bonbon::Bleu;
-                break;
-            case 4:
-                color=Bonbon::Violet;
-                break;
-            case 5:
-                color=Bonbon::Rose;
-                break;
-            default:
-                color=Bonbon::Aucune;
-                type=Bonbon::Bombe;
-            }
-
-            niveau.ajouterBonbon(i,j,color,type);
-
-        }
-    }
+void Controleur::chargerNiveau(int n){
+    if(niveau!=NULL)
+        delete(niveau);
+    niveau=new Niveau(n);
+    emit nbColonneChanged();
+    emit actualiserTailleBonbon();
 }

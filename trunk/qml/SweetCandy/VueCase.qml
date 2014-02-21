@@ -10,7 +10,7 @@ CaseB{
         y:ligne*controleur.tailleBonbon
         width: controleur.tailleBonbon
         height: controleur.tailleBonbon
-        color: "grey"
+        color:CaseB.franchissable ? "grey":"black"
         radius: controleur.tailleBonbon/6
     }
 }

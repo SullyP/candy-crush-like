@@ -6,7 +6,7 @@ Case::Case(QQuickItem *parent) :
 {
     this->debut=false;
     this->fin=false;
-    this->franchissable=false;
+    this->franchissable=true;
     this->bonbon=NULL;
 }
 
@@ -52,5 +52,8 @@ void Case::setDebut(bool debut){
 }
 
 void Case::setFranchissable(bool franchissable){
-    this->franchissable=franchissable;
+    if(franchissable!=this->franchissable){
+        this->franchissable=franchissable;
+        emit franchissableChanged();
+    }
 }
