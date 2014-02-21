@@ -21,9 +21,10 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
     viewer.setMinimumSize(QSize(600,400));
 
+
     GlobalViewer=&viewer;
     GlobalGrille = GlobalViewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
-    controleur.newNiveau();
+    controleur.chargerNiveau(1);
 
     return app.exec();
 }

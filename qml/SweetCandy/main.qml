@@ -46,6 +46,10 @@ Rectangle {
                     controleur.tailleBonbon=width/controleur.nbColonne;
                 }
 
+
+
+
+
                 /*MouseArea {
                     anchors.fill: parent;
                     onClicked: Game.handleClick(mouse.x,mouse.y);

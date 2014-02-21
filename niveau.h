@@ -5,13 +5,18 @@
 #include"case.h"
 #include"bonbon.h"
 #include"global.h"
+#include <stdlib.h>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 class Niveau
 {
 
 public:
     Niveau();
-    Niveau(int num_niveau,int score_objectif, QList<Case*> liste, int nb_col, int nb_lign, int nb_mvt);
+    Niveau(int nnbNiveau);
 
     //Get and Set
     int getNum_niveau() const;
@@ -22,9 +27,12 @@ public:
     int getNb_mvt() const;
 
 
-    bool estVide (int lign, int col);
-    bool sansBonbon (int lign, int col);
-    int index(int lign, int col);
+    bool estVide (int lign, int col) const;
+    bool estBloc (int lign, int col) const;
+    bool sansBonbon (int lign, int col) const;
+    int index(int lign, int col) const;
+
+    void remplir();
 
     //combo
     bool comboHorizontal (int lign, int col);
@@ -42,6 +50,10 @@ private:
     int score;
     int score_objectif;
     QList<Case*> liste;
+    QList<int> caseVide;
+    QList<int> caseBloc;
+    QList<int> caseDebut;
+    QList<int> caseFin;
     int nb_col;
     int nb_lign;
     int nb_mvt;

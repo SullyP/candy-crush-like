@@ -14,21 +14,23 @@ class Controleur : public QObject
     Q_OBJECT
     Q_PROPERTY(int tailleBonbon READ getTailleBonbon WRITE setTailleBonbon NOTIFY tailleBonbonChanged)
     Q_PROPERTY(int resolutionBonbon READ getResolutionBonbon NOTIFY resolutionBonbonChanged)
-    Q_PROPERTY(int nbColonne READ getNbColonne)
+    Q_PROPERTY(int nbColonne READ getNbColonne NOTIFY nbColonneChanged)
 public:
     explicit Controleur(QObject *parent = 0);
     int getResolutionBonbon() const;
     int getTailleBonbon() const;
     void setTailleBonbon(int taille);
     int getNbColonne() const;
-    void newNiveau();
+    void chargerNiveau(int n);
 private:
     int resolutionBonbon;
     int tailleBonbon;
-    Niveau niveau;
+    Niveau* niveau;
 signals:
     void tailleBonbonChanged();
     void resolutionBonbonChanged();
+    void nbColonneChanged();
+    void actualiserTailleBonbon();
 public slots:
 
 };
