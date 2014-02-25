@@ -44,11 +44,17 @@ void Case::setBonbon(Bonbon* bonbon){
 }
 
 void Case::setFin(bool fin){
-    this->fin=fin;
+    if(fin!=this->fin){
+        this->fin=fin;
+        emit finChanged();
+    }
 }
 
 void Case::setDebut(bool debut){
-    this->debut=debut;
+    if(debut!=this->debut){
+        this->debut=debut;
+        emit debutChanged();
+    }
 }
 
 void Case::setFranchissable(bool franchissable){

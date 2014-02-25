@@ -8,95 +8,96 @@ Niveau::Niveau(){
 
 Niveau::Niveau(int nbNiveau){
     ostringstream nomFichier;
-    nomFichier << "./levels/" << nbNiveau << ".candy";
+    nomFichier << ":/levels/" << nbNiveau;
 
-    // le constructeur de ifstream permet d'ouvrir un fichier en lecture
-    ifstream fichier(nomFichier.str().c_str());
+    QFile file((nomFichier.str()).c_str());
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
 
-    if (fichier) // ce test échoue si le fichier n'est pas ouvert
-    {
-        string ligne; // variable contenant chaque ligne lue
+    int etape =0;
+    num_niveau=nbNiveau;
+    score=0;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString ligne = in.readLine();
+        switch(etape){
+        case 0:
+            if(ligne=="score_objectif:")
+                etape++;
+            break;
+        case 1:
+            score_objectif=ligne.toInt();
+            etape++;
+            break;
+        case 2:
+            if(ligne=="nb_col:")
+                etape++;
+            break;
+        case 3:
+            nb_col=ligne.toInt();
+            etape++;
+            break;
+        case 4:
+            if(ligne=="nb_lign:")
+                etape++;
+            break;
+        case 5:
+            nb_lign=ligne.toInt();
+            etape++;
+            break;
+        case 6:
+            if(ligne=="nb_mvt:")
+                etape++;
+            break;
+        case 7:
+            nb_mvt=ligne.toInt();
+            etape++;
+            break;
+        case 8:
+            if(ligne=="case_vide:")
+                etape++;
+            break;
+        case 9:
+            if(ligne!="case_bloc:")
+                caseVide.push_back(ligne.toInt());
+            else
+                etape++;
+            break;
+        case 10:
+            if(ligne!="case_debut:")
+                caseBloc.push_back(ligne.toInt());
+            else
+                etape++;
+            break;
+        case 11:
+            if(ligne!="case_fin:")
+                caseDebut.push_back(ligne.toInt());
+            else
+                etape++;
+            break;
+        case 12:
+            caseFin.push_back(ligne.toInt());
 
-        if (getline( fichier, ligne))
-        {
-            num_niveau=nbNiveau;
-            score=0;
-            if(ligne=="score_objectif:" && getline( fichier, ligne )){
-                score_objectif=atoi(ligne.c_str());
-                getline( fichier, ligne );
+        }
+    }
 
-                if(ligne=="nb_col:" && getline( fichier, ligne )){
-                    nb_col=atoi(ligne.c_str());
-                    getline( fichier, ligne );
+    //Création de la grille et des cases
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            liste.append(NULL);
 
-                    if(ligne=="nb_lign:" && getline( fichier, ligne )){
-                        nb_lign=atoi(ligne.c_str());
-                        getline( fichier, ligne );
-
-                        if(ligne=="nb_mvt:" && getline( fichier, ligne )){
-                            nb_mvt=atoi(ligne.c_str());
-                            getline( fichier, ligne );
-                            
-                            if(ligne=="case_vide:"){
-                                QList<int> caseVide;
-                                while(getline( fichier, ligne ) && ligne!="case_bloc:"){
-                                    caseVide.push_back(atoi(ligne.c_str()));
-                                }
-
-                                if(ligne=="case_bloc:"){
-                                    QList<int> caseBloc;
-                                    while(getline( fichier, ligne ) && ligne!="case_debut:"){
-                                        caseBloc.push_back(atoi(ligne.c_str()));
-                                    }
-
-                                    if(ligne=="case_debut:"){
-                                        QList<int> caseDebut;
-                                        while(getline( fichier, ligne ) && ligne!="case_fin:"){
-                                            caseDebut.push_back(atoi(ligne.c_str()));
-                                        }
-
-                                        if(ligne=="case_fin:"){
-                                            QList<int> caseFin;
-                                            while(getline( fichier, ligne ) && ligne!=""){
-                                                caseFin.push_back(atoi(ligne.c_str()));
-                                            }
-
-                                            //Fermeture du fichier
-                                            fichier.close();
-
-                                            //Création de la grille
-                                            for(int i=0;i<nb_lign;i++){
-                                                for(int j=0;j<nb_col;j++){
-                                                    liste.append(NULL);
-                                                }
-                                            }
-
-                                            //Création des cases
-                                            for(int i=0;i<nb_lign;i++){
-                                                for(int j=0;j<nb_col;j++){
-                                                    if(caseVide.contains(index(i,j))){
-                                                        //RIEN
-                                                    }else if(caseBloc.contains(index(i,j))){
-                                                        ajouterCase(i,j,false,false,false);
-                                                    }else {
-                                                        ajouterCase(i,j,caseDebut.contains(index(i,j)),caseFin.contains(index(i,j)));
-                                                    }
-
-                                                }
-                                            }
-
-                                            //Remplissage de la grille par des bonbons
-                                            remplir();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if(caseVide.contains(index(i,j))){
+                //RIEN
+            }else if(caseBloc.contains(index(i,j))){
+                ajouterCase(i,j,false,false,false);
+            }else {
+                ajouterCase(i,j,caseDebut.contains(index(i,j)),caseFin.contains(index(i,j)));
             }
         }
     }
+
+    //Remplissage de la grille par des bonbons
+    remplir();
 }
 
 //Get and Set////////////////////////////////////////////////////////////////////////
