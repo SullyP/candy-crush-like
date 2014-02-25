@@ -7,8 +7,8 @@
 class Case : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool debut READ estDebut)
-    Q_PROPERTY(bool fin READ estFin)
+    Q_PROPERTY(bool debut READ estDebut NOTIFY debutChanged)
+    Q_PROPERTY(bool fin READ estFin NOTIFY finChanged)
     Q_PROPERTY(bool franchissable READ estFranchissable NOTIFY franchissableChanged)
     Q_PROPERTY(bool vide READ estVide)
 
@@ -32,6 +32,8 @@ private:
     bool franchissable;
 signals:
     void franchissableChanged();
+    void finChanged();
+    void debutChanged();
 public slots:
 
 };

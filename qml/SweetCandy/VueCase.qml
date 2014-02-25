@@ -10,7 +10,38 @@ CaseB{
         y:ligne*controleur.tailleBonbon
         width: controleur.tailleBonbon
         height: controleur.tailleBonbon
-        color:CaseB.franchissable ? "grey":"black"
+        color:franchissable ? "#A3A3A3":"#616161"
         radius: controleur.tailleBonbon/6
+
+        Item{
+            //Indicateur de debut
+            anchors.top: parent.top
+            width: parent.width
+            height: 1
+
+            Rectangle{
+                visible: debut
+                anchors.fill: parent
+                anchors.rightMargin: controleur.tailleBonbon/6
+                anchors.leftMargin: controleur.tailleBonbon/6
+                color:"blue"
+            }
+
+        }
+
+        Item{
+            //Indicateur de fin
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+
+            Rectangle{
+                visible: fin
+                anchors.fill: parent
+                anchors.rightMargin: controleur.tailleBonbon/6
+                anchors.leftMargin: controleur.tailleBonbon/6
+                color:"black"
+            }
+        }
     }
 }

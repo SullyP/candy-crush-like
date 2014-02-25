@@ -74,6 +74,7 @@ Bonbon{
         }
 
         anchors.fill: parent
+        anchors.margins: 2
         sourceSize.height: controleur.resolutionBonbon
     }
 }

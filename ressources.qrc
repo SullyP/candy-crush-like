@@ -27,4 +27,7 @@
         <file alias="violetSucre">images/violetSucre.svg</file>
         <file alias="bombe">images/bombe.svg</file>
     </qresource>
+    <qresource prefix="/levels">
+        <file alias="1">levels/1.candy</file>
+    </qresource>
 </RCC>

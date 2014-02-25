@@ -6,6 +6,7 @@ Rectangle {
     height: 400
     state: "mainMenu"
     property int margePixel: 30
+    property int tailleInfoJeux: 200
 
     Image {
         id: background
@@ -23,11 +24,11 @@ Rectangle {
         Item{
             anchors.centerIn: parent
             height: parent.height
-            width: Math.min(parent.height+200,parent.width)
+            width: Math.min(parent.height+tailleInfoJeux,parent.width)
 
             Rectangle {
                 id: infoJeux
-                width: 200
+                width: tailleInfoJeux
                 color: "yellow"
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -42,13 +43,16 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.left: infoJeux.right
 
-                onWidthChanged:{
-                    controleur.tailleBonbon=width/controleur.nbColonne;
+                Connections {
+                    target: controleur
+                    onActualiserTailleBonbon:{
+                        controleur.tailleBonbon=grilleJeux.width/controleur.nbColonne;
+                    }
                 }
 
-
-
-
+                onWidthChanged:{
+                        controleur.tailleBonbon=width/controleur.nbColonne;
+                }
 
                 /*MouseArea {
                     anchors.fill: parent;
