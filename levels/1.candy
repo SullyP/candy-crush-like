@@ -1,5 +1,5 @@
 score_objectif:
-10 000
+10000
 nb_col:
 9
 nb_lign:
@@ -14,15 +14,13 @@ case_bloc:
 11
 12
 case_debut:
-1
+0
 2
 3
 4
 5
 6
-7
 8
-9
 case_fin:
 81
 80

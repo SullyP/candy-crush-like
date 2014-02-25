@@ -25,6 +25,7 @@ public:
     int getNb_col() const;
     int getNb_lign() const;
     int getNb_mvt() const;
+    Bonbon* getBonbon(int lign, int col) const;
 
 
     bool estVide (int lign, int col) const;
@@ -57,6 +58,7 @@ private:
     int nb_col;
     int nb_lign;
     int nb_mvt;
+    Bonbon::Couleur couleurHasard() const;
 
 
 };

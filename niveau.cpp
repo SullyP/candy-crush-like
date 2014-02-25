@@ -142,41 +142,80 @@ bool Niveau::sansBonbon (int lign, int col) const{
     return (estVide(lign, col) || liste.at(index(lign,col))->getBonbon()==NULL);
 }
 
-// Retourne l'id de la case
+// Retourne l'id de la case et retourne -1 s'il est en dehors de la liste
 int Niveau::index(int lign, int col) const{
-    return (lign*nb_col) + col;
+    if(lign>=0 && lign<=nb_lign && col>=0 && col<=nb_col)
+        return (lign*nb_col) + col;
+    else
+        return -1;
 }
 
+//Remplissage de la grille de manière aléatoire, puis on change la couleur des bonbons qui forment un combo
 void Niveau::remplir(){
     for(int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
             if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
-                Bonbon::Couleur couleur;
-                int temp = rand() % 6;
-                switch(temp){
-                case 0:
-                    couleur=Bonbon::Rouge;
-                    break;
-                case 1:
-                    couleur=Bonbon::Jaune;
-                    break;
-                case 2:
-                    couleur=Bonbon::Vert;
-                    break;
-                case 3:
-                    couleur=Bonbon::Bleu;
-                    break;
-                case 4:
-                    couleur=Bonbon::Violet;
-                    break;
-                case 5:
-                    couleur=Bonbon::Rose;
-                    break;
+                ajouterBonbon(i,j,couleurHasard());
+                Bonbon *b1,*b2,*b3,*b4;
+                bool comboColonne=false, comboLigne=false;
+                b1 = getBonbon(i, j - 1);
+                b2 = getBonbon(i, j - 2);
+                b3 = getBonbon(i-1,j);
+                b4 = getBonbon(i-2,j);
+                if(b1!=NULL && b2!=NULL)
+                    comboColonne=(b1->getCouleur() == getBonbon(i,j)->getCouleur() && b2->getCouleur()==getBonbon(i,j)->getCouleur());
+                if(b3!=NULL && b4!=NULL)
+                    comboLigne=(b3->getCouleur() == getBonbon(i,j)->getCouleur() && b4->getCouleur()==getBonbon(i,j)->getCouleur());
+
+                while(comboLigne || comboColonne){
+                    Bonbon::Couleur newCouleur = couleurHasard();
+                    if(newCouleur!=getBonbon(i,j)->getCouleur()){
+                        std::cout << i << " " << j << endl;
+                        getBonbon(i,j)->setCouleur(newCouleur);
+                        if(b1!=NULL && b2!=NULL)
+                            comboColonne=(b1->getCouleur() == newCouleur && b2->getCouleur()==newCouleur);
+                        if(b3!=NULL && b4!=NULL)
+                            comboLigne=(b3->getCouleur() == newCouleur && b4->getCouleur()==newCouleur);
+                    }
                 }
-                ajouterBonbon(i,j,couleur);
             }
         }
     }
+}
+
+//Retourne le bonbon à la case spécifié, s'il existe
+Bonbon* Niveau::getBonbon(int lign, int col) const{
+    if(index(lign,col)!=-1 && liste.at(index(lign,col))!=NULL)
+        return liste.at(index(lign,col))->getBonbon();
+    else
+        return NULL;
+
+}
+
+Bonbon::Couleur Niveau::couleurHasard() const{
+    Bonbon::Couleur couleur;
+    int temp = rand() % 6;
+    switch(temp){
+    case 0:
+        couleur=Bonbon::Rouge;
+        break;
+    case 1:
+        couleur=Bonbon::Jaune;
+        break;
+    case 2:
+        couleur=Bonbon::Vert;
+        break;
+    case 3:
+        couleur=Bonbon::Bleu;
+        break;
+    case 4:
+        couleur=Bonbon::Violet;
+        break;
+    case 5:
+        couleur=Bonbon::Rose;
+        break;
+    }
+    return couleur;
 }
 
 //Combo///////////////////////////////////////////////////////////////////////////////////////
