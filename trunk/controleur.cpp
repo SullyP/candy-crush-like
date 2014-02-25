@@ -20,6 +20,27 @@ int Controleur::getTailleBonbon() const{
     return tailleBonbon;
 }
 
+int Controleur::getScore() const{
+    if(niveau!=NULL)
+        return niveau->getScore();
+    else
+        return 0;
+}
+
+int Controleur::getNbMvt() const{
+    if(niveau!=NULL)
+        return niveau->getNb_mvt();
+    else
+        return 0;
+}
+
+int Controleur::getNumNiveau() const{
+    if(niveau!=NULL)
+        return niveau->getNum_niveau();
+    else
+        return 0;
+}
+
 void Controleur::setTailleBonbon(int taille){
     if(taille!=tailleBonbon){
         tailleBonbon=taille;
@@ -47,10 +68,24 @@ int Controleur::getNbColonne() const{
         return 1;
 }
 
+int Controleur::getScoreObjectif() const{
+    if(niveau!=NULL)
+        return niveau->getScore_objectif();
+    else
+        return 1;
+}
+
+int Controleur::getNbTotalNiveau() const{
+    return NB_TOTAL_NIVEAU;
+}
 void Controleur::chargerNiveau(int n){
     if(niveau!=NULL)
         delete(niveau);
     niveau=new Niveau(n);
     emit nbColonneChanged();
+    emit numNiveauChanged();
+    emit scoreChanged();
     emit actualiserTailleBonbon();
+    emit scoreObjectifChanged();
+    emit nbMvtChanged();
 }
