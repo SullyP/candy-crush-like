@@ -17,6 +17,7 @@ class Niveau
 public:
     Niveau();
     Niveau(int nnbNiveau);
+    ~Niveau();
 
     //Get and Set
     int getNum_niveau() const;

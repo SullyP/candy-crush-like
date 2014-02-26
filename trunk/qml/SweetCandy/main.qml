@@ -1,10 +1,12 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
 
 Rectangle {
     id: ecran
     width: 600
     height: 400
-    state: "jeux"
+    state: "mainMenu"
     property int margePixel: 30
     property int tailleInfoJeux: 200
 
@@ -34,7 +36,51 @@ Rectangle {
                 anchors.centerIn: parent
             }
         }
-   }
+
+        ScrollView{
+            anchors.centerIn: parent
+            Grid{
+                columns: 5
+                spacing: 5
+                Repeater{
+                    model: controleur.nbTotalNiveau
+                    Rectangle {
+                        width: 50
+                        height: 50
+                        radius: 10
+                        color: "#616161"
+
+                        Text{
+                            text:String(index+1)
+                            font.pointSize: 25
+                            color: "white"
+                            anchors.centerIn: parent
+                        }
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                controleur.chargerNiveau(index+1);
+                                ecran.state="jeux";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Image{
+        visible: ecran.state=="jeux"
+        source: "qrc:/images/home"
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {
+                ecran.state="mainMenu";
+            }
+        }
+    }
 
     Item{
         visible: ecran.state=="jeux"
@@ -123,6 +169,27 @@ Rectangle {
                                 color: "black"
                                 anchors.centerIn: parent
                             }
+                        }
+                        ProgressBar{
+                            maximumValue: controleur.scoreObjectif
+                            minimumValue: 0
+                            orientation: 0
+                            style: ProgressBarStyle {
+                                background: Rectangle {
+                                    radius: 2
+                                    color: "lightgray"
+                                    border.color: "gray"
+                                    border.width: 1
+                                    implicitWidth: 200
+                                    implicitHeight: 24
+                                }
+                                progress: Rectangle {
+                                    color: "lightsteelblue"
+                                    border.color: "steelblue"
+                                }
+                            }
+
+                            value: controleur.score
                         }
                     }
                 }

@@ -19,7 +19,7 @@ class Controleur : public QObject
     Q_PROPERTY(int scoreObjectif READ getScoreObjectif NOTIFY scoreObjectifChanged)
     Q_PROPERTY(int numNiveau READ getNumNiveau NOTIFY numNiveauChanged)
     Q_PROPERTY(int nbMvt READ getNbMvt NOTIFY nbMvtChanged)
-    Q_PROPERTY(int nbTotalNiveau READ getNbTotalNiveau)
+    Q_PROPERTY(int nbTotalNiveau READ getNbTotalNiveau CONSTANT)
 public:
     explicit Controleur(QObject *parent = 0);
     int getResolutionBonbon() const;
@@ -31,7 +31,7 @@ public:
     int getNumNiveau() const;
     int getNbMvt() const;
     int getNbTotalNiveau() const;
-    void chargerNiveau(int n);
+    Q_INVOKABLE void chargerNiveau(int n);
 private:
     int resolutionBonbon;
     int tailleBonbon;

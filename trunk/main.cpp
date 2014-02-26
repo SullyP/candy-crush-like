@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 
     GlobalViewer=&viewer;
     GlobalGrille = GlobalViewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
-    controleur.chargerNiveau(1);
 
     return app.exec();
 }
