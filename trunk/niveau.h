@@ -26,6 +26,7 @@ public:
     int getNb_lign() const;
     int getNb_mvt() const;
     Bonbon* getBonbon(int lign, int col) const;
+    Bonbon::Couleur getCouleur (int lign, int col);
 
 
     bool estVide (int lign, int col) const;
@@ -45,6 +46,9 @@ public:
     void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);
     void supprimerBonbon(int lign, int col);
     void supprimerCase(int lign, int col);
+
+    //detruire
+    void detruireCombo(int lign, int col);
 
 private:
     int num_niveau;
