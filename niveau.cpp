@@ -218,6 +218,14 @@ Bonbon::Couleur Niveau::couleurHasard() const{
     return couleur;
 }
 
+//retourne la couleur du bonbon spécifié, s'il existe
+Bonbon::Couleur Niveau::getCouleur (int lign, int col){
+    if (getBonbon(lign, col)!=NULL)
+        return getBonbon(lign,col)->getCouleur();
+    else
+        return Bonbon::Aucune;
+}
+
 //Combo///////////////////////////////////////////////////////////////////////////////////////
 //Pour vérifier s'il y a combo horizontal sur le bonbon.
 bool Niveau::comboHorizontal (int lign, int col){
@@ -311,4 +319,44 @@ void Niveau::supprimerCase(int ligne, int colonne){
         liste.at(index(ligne,colonne))->destroyed();
         liste[index(ligne,colonne)]=NULL;
     }
+}
+
+//destruction des bonbons formant un combo avec le bonbon spécifié
+void Niveau::detruireCombo(int lign, int col){
+    Bonbon::Couleur c = getCouleur(lign,col) ;
+    int i;
+    int j;
+    if (comboHorizontal(lign, col)){
+        //suppression des bonbons sur la gauche
+        i=lign;
+        j=col-1;
+        while (c==getCouleur(i,j) && getCouleur(i,j)!=Bonbon::Aucune ){
+            supprimerBonbon(i,j);
+            j=j-1;
+        }
+        //suppression des bonbons sur la droite
+        i=lign;
+        j=col+1;
+        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune) {
+            supprimerBonbon(i,j);
+            j=j+1;
+        }
+    }
+    else if (comboVertical(lign, col)){
+        //suppression des bonbons au dessus
+        i=lign-1;
+        j=col;
+        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune){
+            supprimerBonbon(i,j);
+            i=i-1;
+        }
+        //suppression des bonbons au dessous
+        i=lign+1;
+        j=col;
+        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune){
+            supprimerBonbon(i,j);
+            i=i+1;
+        }
+    }
+    supprimerBonbon(lign,col);
 }
