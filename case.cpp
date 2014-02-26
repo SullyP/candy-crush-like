@@ -17,6 +17,9 @@ Case::Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon){
     this->bonbon=bonbon;
 }
 
+Case::~Case(){
+    delete bonbon;
+}
 
 bool Case::estVide() const{
     return (NULL==bonbon);

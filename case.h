@@ -15,6 +15,7 @@ class Case : public QQuickItem
 public:
     explicit Case (QQuickItem *parent = 0);
     Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon);
+    ~Case();
     bool estVide() const;
     Bonbon* getBonbon();
     bool estDebut() const;

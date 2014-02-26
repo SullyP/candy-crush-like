@@ -78,6 +78,7 @@ int Controleur::getScoreObjectif() const{
 int Controleur::getNbTotalNiveau() const{
     return NB_TOTAL_NIVEAU;
 }
+
 void Controleur::chargerNiveau(int n){
     if(niveau!=NULL)
         delete(niveau);
