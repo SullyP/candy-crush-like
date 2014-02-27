@@ -6,6 +6,14 @@ Niveau::Niveau(){
 
 }
 
+Niveau::~Niveau(){
+    for(int i=nb_lign-1;i<-1;i--){
+        for(int j=nb_col;j<-1;j--){
+            supprimerCase(i,j);
+        }
+    }
+}
+
 Niveau::Niveau(int nbNiveau){
     ostringstream nomFichier;
     nomFichier << ":/levels/" << nbNiveau;
@@ -307,18 +315,14 @@ void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool fran
 }
 
 void Niveau::supprimerBonbon(int ligne, int colonne){
-    if(!estVide(ligne,colonne) && !sansBonbon(ligne,colonne)){
-        liste.at(index(ligne,colonne))->getBonbon()->destroyed();
-        liste.at(index(ligne,colonne))->setBonbon(NULL);
-    }
+    delete (getBonbon(ligne,colonne));
+    liste[index(ligne,colonne)]->setBonbon(NULL);
 }
 
 void Niveau::supprimerCase(int ligne, int colonne){
-    if(!estVide(ligne,colonne)){
-        supprimerBonbon(ligne,colonne);
-        liste.at(index(ligne,colonne))->destroyed();
-        liste[index(ligne,colonne)]=NULL;
-    }
+    supprimerBonbon(ligne,colonne);
+    delete (liste[index(ligne,colonne)]);
+    liste[index(ligne,colonne)]=NULL;
 }
 
 //destruction des bonbons formant un combo avec le bonbon spécifié
