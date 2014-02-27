@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#define NB_TOTAL_NIVEAU 1
+#define NB_TOTAL_NIVEAU 2
 #include "qtquick2applicationviewer.h"
 
 extern const QtQuick2ApplicationViewer* GlobalViewer;

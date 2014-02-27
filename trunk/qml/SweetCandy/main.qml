@@ -38,15 +38,18 @@ Rectangle {
         }
 
         ScrollView{
+            id:scroll
+            width: parent.width-2*margePixel
+            height: parent.height-4*margePixel
             anchors.centerIn: parent
             Grid{
-                columns: 5
+                columns: scroll.width/66
                 spacing: 5
                 Repeater{
                     model: controleur.nbTotalNiveau
                     Rectangle {
-                        width: 50
-                        height: 50
+                        width: 60
+                        height: 60
                         radius: 10
                         color: "#616161"
 
