@@ -7,8 +7,8 @@ Niveau::Niveau(){
 }
 
 Niveau::~Niveau(){
-    for(int i=nb_lign-1;i<-1;i--){
-        for(int j=nb_col;j<-1;j--){
+    for(int i=0;i<nb_col;i++){
+        for(int j=0;j<nb_lign;j++){
             supprimerCase(i,j);
         }
     }
@@ -178,7 +178,6 @@ void Niveau::remplir(){
                 while(comboLigne || comboColonne){
                     Bonbon::Couleur newCouleur = couleurHasard();
                     if(newCouleur!=getBonbon(i,j)->getCouleur()){
-                        std::cout << i << " " << j << endl;
                         getBonbon(i,j)->setCouleur(newCouleur);
                         if(b1!=NULL && b2!=NULL)
                             comboColonne=(b1->getCouleur() == newCouleur && b2->getCouleur()==newCouleur);
@@ -315,8 +314,10 @@ void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool fran
 }
 
 void Niveau::supprimerBonbon(int ligne, int colonne){
-    delete (getBonbon(ligne,colonne));
-    liste[index(ligne,colonne)]->setBonbon(NULL);
+    if (getBonbon(ligne,colonne)!=NULL){
+        delete (getBonbon(ligne,colonne));
+        liste[index(ligne,colonne)]->setBonbon(NULL);
+    }
 }
 
 void Niveau::supprimerCase(int ligne, int colonne){
