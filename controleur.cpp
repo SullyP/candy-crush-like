@@ -80,8 +80,7 @@ int Controleur::getNbTotalNiveau() const{
 }
 
 void Controleur::chargerNiveau(int n){
-    if(niveau!=NULL)
-        delete(niveau);
+    delete niveau;
     niveau=new Niveau(n);
     emit nbColonneChanged();
     emit numNiveauChanged();
