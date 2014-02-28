@@ -236,19 +236,18 @@ Bonbon::Couleur Niveau::getCouleur (int lign, int col){
 //Combo///////////////////////////////////////////////////////////////////////////////////////
 //Pour vérifier s'il y a combo horizontal sur le bonbon.
 bool Niveau::comboHorizontal (int lign, int col){
-    int i=index(lign,col);
     if (col+2<nb_col){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+1)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i+2)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign,col+1) && getCouleur(lign,col)==getCouleur(lign,col+2)){
             return true;
         }
     }
     if (col-1>=0 && col+1<nb_col){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+1)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i-1)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign,col+1) && getCouleur(lign,col)==getCouleur(lign,col-1)){
             return true;
         }
     }
     if (col-2>=0){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i-1)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i-2)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign,col-1) && getCouleur(lign,col)==getCouleur(lign,col-2)){
             return true;
         }
     }
@@ -257,19 +256,18 @@ bool Niveau::comboHorizontal (int lign, int col){
 
 //Pour vérifier s'il y a combo vertical sur le bonbon.
 bool Niveau::comboVertical(int lign, int col){
-    int i=index(lign,col);
     if (lign+2<nb_lign){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+nb_col)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i+nb_col*2)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign+1,col) && getCouleur(lign,col)==getCouleur(lign+2,col)){
             return true;
         }
     }
     if (lign+1<nb_lign && lign-1>=0){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i+nb_col)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i-nb_col)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign+1,col) && getCouleur(lign,col)==getCouleur(lign-1,col)){
             return true;
         }
     }
     if (lign-2>=0){
-        if (liste.at(i)->getBonbon()->getCouleur()==liste.at(i-nb_col)->getBonbon()->getCouleur() && liste.at(i)->getBonbon()->getCouleur()==liste.at(i-nb_col*2)->getBonbon()->getCouleur()){
+        if (getCouleur(lign,col)==getCouleur(lign-1,col) && getCouleur(lign,col)==getCouleur(lign-2,col)){
             return true;
         }
     }
@@ -326,42 +324,70 @@ void Niveau::supprimerCase(int ligne, int colonne){
     liste[index(ligne,colonne)]=NULL;
 }
 
+//detruire//////////////////////////////////////////////////////////////
 //destruction des bonbons formant un combo avec le bonbon spécifié
 void Niveau::detruireCombo(int lign, int col){
-    Bonbon::Couleur c = getCouleur(lign,col) ;
-    int i;
-    int j;
     if (comboHorizontal(lign, col)){
-        //suppression des bonbons sur la gauche
-        i=lign;
-        j=col-1;
-        while (c==getCouleur(i,j) && getCouleur(i,j)!=Bonbon::Aucune ){
-            supprimerBonbon(i,j);
-            j=j-1;
-        }
-        //suppression des bonbons sur la droite
-        i=lign;
-        j=col+1;
-        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune) {
-            supprimerBonbon(i,j);
-            j=j+1;
-        }
+        detruireHorizontal(lign,col);
     }
-    else if (comboVertical(lign, col)){
-        //suppression des bonbons au dessus
-        i=lign-1;
-        j=col;
-        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune){
-            supprimerBonbon(i,j);
-            i=i-1;
-        }
-        //suppression des bonbons au dessous
-        i=lign+1;
-        j=col;
-        while (c==getCouleur(i,j)&& getCouleur(i,j)!=Bonbon::Aucune){
-            supprimerBonbon(i,j);
-            i=i+1;
-        }
+    if (comboVertical(lign, col)){
+        detruireVertical(lign,col);
     }
     supprimerBonbon(lign,col);
+}
+
+void Niveau::detruireHorizontal(int lign, int col){
+    Bonbon::Couleur c = getCouleur(lign,col) ;
+    int j;
+    //suppression des bonbons sur la gauche
+    j=col-1;
+    while (c==getCouleur(lign,j) && getCouleur(lign,j)!=Bonbon::Aucune ){
+        if (comboVertical(lign,j)){
+            detruireVertical(lign,j);
+        }
+        supprimerBonbon(lign,j);
+        j=j-1;
+    }
+    //suppression des bonbons sur la droite
+    j=col+1;
+    while (c==getCouleur(lign,j)&& getCouleur(lign,j)!=Bonbon::Aucune) {
+        if (comboVertical(lign,j)){
+            detruireVertical(lign,j);
+        }
+        supprimerBonbon(lign,j);
+        j=j+1;
+    }
+}
+
+void Niveau::detruireVertical(int lign, int col){
+    Bonbon::Couleur c = getCouleur(lign,col) ;
+    int i;
+    //suppression des bonbons au dessus
+    i=lign-1;
+    while (c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
+        if (comboHorizontal(i,col)){
+            detruireHorizontal(i,col);
+        }
+        supprimerBonbon(i,col);
+        i=i-1;
+    }
+    //suppression des bonbons en dessous
+    i=lign+1;
+    while (c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
+        if (comboHorizontal(i,col)){
+            detruireHorizontal(i,col);
+        }
+        supprimerBonbon(i,col);
+        i=i+1;
+    }
+}
+
+void Niveau::detruire(){
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && combo(i,j)){
+                detruireCombo(i,j);
+            }
+        }
+    }
 }
