@@ -115,3 +115,13 @@ void Controleur::selectionBonbon2(int x,int y){
     //niveau->estPossible(niveau->index(this->xSelBonbon,this->ySelBonbon),niveau->index(xSelBonbon,ySelBonbon));
     //Puis reste du déroulement du jeu
 }
+
+bool Controleur::getBehaviorDesactive() const{
+    return behaviorDesactive;
+}
+void Controleur::setbehaviorDesactive(bool b){
+    if(b!=behaviorDesactive){
+        behaviorDesactive=b;
+        emit behaviorDesactiveChanged();
+    }
+}

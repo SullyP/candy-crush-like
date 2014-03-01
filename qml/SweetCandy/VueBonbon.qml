@@ -10,6 +10,16 @@ Bonbon{
     width: controleur.tailleBonbon
     height: controleur.tailleBonbon
 
+    Behavior on x {
+        enabled: controleur.behaviorDesactive
+        PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
+    }
+
+    Behavior on y {
+        enabled: controleur.behaviorDesactive
+        PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
+    }
+
     Image{
         source:{
             var couleurString;
