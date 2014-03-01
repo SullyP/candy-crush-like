@@ -291,6 +291,7 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
         bonbec->setProperty("colonne",QVariant(colonne));
         bonbec->setParent(GlobalGrille);
         bonbec->setParentItem(GlobalGrille);
+        bonbec->setProperty("creationTermine",QVariant(false));
         liste.at(index(ligne,colonne))->setBonbon(bonbec);
     }
 }

@@ -220,7 +220,11 @@ Rectangle {
                 }
 
                 onWidthChanged:{
+                    //Désactive les animations lors du redemensionnement
+                    controleur.animation=false;
                     controleur.tailleBonbon=width/controleur.nbColonne;
+                    //Ré-active les animations
+                    controleur.animation=true;
                 }
             }
         }
