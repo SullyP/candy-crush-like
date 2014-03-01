@@ -8,11 +8,6 @@
 #include "niveau.h"
 #include "vue.h"
 #include "global.h"
-
-#include <stdlib.h>
-#include <string>
-#include <iostream>
-
 class Controleur : public QObject
 {
     Q_OBJECT
