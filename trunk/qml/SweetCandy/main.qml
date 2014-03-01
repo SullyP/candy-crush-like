@@ -209,14 +209,18 @@ Rectangle {
                 Connections {
                     target: controleur
                     onActualiserTailleBonbon:{
+                        //Désactive les animations lors de la mise à jour
+                        controleur.animation=false;
                         controleur.tailleBonbon=grilleJeux.width/controleur.nbColonne;
+                        //Ré-active les animations
+                        controleur.animation=true;
                     }
                 }
 
                 MouseArea{
                     anchors.fill: parent;
-                    onPressed: controleur.selectionBonbon1(mouse.x,mouse.y);
-                    onReleased: controleur.selectionBonbon2(mouse.x,mouse.y);
+                    onPressed: controleur.selectionBonbon1(mouse.y,mouse.x);
+                    onReleased: controleur.selectionBonbon2(mouse.y,mouse.x);
                 }
 
                 onWidthChanged:{
@@ -226,6 +230,7 @@ Rectangle {
                     //Ré-active les animations
                     controleur.animation=true;
                 }
+
             }
         }
     }

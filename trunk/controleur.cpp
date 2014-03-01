@@ -10,6 +10,7 @@ Controleur::Controleur(QObject *parent) :
         }
     }
     niveau=NULL;
+    animation=true;
 }
 
 int Controleur::getResolutionBonbon() const{
@@ -105,14 +106,17 @@ void Controleur::selectionBonbon2(int x,int y){
             ySelBonbon= this->ySelBonbon-1;
         }
     }else if(ySelBonbon==this->ySelBonbon){
-        if(xSelBonbon>this->xSelBonbon){
+        if(xSelBonbon > this->xSelBonbon){
             xSelBonbon= this->xSelBonbon+1;
-        }else if(xSelBonbon<this->xSelBonbon){
+        }else if(xSelBonbon < this->xSelBonbon){
             xSelBonbon= this->xSelBonbon-1;
         }
+    }else{
+        //Sinon déplacement non possible
+        return;
     }
 
-    //niveau->estPossible(niveau->index(this->xSelBonbon,this->ySelBonbon),niveau->index(xSelBonbon,ySelBonbon));
+    niveau->estPossible(this->xSelBonbon,this->ySelBonbon,xSelBonbon,ySelBonbon);
     //Puis reste du déroulement du jeu
 }
 
