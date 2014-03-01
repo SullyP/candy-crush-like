@@ -89,3 +89,29 @@ void Controleur::chargerNiveau(int n){
     emit scoreObjectifChanged();
     emit nbMvtChanged();
 }
+
+void Controleur::selectionBonbon1(int x,int y){
+    xSelBonbon = x/tailleBonbon;
+    ySelBonbon = y/tailleBonbon;
+}
+
+void Controleur::selectionBonbon2(int x,int y){
+    int xSelBonbon = x/tailleBonbon;
+    int ySelBonbon = y/tailleBonbon;
+    if(xSelBonbon==this->xSelBonbon){
+        if(ySelBonbon>this->ySelBonbon){
+            ySelBonbon= this->ySelBonbon+1;
+        }else if(ySelBonbon<this->ySelBonbon){
+            ySelBonbon= this->ySelBonbon-1;
+        }
+    }else if(ySelBonbon==this->ySelBonbon){
+        if(xSelBonbon>this->xSelBonbon){
+            xSelBonbon= this->xSelBonbon+1;
+        }else if(xSelBonbon<this->xSelBonbon){
+            xSelBonbon= this->xSelBonbon-1;
+        }
+    }
+
+    //niveau->estPossible(niveau->index(this->xSelBonbon,this->ySelBonbon),niveau->index(xSelBonbon,ySelBonbon));
+    //Puis reste du déroulement du jeu
+}

@@ -9,6 +9,10 @@
 #include "vue.h"
 #include "global.h"
 
+#include <stdlib.h>
+#include <string>
+#include <iostream>
+
 class Controleur : public QObject
 {
     Q_OBJECT
@@ -32,10 +36,15 @@ public:
     int getNbMvt() const;
     int getNbTotalNiveau() const;
     Q_INVOKABLE void chargerNiveau(int n);
+    Q_INVOKABLE void selectionBonbon1(int x,int y);
+    Q_INVOKABLE void selectionBonbon2(int x,int y);
 private:
     int resolutionBonbon;
     int tailleBonbon;
     Niveau* niveau;
+    //Coordonnées du premier bonbon sélectionné
+    int xSelBonbon;
+    int ySelBonbon;
 signals:
     void tailleBonbonChanged();
     void resolutionBonbonChanged();
