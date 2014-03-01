@@ -213,14 +213,15 @@ Rectangle {
                     }
                 }
 
+                MouseArea{
+                    anchors.fill: parent;
+                    onPressed: controleur.selectionBonbon1(mouse.x,mouse.y);
+                    onReleased: controleur.selectionBonbon2(mouse.x,mouse.y);
+                }
+
                 onWidthChanged:{
                     controleur.tailleBonbon=width/controleur.nbColonne;
                 }
-
-                /*MouseArea {
-                    anchors.fill: parent;
-                    onClicked: Game.handleClick(mouse.x,mouse.y);
-                }*/
             }
         }
     }
