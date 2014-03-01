@@ -18,7 +18,7 @@ class Controleur : public QObject
     Q_PROPERTY(int scoreObjectif READ getScoreObjectif NOTIFY scoreObjectifChanged)
     Q_PROPERTY(int numNiveau READ getNumNiveau NOTIFY numNiveauChanged)
     Q_PROPERTY(int nbMvt READ getNbMvt NOTIFY nbMvtChanged)
-    Q_PROPERTY(int behaviorDesactive READ getBehaviorDesactive WRITE setbehaviorDesactive NOTIFY behaviorDesactiveChanged)
+    Q_PROPERTY(int animation READ getAnimation WRITE setAnimation NOTIFY animationChanged)
     Q_PROPERTY(int nbTotalNiveau READ getNbTotalNiveau CONSTANT)
 public:
     explicit Controleur(QObject *parent = 0);
@@ -31,8 +31,8 @@ public:
     int getNumNiveau() const;
     int getNbMvt() const;
     int getNbTotalNiveau() const;
-    bool getBehaviorDesactive() const;
-    void setbehaviorDesactive(bool b);
+    bool getAnimation() const;
+    void setAnimation(bool b);
     Q_INVOKABLE void chargerNiveau(int n);
     Q_INVOKABLE void selectionBonbon1(int x,int y);
     Q_INVOKABLE void selectionBonbon2(int x,int y);
@@ -41,7 +41,7 @@ private:
     int tailleBonbon;
     Niveau* niveau;
     //Désactivé les animations
-    bool behaviorDesactive;
+    bool animation;
     //Coordonnées du premier bonbon sélectionné
     int xSelBonbon;
     int ySelBonbon;
@@ -54,7 +54,7 @@ signals:
     void numNiveauChanged();
     void scoreObjectifChanged();
     void nbMvtChanged();
-    void behaviorDesactiveChanged();
+    void animationChanged();
 public slots:
 
 };

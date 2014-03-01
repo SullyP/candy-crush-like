@@ -116,12 +116,12 @@ void Controleur::selectionBonbon2(int x,int y){
     //Puis reste du déroulement du jeu
 }
 
-bool Controleur::getBehaviorDesactive() const{
-    return behaviorDesactive;
+bool Controleur::getAnimation() const{
+    return animation;
 }
-void Controleur::setbehaviorDesactive(bool b){
-    if(b!=behaviorDesactive){
-        behaviorDesactive=b;
-        emit behaviorDesactiveChanged();
+void Controleur::setAnimation(bool b){
+    if(b!=animation){
+        animation=b;
+        emit animationChanged();
     }
 }

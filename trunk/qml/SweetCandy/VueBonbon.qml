@@ -3,7 +3,8 @@ import sweetcandy.bonbon 1.0
 
 Bonbon{
     property int colonne: 0
-    property int ligne: 0
+    property int ligne: -1 // permet d'avoir un effet "tombé du ciel" lors de l'animation
+    property bool creationTermine: false
 
     x: colonne*controleur.tailleBonbon
     y: ligne*controleur.tailleBonbon
@@ -11,12 +12,12 @@ Bonbon{
     height: controleur.tailleBonbon
 
     Behavior on x {
-        enabled: controleur.behaviorDesactive
+        enabled: controleur.animation && creationTermine
         PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
     }
 
     Behavior on y {
-        enabled: controleur.behaviorDesactive
+        enabled: controleur.animation
         PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
     }
 
