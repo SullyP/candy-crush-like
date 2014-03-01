@@ -27,6 +27,7 @@ public:
     int getNb_lign() const;
     int getNb_mvt() const;
     Bonbon* getBonbon(int lign, int col) const;
+    Bonbon* getBonbon(int id) const;
     Bonbon::Couleur getCouleur (int lign, int col);
 
 
@@ -36,6 +37,7 @@ public:
     int index(int lign, int col) const;
 
     void remplir();
+    bool estPossible(int x1, int y1, int x2, int y2);
 
     //combo
     bool comboHorizontal (int lign, int col);

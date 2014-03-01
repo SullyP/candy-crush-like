@@ -12,13 +12,12 @@ Bonbon{
     height: controleur.tailleBonbon
 
     Behavior on x {
-        enabled: controleur.animation && creationTermine
+        enabled: creationTermine && controleur.animation
         PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
     }
 
     Behavior on y {
-        enabled: controleur.animation
-        PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
+        PropertyAnimation { duration: 400; easing.type: Easing.OutBack}
     }
 
     Image{

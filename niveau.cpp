@@ -190,10 +190,58 @@ void Niveau::remplir(){
     }
 }
 
+//Renvoye vrai si le déplacements est possible, faux sinon.
+//Effectue le déplacement si nécessaire.
+bool Niveau::estPossible(int x1, int y1, int x2, int y2){
+    if(getBonbon(x1,y1)!=NULL && getBonbon(x2,y2)!=NULL){
+        //Déplacements des deux bonbons
+        Bonbon* b1 = getBonbon(x1,y1);
+        Bonbon* b2 = getBonbon(x2,y2);
+        liste[index(x1,y1)]->setBonbon(b2);
+        liste[index(x2,y2)]->setBonbon(b1);
+        if(x1==x2){
+            b2->setProperty("colonne",QVariant(y1));
+            b1->setProperty("colonne",QVariant(y2));
+        }else{
+            b2->setProperty("ligne",QVariant(x1));
+            b1->setProperty("ligne",QVariant(x2));
+        }
+        //Si le coup est possible on renvoye vrai
+        if(combo(x1,y1) || combo(x2,y2)){
+            return true;
+        }else{
+            //Sinon on remet les bonbons dans leur position initiale
+            liste[index(x1,y1)]->setBonbon(b1);
+            liste[index(x2,y2)]->setBonbon(b2);
+            if(x1==x2){
+                b2->setProperty("colonne",QVariant(y2));
+                b1->setProperty("colonne",QVariant(y1));
+            }else{
+                b2->setProperty("ligne",QVariant(x2));
+                b1->setProperty("ligne",QVariant(x1));
+            }
+            //et on renvoye faux
+            return false;
+        }
+    }else{
+        return false;
+    }
+}
+
+
 //Retourne le bonbon à la case spécifié, s'il existe
 Bonbon* Niveau::getBonbon(int lign, int col) const{
     if(index(lign,col)!=-1 && liste.at(index(lign,col))!=NULL)
         return liste.at(index(lign,col))->getBonbon();
+    else
+        return NULL;
+
+}
+
+//Retourne le bonbon à l'id spécifié, s'il existe
+Bonbon* Niveau::getBonbon(int id) const{
+    if(id!=-1 && liste.at(id)!=NULL)
+        return liste.at(id)->getBonbon();
     else
         return NULL;
 
@@ -291,7 +339,7 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
         bonbec->setProperty("colonne",QVariant(colonne));
         bonbec->setParent(GlobalGrille);
         bonbec->setParentItem(GlobalGrille);
-        bonbec->setProperty("creationTermine",QVariant(false));
+        bonbec->setProperty("creationTermine",QVariant(true));
         liste.at(index(ligne,colonne))->setBonbon(bonbec);
     }
 }
