@@ -118,6 +118,7 @@ void Controleur::selectionBonbon2(int x,int y){
 
     niveau->estPossible(this->xSelBonbon,this->ySelBonbon,xSelBonbon,ySelBonbon);
     //Puis reste du déroulement du jeu
+    niveau->detruire();
 }
 
 bool Controleur::getAnimation() const{

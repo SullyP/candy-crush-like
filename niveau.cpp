@@ -152,7 +152,7 @@ bool Niveau::sansBonbon (int lign, int col) const{
 
 // Retourne l'id de la case et retourne -1 s'il est en dehors de la liste
 int Niveau::index(int lign, int col) const{
-    if(lign>=0 && lign<=nb_lign && col>=0 && col<=nb_col)
+    if(lign>=0 && lign<nb_lign && col>=0 && col<nb_col)
         return (lign*nb_col) + col;
     else
         return -1;
@@ -390,7 +390,7 @@ void Niveau::detruireHorizontal(int lign, int col){
     int j;
     //suppression des bonbons sur la gauche
     j=col-1;
-    while (c==getCouleur(lign,j) && getCouleur(lign,j)!=Bonbon::Aucune ){
+    while (c==getCouleur(lign,j) && getCouleur(lign,j)!=Bonbon::Aucune){
         if (comboVertical(lign,j)){
             detruireVertical(lign,j);
         }
@@ -413,7 +413,7 @@ void Niveau::detruireVertical(int lign, int col){
     int i;
     //suppression des bonbons au dessus
     i=lign-1;
-    while (c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
+    while ( c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
         if (comboHorizontal(i,col)){
             detruireHorizontal(i,col);
         }
@@ -422,7 +422,7 @@ void Niveau::detruireVertical(int lign, int col){
     }
     //suppression des bonbons en dessous
     i=lign+1;
-    while (c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
+    while ( c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
         if (comboHorizontal(i,col)){
             detruireHorizontal(i,col);
         }
