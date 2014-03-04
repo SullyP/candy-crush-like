@@ -100,40 +100,38 @@ void Controleur::chargerNiveau(int n){
 }
 
 void Controleur::selectionBonbon1(int x,int y){
-    x1SelBonbon = x/tailleBonbon;
-    y1SelBonbon = y/tailleBonbon;
+    if(etape==0){
+        x1SelBonbon = x/tailleBonbon;
+        y1SelBonbon = y/tailleBonbon;
+    }
 }
 
 void Controleur::selectionBonbon2(int x,int y){
-    int xSel = x/tailleBonbon;
-    int ySel = y/tailleBonbon;
-    if(xSel == x1SelBonbon){
-        if(ySel > y1SelBonbon){
-            x2SelBonbon = x1SelBonbon;
-            y2SelBonbon = y1SelBonbon+1;
-        }else if(ySel < y1SelBonbon){
-            x2SelBonbon = x1SelBonbon;
-            y2SelBonbon = y1SelBonbon-1;
-        }
-    }else if(ySel == y1SelBonbon){
-        if(xSel > x1SelBonbon){
-            y2SelBonbon = y1SelBonbon;
-            x2SelBonbon = x1SelBonbon+1;
-        }else if(xSel < x1SelBonbon){
-            y2SelBonbon = y1SelBonbon;
-            x2SelBonbon= x1SelBonbon-1;
-        }
-    }
     if(etape == 0){
+        int xSel = x/tailleBonbon;
+        int ySel = y/tailleBonbon;
+        if(xSel == x1SelBonbon){
+            x2SelBonbon = x1SelBonbon;
+            if(ySel > y1SelBonbon){
+                y2SelBonbon = y1SelBonbon+1;
+            }else if(ySel < y1SelBonbon){
+                y2SelBonbon = y1SelBonbon-1;
+            }
+        }else if(ySel == y1SelBonbon){
+            y2SelBonbon = y1SelBonbon;
+            if(xSel > x1SelBonbon){
+                x2SelBonbon = x1SelBonbon+1;
+            }else if(xSel < x1SelBonbon){
+                x2SelBonbon= x1SelBonbon-1;
+            }
+        }
+
         //Si la commutation à bien été effectuée
         if(niveau->commuterBonbon(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
             timer.start();
         }
     }
-    /* niveau->estPossible(this->xSelBonbon,this->ySelBonbon,xSelBonbon,ySelBonbon);
-    //Puis reste du déroulement du jeu
-    niveau->detruire();*/
 }
 
 bool Controleur::getAnimationY() const{
@@ -169,22 +167,28 @@ void Controleur::deroulementJeu(){
         //Si le déplacement est possible
         if(niveau->estPossible(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
+            emit nbMvtChanged();
         }else{
             etape=0;
         }
         timer.start();
         break;
     case 2:
-        //En attendant la suite des fonctions (WIP)
-        niveau->detruire();
-        etape=0;
         //Si des bonbons sont détruits
-       /* if(niveau->detruire()){
+        if(niveau->detruire()){
             etape++;
         }else{
             etape=0;
-        }*/
+        }
         timer.start();
         break;
+    default:
+        //En attendant la suite
+        etape=0;
+        x1SelBonbon=-1;
+        y1SelBonbon=-1;
+        x2SelBonbon=-1;
+        y2SelBonbon=-1;
+        timer.stop();
     }
 }
