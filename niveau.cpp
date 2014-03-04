@@ -196,6 +196,8 @@ bool Niveau::estPossible(int x1, int y1, int x2, int y2){
     if(getBonbon(x1,y1)!=NULL && getBonbon(x2,y2)!=NULL){
         //Si le coup est possible on renvoye vrai
         if(combo(x1,y1) || combo(x2,y2)){
+            //et on décrémente les déplacements possibles
+            nb_mvt--;
             return true;
         }else{
             //Sinon on remet les bonbons dans leur position initiale
@@ -411,14 +413,18 @@ void Niveau::detruireVertical(int lign, int col){
     }
 }
 
-void Niveau::detruire(){
+//Detruit tous les combos. Renvoye vrai s'il y a eu destruction, faux sinon.
+bool Niveau::detruire(){
+    bool destruction = false;
     for(int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
             if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && combo(i,j)){
                 detruireCombo(i,j);
+                destruction = true;
             }
         }
     }
+    return destruction;
 }
 
 //Commute les deux bonbons aux coordonées indiquées s'ils existent

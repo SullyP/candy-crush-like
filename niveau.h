@@ -55,7 +55,7 @@ public:
     void detruireCombo(int lign, int col);
     void detruireHorizontal(int lign, int col);
     void detruireVertical(int lign, int col);
-    void detruire();
+    bool detruire();
 
 private:
     int num_niveau;
