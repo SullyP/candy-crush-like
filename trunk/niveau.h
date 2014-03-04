@@ -38,6 +38,7 @@ public:
 
     void remplir();
     bool estPossible(int x1, int y1, int x2, int y2);
+    void commuterBonbon(int lign1, int col1, int lign2, int col2);
 
     //combo
     bool comboHorizontal (int lign, int col);

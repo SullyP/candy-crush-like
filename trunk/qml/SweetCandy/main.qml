@@ -210,10 +210,10 @@ Rectangle {
                     target: controleur
                     onActualiserTailleBonbon:{
                         //Désactive les animations lors de la mise à jour
-                        controleur.animation=false;
+                        controleur.animationX=false;
                         controleur.tailleBonbon=grilleJeux.width/controleur.nbColonne;
                         //Ré-active les animations
-                        controleur.animation=true;
+                        controleur.animationX=true;
                     }
                 }
 
@@ -225,10 +225,12 @@ Rectangle {
 
                 onWidthChanged:{
                     //Désactive les animations lors du redemensionnement
-                    controleur.animation=false;
+                    controleur.animationX=false;
+                    controleur.animationY=false;
                     controleur.tailleBonbon=width/controleur.nbColonne;
                     //Ré-active les animations
-                    controleur.animation=true;
+                    controleur.animationX=true;
+                    controleur.animationY=true;
                 }
 
             }

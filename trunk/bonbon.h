@@ -35,7 +35,6 @@ public:
     Type getType() const;
     void setType(Type type);
     void setCouleur(Couleur couleur);
-
 private:
     Couleur couleur;
     Type type;
