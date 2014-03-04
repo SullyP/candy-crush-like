@@ -5,7 +5,6 @@
 #include "bonbon.h"
 #include "niveau.h"
 #include "controleur.h"
-#include "vue.h"
 #include "global.h"
 
 int main(int argc, char *argv[])

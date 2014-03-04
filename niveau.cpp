@@ -190,12 +190,10 @@ void Niveau::remplir(){
     }
 }
 
-//Renvoye vrai si le déplacements est possible, faux sinon.
-//Effectue le déplacement si nécessaire.
+//Renvoye vrai si le déplacement est possible, faux sinon.
+//Re-commute les bonbons si le déplacment n'est pas possible.
 bool Niveau::estPossible(int x1, int y1, int x2, int y2){
     if(getBonbon(x1,y1)!=NULL && getBonbon(x2,y2)!=NULL){
-        //Déplacements des deux bonbons
-        commuterBonbon(x1,y1,x2,y2);
         //Si le coup est possible on renvoye vrai
         if(combo(x1,y1) || combo(x2,y2)){
             return true;
@@ -423,20 +421,26 @@ void Niveau::detruire(){
     }
 }
 
-void Niveau::commuterBonbon(int lign1, int col1, int lign2, int col2){
+//Commute les deux bonbons aux coordonées indiquées s'ils existent
+//A condition qu'ils soient sur la même ligne ou colonne
+//Renvoye vrai si le déplacement à été effectué, faux sinon
+bool Niveau::commuterBonbon(int lign1, int col1, int lign2, int col2){
     Bonbon* b1 = getBonbon(lign1,col1);
     Bonbon* b2 = getBonbon(lign2,col2);
-    liste[index(lign1,col1)]->setBonbon(b2);
-    liste[index(lign2,col2)]->setBonbon(b1);
-    if(lign1==lign2){
-        b2->setProperty("colonne",QVariant(col1));
-        b1->setProperty("colonne",QVariant(col2));
-        b2->xChanged();
-        b1->xChanged();
-    }else{
-        b2->setProperty("ligne",QVariant(lign1));
-        b1->setProperty("ligne",QVariant(lign2));
-        b2->yChanged();
-        b1->yChanged();
+    if(b1!=NULL && b2!=NULL){
+        if(lign1 == lign2){
+            liste[index(lign1,col1)]->setBonbon(b2);
+            liste[index(lign2,col2)]->setBonbon(b1);
+            b2->setProperty("colonne",QVariant(col1));
+            b1->setProperty("colonne",QVariant(col2));
+            return true;
+        }else if (col1 == col2){
+            liste[index(lign1,col1)]->setBonbon(b2);
+            liste[index(lign2,col2)]->setBonbon(b1);
+            b2->setProperty("ligne",QVariant(lign1));
+            b1->setProperty("ligne",QVariant(lign2));
+            return true;
+        }
     }
+    return false;
 }

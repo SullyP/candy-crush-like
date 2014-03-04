@@ -2,11 +2,11 @@
 #define CONTROLEUR_H
 
 #include <QObject>
+#include <QTimer>
 #include "qtquick2applicationviewer.h"
 #include "case.h"
 #include "bonbon.h"
 #include "niveau.h"
-#include "vue.h"
 #include "global.h"
 class Controleur : public QObject
 {
@@ -40,15 +40,24 @@ public:
     Q_INVOKABLE void selectionBonbon1(int x,int y);
     Q_INVOKABLE void selectionBonbon2(int x,int y);
 private:
+    //Taille et resolution des bonbons pour l'affichage
     int resolutionBonbon;
     int tailleBonbon;
+    //Niveau en cours
     Niveau* niveau;
+    //Timer permettant d'attendre la fin des animations avant de continuer le déroulement du jeu
+    QTimer timer;
     //Désactive les animations
     bool animationX;
     bool animationY;
     //Coordonnées du premier bonbon sélectionné
-    int xSelBonbon;
-    int ySelBonbon;
+    int x1SelBonbon;
+    int y1SelBonbon;
+    //Coordonnées du second bonbon sélectionné
+    int x2SelBonbon;
+    int y2SelBonbon;
+    //Etape du déroulement du jeu
+    int etape;
 signals:
     void tailleBonbonChanged();
     void resolutionBonbonChanged();
@@ -61,7 +70,7 @@ signals:
     void animationXChanged();
     void animationYChanged();
 public slots:
-
+    void deroulementJeu();
 };
 
 #endif // CONTROLEUR_H
