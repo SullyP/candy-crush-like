@@ -12,7 +12,6 @@ SOURCES += main.cpp \
     niveau.cpp \
     case.cpp \
     controleur.cpp \
-    vue.cpp \
     global.cpp
 
 # Installation path
@@ -32,7 +31,6 @@ HEADERS += \
     niveau.h \
     case.h \
     controleur.h \
-    vue.h \
     global.h
 
 RESOURCES += \

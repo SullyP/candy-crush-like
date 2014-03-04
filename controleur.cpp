@@ -3,14 +3,9 @@
 Controleur::Controleur(QObject *parent) :
     QObject(parent)
 {
-    QList<Case*> liste;
-    for(int i=0;i<9;i++){
-        for(int j=0;j<9;j++){
-            liste.push_back(NULL);
-        }
-    }
     niveau=NULL;
-    animation=true;
+    animationX=false;
+    animationY=true;
 }
 
 int Controleur::getResolutionBonbon() const{
@@ -121,12 +116,22 @@ void Controleur::selectionBonbon2(int x,int y){
     niveau->detruire();
 }
 
-bool Controleur::getAnimation() const{
-    return animation;
+bool Controleur::getAnimationY() const{
+    return animationY;
 }
-void Controleur::setAnimation(bool b){
-    if(b!=animation){
-        animation=b;
-        emit animationChanged();
+void Controleur::setAnimationY(bool b){
+    if(b!=animationY){
+        animationY=b;
+        emit animationYChanged();
+    }
+}
+
+bool Controleur::getAnimationX() const{
+    return animationX;
+}
+void Controleur::setAnimationX(bool b){
+    if(b!=animationX){
+        animationX=b;
+        emit animationXChanged();
     }
 }
