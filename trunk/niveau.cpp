@@ -306,8 +306,281 @@ bool Niveau::comboVertical(int lign, int col){
 
 //Combo final
 // vérifie horizontalement et verticalement si le bonbon indiqué fait parti d'un combo
-bool Niveau::combo (int lign, int col){
+bool Niveau::combo(int lign, int col){
     return (comboHorizontal(lign, col) || comboVertical(lign, col));
+}
+
+//Coup possible
+//vérifie s'il reste des coups possibles sur la grille actuelle
+bool Niveau::coupPossible() const {
+    for(int i = 0; i<nb_lign; i++){
+        for(int j = 0; j<nb_col; j++){
+            if(comboPossible(i,j)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Niveau::comboPossible(int lign, int col) const{
+    if(sansBonbon(lign, col)){
+        return false;
+    }
+    if(getBonbon(lign, col)->getType()!=Bonbon::Normal){
+        if(!sansBonbon(lign, col+1)){
+            if(getBonbon(lign, col+1)->getType()!=Bonbon::Normal){
+                return true;
+            }
+        }
+        if(!sansBonbon(lign+1, col)){
+            if(getBonbon(lign+1, col)->getType()!=Bonbon::Normal){
+                return true;
+            }
+        }
+    }
+    return(possibleHL(lign, col) || possibleVL(lign, col) || possibleHR(lign, col) || possibleVR(lign, col));
+}
+
+//test sur rectangle 1x4 horizontal si 3 bonbon de la même couleur, un coup est possible
+bool Niveau::possibleHL(int lign, int col) const{
+    int rg,ja,ve,b,vi,rs = 0;
+    Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
+    for(int i=0;i<4;i++){
+        if(sansBonbon(lign, col+i)){
+            return false;
+        }
+        tmpCouleur = getBonbon(lign, col+i)->getCouleur();
+        switch(tmpCouleur) {
+        case Bonbon::Rouge:
+            rg++;
+            break;
+        case Bonbon::Jaune:
+            ja++;
+            break;
+        case Bonbon::Vert:
+            ve++;
+            break;
+        case Bonbon::Bleu:
+            b++;
+            break;
+        case Bonbon::Violet:
+            vi++;
+            break;
+        case Bonbon::Rose:
+            rs++;
+            break;
+        case Bonbon::Aucune:
+            if(getBonbon(lign, col+i)->getType() == Bonbon::Bombe){
+                return true;
+            }
+        }
+    }
+    if(rg==3 || ja==3 || ve==3 || b==3 || vi==3 || rs==3){
+        return true;
+    }
+    return false;
+}
+
+//test sur rectangle 1x4 vertical si 3 bonbon de la même couleur, un coup est possible
+bool Niveau::possibleVL(int lign, int col) const{
+    int rg,ja,ve,b,vi,rs = 0;
+    Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
+    for(int i=0;i<4;i++){
+        if(sansBonbon(lign+i, col)){
+            return false;
+        }
+        tmpCouleur = getBonbon(lign+i, col)->getCouleur();
+        switch(tmpCouleur) {
+        case Bonbon::Rouge:
+            rg++;
+            break;
+        case Bonbon::Jaune:
+            ja++;
+            break;
+        case Bonbon::Vert:
+            ve++;
+            break;
+        case Bonbon::Bleu:
+            b++;
+            break;
+        case Bonbon::Violet:
+            vi++;
+            break;
+        case Bonbon::Rose:
+            rs++;
+            break;
+        case Bonbon::Aucune:
+            if(getBonbon(lign+i, col)->getType() == Bonbon::Bombe){
+                return true;
+            }
+        }
+    }
+    if(rg==3 || ja==3 || ve==3 || b==3 || vi==3 || rs==3){
+        return true;
+    }
+    return false;
+}
+
+//test sur rectangle 2x3 horizontal si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
+bool Niveau::possibleHR(int lign, int col) const{
+    int rg,ja,ve,b,vi,rs = 0;
+    Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
+    //test sur rectangle 2x3 horizontal si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
+    for(int i=0;i<2;i++){
+        for(int j=0;j<3;j++){
+            if(sansBonbon(lign+i, col+j)){
+                return false;
+            }
+            tmpCouleur = getBonbon(lign+i, col+j)->getCouleur();
+            switch(tmpCouleur) {
+            case Bonbon::Rouge:
+                rg++;
+                break;
+            case Bonbon::Jaune:
+                ja++;
+                break;
+            case Bonbon::Vert:
+                ve++;
+                break;
+            case Bonbon::Bleu:
+                b++;
+                break;
+            case Bonbon::Violet:
+                vi++;
+                break;
+            case Bonbon::Rose:
+                rs++;
+                break;
+            case Bonbon::Aucune:
+                if(getBonbon(lign+i, col+j)->getType() == Bonbon::Bombe){
+                    return true;
+                }
+            }
+        }
+    }
+    if(rg>=3 || ja>=3 || ve>=3 || b>=3 || vi>=3 || rs>=3){
+        if(rg==4 || ja==4 || ve==4 || b==4 || vi==4 || rs==4){
+            if(rg==4){
+                tmpCouleur = Bonbon::Rouge;
+            }else if(ja==4){
+                tmpCouleur = Bonbon::Jaune;
+            }else if(ve==4){
+                tmpCouleur = Bonbon::Vert;
+            }else if(b==4){
+                tmpCouleur = Bonbon::Bleu;
+            }else if(vi==4){
+                tmpCouleur = Bonbon::Violet;
+            }else {
+                tmpCouleur = Bonbon::Rose;
+            }
+            if(getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur()){
+                return true;
+            }else if((getBonbon(lign, col)->getCouleur() == tmpCouleur) !=
+                     (getBonbon(lign+1, col)->getCouleur() == tmpCouleur)){
+                return true;
+            }
+        }
+        else if(rg==3){
+            tmpCouleur = Bonbon::Rouge;
+        }else if(ja==3){
+            tmpCouleur = Bonbon::Jaune;
+        }else if(ve==3){
+            tmpCouleur = Bonbon::Vert;
+        }else if(b==3){
+            tmpCouleur = Bonbon::Bleu;
+        }else if(vi==3){
+            tmpCouleur = Bonbon::Violet;
+        }else {
+            tmpCouleur = Bonbon::Rose;
+        }
+        if(getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
+                getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
+                getBonbon(lign, col+2)->getCouleur() != getBonbon(lign+1, col+2)->getCouleur()){
+            return true;
+        }
+    }
+    return false;
+}
+
+//test sur rectangle 2x3 vertical si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
+bool Niveau::possibleVR(int lign, int col) const{
+    int rg,ja,ve,b,vi,rs = 0;
+    Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<2;j++){
+            if(sansBonbon(lign+i, col+j)){
+                return false;
+            }
+            tmpCouleur = getBonbon(lign+i, col+j)->getCouleur();
+            switch(tmpCouleur) {
+            case Bonbon::Rouge:
+                rg++;
+                break;
+            case Bonbon::Jaune:
+                ja++;
+                break;
+            case Bonbon::Vert:
+                ve++;
+                break;
+            case Bonbon::Bleu:
+                b++;
+                break;
+            case Bonbon::Violet:
+                vi++;
+                break;
+            case Bonbon::Rose:
+                rs++;
+                break;
+            case Bonbon::Aucune:
+                if(getBonbon(lign+i, col+j)->getType() == Bonbon::Bombe){
+                    return true;
+                }
+            }
+        }
+    }
+    if(rg>=3 || ja>=3 || ve>=3 || b>=3 || vi>=3 || rs>=3){
+        if(rg==4 || ja==4 || ve==4 || b==4 || vi==4 || rs==4){
+            if(rg==4){
+                tmpCouleur = Bonbon::Rouge;
+            }else if(ja==4){
+                tmpCouleur = Bonbon::Jaune;
+            }else if(ve==4){
+                tmpCouleur = Bonbon::Vert;
+            }else if(b==4){
+                tmpCouleur = Bonbon::Bleu;
+            }else if(vi==4){
+                tmpCouleur = Bonbon::Violet;
+            }else {
+                tmpCouleur = Bonbon::Rose;
+            }
+            if(getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur()){
+                return true;
+            }else if((getBonbon(lign, col)->getCouleur() == tmpCouleur) !=
+                     (getBonbon(lign, col+1)->getCouleur() == tmpCouleur)){
+                return true;
+            }
+        }
+        else if(rg==3){
+            tmpCouleur = Bonbon::Rouge;
+        }else if(ja==3){
+            tmpCouleur = Bonbon::Jaune;
+        }else if(ve==3){
+            tmpCouleur = Bonbon::Vert;
+        }else if(b==3){
+            tmpCouleur = Bonbon::Bleu;
+        }else if(vi==3){
+            tmpCouleur = Bonbon::Violet;
+        }else {
+            tmpCouleur = Bonbon::Rose;
+        }
+        if(getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur() &&
+                getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
+                getBonbon(lign+2, col)->getCouleur() != getBonbon(lign+2, col+1)->getCouleur()){
+            return true;
+        }
+    }
+    return false;
 }
 
 //Ajout/Suppresion Bonbon/Case //////////////////////////////////////////////////////////////////
