@@ -45,6 +45,15 @@ public:
     bool comboVertical (int lign, int col);
     bool combo (int lign, int col);
 
+    //coup possible
+    bool coupPossible() const;
+    bool comboPossible(int lign, int col) const;
+    bool possibleHL(int lign, int col) const;
+    bool possibleVL(int lign, int col) const;
+    bool possibleHR(int lign, int col) const;
+    bool possibleVR(int lign, int col) const;
+
+
     //Ajout/Suppresion Bonbon/Case
     void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
     void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);

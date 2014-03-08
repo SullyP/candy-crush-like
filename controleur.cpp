@@ -180,6 +180,9 @@ void Controleur::deroulementJeu(){
         }else{
             etape=0;
         }
+/*        while(!niveau->coupPossible()){
+            //redistribuer bonbon
+        }*/
         timer.start();
         break;
     default:
