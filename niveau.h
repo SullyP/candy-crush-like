@@ -35,8 +35,12 @@ public:
     bool estBloc (int lign, int col) const;
     bool sansBonbon (int lign, int col) const;
     int index(int lign, int col) const;
+    bool estDebut(int lign, int col) const;
+    bool caseEncoreVidePossible();
+    bool caseDebutVide();
 
     void remplir();
+    void remplirAuHazard();
     bool estPossible(int x1, int y1, int x2, int y2);
     bool commuterBonbon(int lign1, int col1, int lign2, int col2);
 
@@ -65,6 +69,10 @@ public:
     void detruireHorizontal(int lign, int col);
     void detruireVertical(int lign, int col);
     bool detruire();
+
+    //tomber
+    bool tomber();
+    void tomberDuDessus(int lign, int col);
 
 private:
     int num_niveau;
