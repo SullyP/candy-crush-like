@@ -185,6 +185,23 @@ void Controleur::deroulementJeu(){
         }*/
         timer.start();
         break;
+    case 3:
+        if(niveau->caseEncoreVidePossible()){
+            niveau->tomber();
+        }else{
+            etape++;
+        }
+        timer.start();
+        break;
+    case 4:
+        if(niveau->caseDebutVide()){
+            niveau->remplirAuHazard();
+            etape=2;
+        }else{
+            etape=0;
+        }
+        timer.start();
+        break;
     default:
         //En attendant la suite
         etape=0;

@@ -145,6 +145,11 @@ bool Niveau::estBloc (int lign, int col) const{
     return (!liste.at(index(lign,col))->estFranchissable());
 }
 
+//indique si la case est une case debut
+bool Niveau::estDebut(int lign, int col) const{
+    return (liste.at(index(lign,col))->estDebut());
+}
+
 //Indique s'il y a un bonbon dans la case
 bool Niveau::sansBonbon (int lign, int col) const{
     return (estVide(lign, col) || liste.at(index(lign,col))->getBonbon()==NULL);
@@ -722,4 +727,79 @@ bool Niveau::commuterBonbon(int lign1, int col1, int lign2, int col2){
         }
     }
     return false;
+}
+
+//tomber//////////////////////////////////////////////////////////
+bool Niveau::tomber(){
+    bool tombe=false;
+    for(int i=nb_lign-1;i>-1;i--){
+        for(int j=nb_col-1;j>-1;j--){
+            if(sansBonbon(i,j)){
+                tomberDuDessus(i,j);
+                tombe=true;
+            }
+        }
+    }
+    return tombe;
+}
+
+void Niveau::tomberDuDessus(int lign, int col){
+    if(!estDebut(lign,col)){
+        if(!estBloc(lign-1,col) && !sansBonbon(lign-1,col)){
+            Bonbon* b = getBonbon(lign-1,col);
+            liste[index(lign,col)]->setBonbon(b);
+            b->setProperty("ligne",QVariant(lign));
+            liste[index(lign-1,col)]->setBonbon(NULL);
+        }
+        else if (estBloc(lign-1,col)){
+            if(!sansBonbon(lign-1,col+1)){
+                Bonbon* b = getBonbon(lign-1,col+1);
+                liste[index(lign,col)]->setBonbon(b);
+                b->setProperty("ligne",QVariant(lign));
+                liste[index(lign-1,col+1)]->setBonbon(NULL);
+            }
+            else if(!sansBonbon(lign-1,col-1)){
+                Bonbon* b = getBonbon(lign-1,col-1);
+                liste[index(lign,col)]->setBonbon(b);
+                b->setProperty("ligne",QVariant(lign));
+                liste[index(lign-1,col-1)]->setBonbon(NULL);
+            }
+        }
+    }
+}
+
+bool Niveau::caseEncoreVidePossible(){
+    bool vide=false;
+    for (int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(sansBonbon(i,j) && !estDebut(i,j)){
+                if(!sansBonbon(i-1,j) || (estBloc(i-1,j) && (!sansBonbon(i-1,j+1) || !sansBonbon(i-1,j-1) ))){
+                    vide=true;
+                }
+            }
+        }
+    }
+    return vide;
+}
+
+bool Niveau::caseDebutVide(){
+    bool vide=false;
+    for (int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(sansBonbon(i,j) && estDebut(i,j)){
+                vide=true;
+            }
+        }
+    }
+    return vide;
+}
+
+void Niveau::remplirAuHazard(){
+    for (int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j) ){
+                ajouterBonbon(i,j,couleurHasard());
+            }
+        }
+    }
 }
