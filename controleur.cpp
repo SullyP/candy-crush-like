@@ -193,9 +193,8 @@ void Controleur::deroulementJeu(){
         //ETAPE 3: Générer et tomber les bonbons
         //Générer les bonbons dans les cases de début
         niveau->completer();
-        //S'il reste des cases vides
-        if(niveau->caseEncoreVidePossible()){
-            niveau->tomber();
+        //Si des bonbons sont tombés
+        if(niveau->tomber()){
             timer.start(TEMPS_TIMER_SANS_ANIMATION);
         }else{
             etape=2;
