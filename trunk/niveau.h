@@ -40,7 +40,7 @@ public:
     bool caseDebutVide();
 
     void remplir();
-    void remplirAuHazard();
+    bool completer();
     bool estPossible(int x1, int y1, int x2, int y2);
     bool commuterBonbon(int lign1, int col1, int lign2, int col2);
 

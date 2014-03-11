@@ -1,5 +1,7 @@
 #include "controleur.h"
 
+#define TEMPS_TIMER_ANIMATION 450
+#define TEMPS_TIMER_SANS_ANIMATION 1
 Controleur::Controleur(QObject *parent) :
     QObject(parent)
 {
@@ -7,7 +9,7 @@ Controleur::Controleur(QObject *parent) :
     animationX=false;
     animationY=true;
     etape=0;
-    timer.setInterval(500);
+    timer.setInterval(TEMPS_TIMER_ANIMATION);
     connect(&timer, SIGNAL(timeout()), this, SLOT(deroulementJeu()));
 
     //Initialisation sélecteur de bonbon
@@ -129,7 +131,7 @@ void Controleur::selectionBonbon2(int x,int y){
         //Si la commutation à bien été effectuée
         if(niveau->commuterBonbon(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
-            timer.start();
+            timer.start(TEMPS_TIMER_ANIMATION);
         }
     }
 }
@@ -164,6 +166,7 @@ void Controleur::deroulementJeu(){
         timer.stop();
         break;
     case 1:
+        //ETAPE 1: Commutation des bonbons
         //Si le déplacement est possible
         if(niveau->estPossible(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
@@ -171,9 +174,10 @@ void Controleur::deroulementJeu(){
         }else{
             etape=0;
         }
-        timer.start();
+        timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 2:
+        //ETAPE 2: Destruction des bonbons
         //Si des bonbons sont détruits
         if(niveau->detruire()){
             etape++;
@@ -183,32 +187,20 @@ void Controleur::deroulementJeu(){
 /*        while(!niveau->coupPossible()){
             //redistribuer bonbon
         }*/
-        timer.start();
+        timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 3:
+        //ETAPE 3: Générer et tomber les bonbons
+        //Générer les bonbons dans les cases de début
+        niveau->completer();
+        //S'il reste des cases vides
         if(niveau->caseEncoreVidePossible()){
             niveau->tomber();
+            timer.start(TEMPS_TIMER_SANS_ANIMATION);
         }else{
-            etape++;
-        }
-        timer.start();
-        break;
-    case 4:
-        if(niveau->caseDebutVide()){
-            niveau->remplirAuHazard();
             etape=2;
-        }else{
-            etape=0;
+            timer.start(TEMPS_TIMER_ANIMATION);
         }
-        timer.start();
         break;
-    default:
-        //En attendant la suite
-        etape=0;
-        x1SelBonbon=-1;
-        y1SelBonbon=-1;
-        x2SelBonbon=-1;
-        y2SelBonbon=-1;
-        timer.stop();
     }
 }

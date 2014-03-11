@@ -31,5 +31,8 @@
     <qresource prefix="/levels">
         <file alias="1">levels/1.candy</file>
         <file alias="2">levels/2.candy</file>
+        <file alias="3">levels/3.candy</file>
+        <file alias="4">levels/4.candy</file>
+        <file alias="5">levels/5.candy</file>
     </qresource>
 </RCC>

@@ -744,7 +744,7 @@ bool Niveau::tomber(){
 }
 
 void Niveau::tomberDuDessus(int lign, int col){
-    if(!estDebut(lign,col)){
+    if(!estVide(lign,col) && !estDebut(lign,col)){
         if(!estBloc(lign-1,col) && !sansBonbon(lign-1,col)){
             Bonbon* b = getBonbon(lign-1,col);
             liste[index(lign,col)]->setBonbon(b);
@@ -768,13 +768,16 @@ void Niveau::tomberDuDessus(int lign, int col){
     }
 }
 
+//Indique s'il y a encore des cases vide où les bonbons devraient tomber
 bool Niveau::caseEncoreVidePossible(){
     bool vide=false;
     for (int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
-            if(sansBonbon(i,j) && !estDebut(i,j)){
-                if(!sansBonbon(i-1,j) || (estBloc(i-1,j) && (!sansBonbon(i-1,j+1) || !sansBonbon(i-1,j-1) ))){
-                    vide=true;
+            if(!estVide(i,j)){
+                if(sansBonbon(i,j) && !estDebut(i,j)){
+                    if(!sansBonbon(i-1,j) || (estBloc(i-1,j) && (!sansBonbon(i-1,j+1) || !sansBonbon(i-1,j-1) ))){
+                        vide=true;
+                    }
                 }
             }
         }
@@ -782,24 +785,27 @@ bool Niveau::caseEncoreVidePossible(){
     return vide;
 }
 
+//USELESS
 bool Niveau::caseDebutVide(){
     bool vide=false;
-    for (int i=0;i<nb_lign;i++){
-        for(int j=0;j<nb_col;j++){
-            if(sansBonbon(i,j) && estDebut(i,j)){
-                vide=true;
-            }
+    for (int i = 0; i < caseDebut.size(); ++i) {
+        if((liste.at(caseDebut.at(i))->getBonbon())==NULL){
+            vide=true;
         }
     }
     return vide;
 }
 
-void Niveau::remplirAuHazard(){
-    for (int i=0;i<nb_lign;i++){
-        for(int j=0;j<nb_col;j++){
-            if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j) ){
-                ajouterBonbon(i,j,couleurHasard());
-            }
+//Génere des bonbons aléatoirement sur les cases de début
+//Renvoye vrai si des bonbons ont été ajouté
+bool Niveau::completer(){
+    bool bonbonAjouter=false;
+    for (int i = 0; i < caseDebut.size(); ++i) {
+        int idBonbon = caseDebut.at(i);
+        if((liste.at(idBonbon)->getBonbon())==NULL){
+            ajouterBonbon(idBonbon/nb_col,idBonbon%nb_col,couleurHasard());
+            bonbonAjouter=true;
         }
     }
+    return bonbonAjouter;
 }
