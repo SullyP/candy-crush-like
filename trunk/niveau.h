@@ -72,7 +72,7 @@ public:
 
     //tomber
     bool tomber();
-    void tomberDuDessus(int lign, int col);
+    bool tomberDuDessus(int lign, int col);
 
 private:
     int num_niveau;

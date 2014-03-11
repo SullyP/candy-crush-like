@@ -730,45 +730,65 @@ bool Niveau::commuterBonbon(int lign1, int col1, int lign2, int col2){
 }
 
 //tomber//////////////////////////////////////////////////////////
+//Renvoye vrai si des bonbons sont tombés, faux sinon
 bool Niveau::tomber(){
     bool tombe=false;
     for(int i=nb_lign-1;i>-1;i--){
         for(int j=nb_col-1;j>-1;j--){
-            if(sansBonbon(i,j)){
-                tomberDuDessus(i,j);
-                tombe=true;
+            if(sansBonbon(i,j) && !estVide(i,j) && !estBloc(i,j) && !estDebut(i,j)){
+                tombe = tombe || tomberDuDessus(i,j);
             }
         }
     }
     return tombe;
 }
 
-void Niveau::tomberDuDessus(int lign, int col){
-    if(!estVide(lign,col) && !estDebut(lign,col)){
-        if(!estBloc(lign-1,col) && !sansBonbon(lign-1,col)){
-            Bonbon* b = getBonbon(lign-1,col);
-            liste[index(lign,col)]->setBonbon(b);
-            b->setProperty("ligne",QVariant(lign));
-            liste[index(lign-1,col)]->setBonbon(NULL);
-        }
-        else if (estBloc(lign-1,col)){
-            if(!sansBonbon(lign-1,col+1)){
-                Bonbon* b = getBonbon(lign-1,col+1);
+//Renvoye vrai si le bonbon est bien tombé, faux sinon
+bool Niveau::tomberDuDessus(int lign, int col){
+    //Si la case du dessus est une case Vide
+    //ou
+    //Si la case du dessus est une case "normale"
+    if(estVide(lign-1,col) ||
+            (!estBloc(lign-1,col) && !estVide(lign-1,col))){
+        //On cherche une case plus haut qui a un bonbon
+        for(int curLign = lign-1; curLign>-1;curLign--){
+            if(!sansBonbon(curLign,col)){
+                Bonbon* b = getBonbon(curLign,col);
                 liste[index(lign,col)]->setBonbon(b);
                 b->setProperty("ligne",QVariant(lign));
-                liste[index(lign-1,col+1)]->setBonbon(NULL);
-            }
-            else if(!sansBonbon(lign-1,col-1)){
-                Bonbon* b = getBonbon(lign-1,col-1);
-                liste[index(lign,col)]->setBonbon(b);
-                b->setProperty("ligne",QVariant(lign));
-                liste[index(lign-1,col-1)]->setBonbon(NULL);
+                liste[index(curLign,col)]->setBonbon(NULL);
+                return true;
             }
         }
+
     }
+    //Si on arrive ici alors il n'y a pas de bonbon plus haut
+    //Ou la case est un bloc
+
+    //On regarde la case du dessus à droite
+    if(index(lign-1,col+1)!=-1 && !sansBonbon(lign-1,col+1) &&!estBloc(lign-1,col+1)){
+        Bonbon* b = getBonbon(lign-1,col+1);
+        liste[index(lign,col)]->setBonbon(b);
+        b->setProperty("ligne",QVariant(lign));
+        b->setProperty("colonne",QVariant(col));
+        liste[index(lign-1,col+1)]->setBonbon(NULL);
+        return true;
+    }
+    //Sinon on regarde la case du dessus à gauche
+    else if(index(lign-1,col-1)!=-1 &&!sansBonbon(lign-1,col-1) && !estBloc(lign-1,col-1)){
+        Bonbon* b = getBonbon(lign-1,col-1);
+        liste[index(lign,col)]->setBonbon(b);
+        b->setProperty("ligne",QVariant(lign));
+        b->setProperty("colonne",QVariant(col));
+        liste[index(lign-1,col-1)]->setBonbon(NULL);
+        return true;
+    }
+
+    return false;
 }
 
 //Indique s'il y a encore des cases vide où les bonbons devraient tomber
+//USELESS
 bool Niveau::caseEncoreVidePossible(){
     bool vide=false;
     for (int i=0;i<nb_lign;i++){
