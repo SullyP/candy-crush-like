@@ -96,8 +96,9 @@ void Controleur::chargerNiveau(int n){
     emit scoreObjectifChanged();
     emit nbMvtChanged();
 
-    //Initialisation etape et timer
+    //Initialisation etape et timer et coefScrore
     etape=0;
+    coefScore=1;
     timer.stop();
 }
 
@@ -163,6 +164,7 @@ void Controleur::deroulementJeu(){
         y1SelBonbon=-1;
         x2SelBonbon=-1;
         y2SelBonbon=-1;
+        coefScore=1;
         timer.stop();
         break;
     case 1:
@@ -180,7 +182,9 @@ void Controleur::deroulementJeu(){
         //ETAPE 2: 'Marquage' des bonbons
         //Si des bonbons sont marqués
         if(niveau->marquerDestruction()){
-
+            niveau->compterScore(coefScore);
+            coefScore=coefScore+0.5;
+            emit scoreChanged();
             etape++;
         }else{
             etape=0;

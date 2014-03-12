@@ -45,6 +45,7 @@ public:
     bool commuterBonbon(int lign1, int col1, int lign2, int col2);
     bool coupPossible() const;
     bool tomber();
+    void compterScore(int coef);
 
 private:
     int num_niveau;
