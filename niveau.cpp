@@ -866,3 +866,17 @@ void Niveau::setViewer(QtQuick2ApplicationViewer* v){
     viewer=v;
     grille = viewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
 }
+
+void Niveau::compterScore(int coef){
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(estMarquer(i,j)){
+                if(getBonbon(i,j)->getType()==Bonbon::Normal){
+                    score=score+60*coef;
+                }else{
+                    score=score+80*coef;
+                }
+            }
+        }
+    }
+}

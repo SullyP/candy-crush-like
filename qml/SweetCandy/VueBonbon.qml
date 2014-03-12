@@ -93,7 +93,7 @@ Bonbon{
 
     Image{
         id: imgExplosion
-        opacity: etat=="destruction"? 1 : 0
+        opacity: 0
         source: "qrc:/images/explosion"+imgEnCours
         anchors.centerIn: parent
         sourceSize.height: controleur.resolutionBonbon*1.25
@@ -102,6 +102,7 @@ Bonbon{
 
         ParallelAnimation{
             running:etat=="destruction"
+            PropertyAction { target: imgExplosion; property: "opacity"; value:1 }
             NumberAnimation { target: img; property: "opacity"; to: 0; duration: 400 }
             NumberAnimation { target: imgExplosion; property: "imgEnCours"; to: 5; duration: 400 }
         }

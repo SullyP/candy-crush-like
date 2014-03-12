@@ -63,6 +63,8 @@ private:
     int y2SelBonbon;
     //Etape du déroulement du jeu
     int etape;
+    //Coefficient multiplicateur de score
+    double coefScore;
 signals:
     void tailleBonbonChanged();
     void resolutionBonbonChanged();
