@@ -158,6 +158,14 @@ bool Niveau::sansBonbon (int lign, int col) const{
     return (estVide(lign, col) || liste.at(index(lign,col))->getBonbon()==NULL);
 }
 
+//Indique si le bonbon est marqué pour la destruction
+bool Niveau::estMarquer(int lign,int col) const{
+    if(index(lign,col)!=-1 && !sansBonbon(lign,col)){
+        return getBonbon(lign,col)->property("etat")=="destruction";
+    }
+    return false;
+}
+
 // Retourne l'id de la case et retourne -1 s'il est en dehors de la liste
 int Niveau::index(int lign, int col) const{
     if(lign>=0 && lign<nb_lign && col>=0 && col<nb_col)
@@ -602,7 +610,7 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
         bonbec->setProperty("colonne",QVariant(colonne));
         bonbec->setParent(grille);
         bonbec->setParentItem(grille);
-        bonbec->setProperty("creationTermine",QVariant(true));
+        bonbec->setProperty("etat",QVariant("normal"));
         liste.at(index(ligne,colonne))->setBonbon(bonbec);
     }
 }
@@ -638,69 +646,120 @@ void Niveau::supprimerCase(int ligne, int colonne){
 
 //detruire//////////////////////////////////////////////////////////////
 //destruction des bonbons formant un combo avec le bonbon spécifié
-void Niveau::detruireCombo(int lign, int col){
+void Niveau::marquerCombo(int lign, int col){
     if (comboHorizontal(lign, col)){
-        detruireHorizontal(lign,col);
+        marquerHorizontal(lign,col);
     }
     if (comboVertical(lign, col)){
-        detruireVertical(lign,col);
+        marquerVertical(lign,col);
     }
-    supprimerBonbon(lign,col);
+    marquerBonbon(lign,col);
 }
 
-void Niveau::detruireHorizontal(int lign, int col){
+void Niveau::marquerHorizontal(int lign, int col){
     Bonbon::Couleur c = getCouleur(lign,col) ;
     int j;
     //suppression des bonbons sur la gauche
     j=col-1;
     while (c==getCouleur(lign,j) && getCouleur(lign,j)!=Bonbon::Aucune){
         if (comboVertical(lign,j)){
-            detruireVertical(lign,j);
+            marquerVertical(lign,j);
         }
-        supprimerBonbon(lign,j);
+        marquerBonbon(lign,j);
         j=j-1;
     }
     //suppression des bonbons sur la droite
     j=col+1;
     while (c==getCouleur(lign,j)&& getCouleur(lign,j)!=Bonbon::Aucune) {
         if (comboVertical(lign,j)){
-            detruireVertical(lign,j);
+            marquerVertical(lign,j);
         }
-        supprimerBonbon(lign,j);
+        marquerBonbon(lign,j);
         j=j+1;
     }
 }
 
-void Niveau::detruireVertical(int lign, int col){
+void Niveau::marquerVertical(int lign, int col){
     Bonbon::Couleur c = getCouleur(lign,col) ;
     int i;
     //suppression des bonbons au dessus
     i=lign-1;
     while ( c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
         if (comboHorizontal(i,col)){
-            detruireHorizontal(i,col);
+            marquerHorizontal(i,col);
         }
-        supprimerBonbon(i,col);
+        marquerBonbon(i,col);
         i=i-1;
     }
     //suppression des bonbons en dessous
     i=lign+1;
     while ( c==getCouleur(i,col)&& getCouleur(i,col)!=Bonbon::Aucune){
         if (comboHorizontal(i,col)){
-            detruireHorizontal(i,col);
+            marquerHorizontal(i,col);
         }
-        supprimerBonbon(i,col);
+        marquerBonbon(i,col);
         i=i+1;
     }
 }
 
-//Detruit tous les combos. Renvoye vrai s'il y a eu destruction, faux sinon.
+//Marque le bonbon à détruire et marque les autres bonbons si le bonbon en question est spécial
+void Niveau::marquerBonbon(int lign,int col){
+    if(index(lign,col)!=-1 && !estMarquer(lign,col) && !estVide(lign,col) && !estBloc(lign,col) && !sansBonbon(lign,col)){
+        getBonbon(lign,col)->setProperty("etat",QVariant("destruction"));
+        //Destruction de tous les bonbons sur un rectangle de 3*3
+        if(getBonbon(lign,col)->getType()==Bonbon::Sucre){
+            for(int i=lign-1;i<=lign+1;i++){
+                for(int j=col-1;j<=col+1;j++){
+                    marquerBonbon(i,j);
+                }
+            }
+            //Destruction de tous les bonbons sur la colonne
+        }else if(getBonbon(lign,col)->getType()==Bonbon::RayureV){
+            for(int i=0;i<nb_lign;i++){
+                marquerBonbon(i,col);
+            }
+            //Destruction de tous les bonbons sur la ligne
+        }else if(getBonbon(lign,col)->getType()==Bonbon::RayureH){
+            for(int i=0;i<nb_col;i++){
+                marquerBonbon(lign,i);
+            }
+            //Destruction de tous les bonbons d'une couleur aléatoire
+        }else if(getBonbon(lign,col)->getType()==Bonbon::Bombe){
+            Bonbon::Couleur couleurDestruction = couleurHasard();
+            for(int i=0;i<nb_lign;i++){
+                for(int j=0;j<nb_col;j++){
+                    if(!estVide(lign,col) && !estBloc(lign,col) && !sansBonbon(lign,col)){
+                        if(getCouleur(i,j)==couleurDestruction){
+                            marquerBonbon(i,j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Marque tous les combos à détruire. Renvoye vrai si des bonbons sont marqués, faux sinon.
+bool Niveau::marquerDestruction(){
+    bool bonbonMarquer = false;
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && combo(i,j)){
+                marquerCombo(i,j);
+                bonbonMarquer = true;
+            }
+        }
+    }
+    return bonbonMarquer;
+}
+
+//Detruit tous les combos précédement marqués. Renvoye vrai s'il y a eu destruction, faux sinon.
 bool Niveau::detruire(){
     bool destruction = false;
     for(int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
-            if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && combo(i,j)){
-                detruireCombo(i,j);
+            if(estMarquer(i,j)){
+                supprimerBonbon(i,j);
                 destruction = true;
             }
         }
@@ -763,7 +822,6 @@ bool Niveau::tomberDuDessus(int lign, int col){
                 return true;
             }
         }
-
     }
     //Si on arrive ici alors il n'y a pas de bonbon plus haut
     //Ou la case est un bloc
@@ -805,6 +863,6 @@ bool Niveau::completer(){
 }
 
 void Niveau::setViewer(QtQuick2ApplicationViewer* v){
-        viewer=v;
-        grille = viewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
+    viewer=v;
+    grille = viewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
 }

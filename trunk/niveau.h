@@ -19,7 +19,6 @@ private:
     static QQuickItem* grille;
 public:
     //STATIC
-
     static void setViewer(QtQuick2ApplicationViewer* v);
 
     Niveau();
@@ -41,6 +40,7 @@ public:
     //Fonctions pour le déroulement du jeu (public)
     bool completer();
     bool estPossible(int x1, int y1, int x2, int y2);
+    bool marquerDestruction();
     bool detruire();
     bool commuterBonbon(int lign1, int col1, int lign2, int col2);
     bool coupPossible() const;
@@ -63,10 +63,11 @@ private:
     //Fonction auxiliaire de tomber
     bool tomberDuDessus(int lign, int col);
 
-    //Fonctions auxiliaire de detruire
-    void detruireCombo(int lign, int col);
-    void detruireHorizontal(int lign, int col);
-    void detruireVertical(int lign, int col);
+    //Fonctions auxiliaire de marquerDetruire
+    void marquerBonbon(int lign,int col);
+    void marquerVertical(int lign, int col);
+    void marquerHorizontal(int lign, int col);
+    void marquerCombo(int lign, int col);
 
     //Ajout/Suppresion Bonbon/Case
     void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
@@ -91,11 +92,11 @@ private:
     bool sansBonbon (int lign, int col) const;
     int index(int lign, int col) const;
     bool estDebut(int lign, int col) const;
+    bool estMarquer(int lign,int col) const;
 
     //Fonctions pour le déroulement du jeu (privé)
     void remplir();
     bool combo (int lign, int col);
-
 
 };
 

@@ -177,20 +177,30 @@ void Controleur::deroulementJeu(){
         timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 2:
-        //ETAPE 2: Destruction des bonbons
-        //Si des bonbons sont détruits
-        if(niveau->detruire()){
+        //ETAPE 2: 'Marquage' des bonbons
+        //Si des bonbons sont marqués
+        if(niveau->marquerDestruction()){
+
             etape++;
         }else{
             etape=0;
         }
-/*        while(!niveau->coupPossible()){
+        /*        while(!niveau->coupPossible()){
             //redistribuer bonbon
         }*/
         timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 3:
-        //ETAPE 3: Générer et tomber les bonbons
+        //ETAPE 3: Destruction des bonbons
+        if(niveau->detruire()){
+            etape++;
+        }else{
+            etape=0;
+        }
+        timer.start(TEMPS_TIMER_SANS_ANIMATION);
+        break;
+    case 4:
+        //ETAPE 4: Générer et tomber les bonbons
         //Générer les bonbons dans les cases de début
         niveau->completer();
         //Si des bonbons sont tombés
