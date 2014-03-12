@@ -4,8 +4,8 @@
 #include <QQuickItem>
 
 class Bonbon : public QQuickItem
-
 {
+    friend class Niveau;
     Q_OBJECT
     Q_ENUMS(Type)
     Q_ENUMS(Couleur)
@@ -31,13 +31,16 @@ public:
     }Type;
     Bonbon(QQuickItem *parent = 0);
     Bonbon(Couleur c,Type t);
+    //GET
     Couleur getCouleur() const;
     Type getType() const;
-    void setType(Type type);
-    void setCouleur(Couleur couleur);
 private:
     Couleur couleur;
     Type type;
+    //Fonctions accesible par la classe amie (niveau)
+    //SET
+    void setType(Type type);
+    void setCouleur(Couleur couleur);
 signals:
     void couleurChanged();
     void typeChanged();

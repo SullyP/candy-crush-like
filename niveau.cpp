@@ -2,6 +2,9 @@
 
 using namespace std;
 
+const QtQuick2ApplicationViewer* Niveau::viewer;
+QQuickItem* Niveau::grille;
+
 Niveau::Niveau(){
 
 }
@@ -591,14 +594,14 @@ bool Niveau::possibleVR(int lign, int col) const{
 //Ajout/Suppresion Bonbon/Case //////////////////////////////////////////////////////////////////
 void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbon::Type type){
     if(!estVide(ligne,colonne) && !estBloc(ligne,colonne) && sansBonbon(ligne,colonne)){
-        QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueBonbon.qml"));
+        QQmlComponent component(viewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueBonbon.qml"));
         Bonbon* bonbec = qobject_cast<Bonbon *>(component.create());
         bonbec->setType(type);
         bonbec->setCouleur(couleur);
         bonbec->setProperty("ligne",QVariant(ligne));
         bonbec->setProperty("colonne",QVariant(colonne));
-        bonbec->setParent(GlobalGrille);
-        bonbec->setParentItem(GlobalGrille);
+        bonbec->setParent(grille);
+        bonbec->setParentItem(grille);
         bonbec->setProperty("creationTermine",QVariant(true));
         liste.at(index(ligne,colonne))->setBonbon(bonbec);
     }
@@ -606,7 +609,7 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
 
 void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool franchissable){
     if(estVide(ligne,colonne)){
-        QQmlComponent component(GlobalViewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueCase.qml"));
+        QQmlComponent component(viewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueCase.qml"));
         Case *curCell = qobject_cast<Case *>(component.create());
         curCell->setDebut(debut);
         curCell->setFin(fin);
@@ -614,8 +617,8 @@ void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool fran
         curCell->setBonbon(NULL);
         curCell->setProperty("ligne",QVariant(ligne));
         curCell->setProperty("colonne",QVariant(colonne));
-        curCell->setParent(GlobalGrille);
-        curCell->setParentItem(GlobalGrille);
+        curCell->setParent(grille);
+        curCell->setParentItem(grille);
         liste[index(ligne,colonne)]=curCell;
     }
 }
@@ -787,35 +790,6 @@ bool Niveau::tomberDuDessus(int lign, int col){
     return false;
 }
 
-//Indique s'il y a encore des cases vide où les bonbons devraient tomber
-//USELESS
-bool Niveau::caseEncoreVidePossible(){
-    bool vide=false;
-    for (int i=0;i<nb_lign;i++){
-        for(int j=0;j<nb_col;j++){
-            if(!estVide(i,j)){
-                if(sansBonbon(i,j) && !estDebut(i,j)){
-                    if(!sansBonbon(i-1,j) || (estBloc(i-1,j) && (!sansBonbon(i-1,j+1) || !sansBonbon(i-1,j-1) ))){
-                        vide=true;
-                    }
-                }
-            }
-        }
-    }
-    return vide;
-}
-
-//USELESS
-bool Niveau::caseDebutVide(){
-    bool vide=false;
-    for (int i = 0; i < caseDebut.size(); ++i) {
-        if((liste.at(caseDebut.at(i))->getBonbon())==NULL){
-            vide=true;
-        }
-    }
-    return vide;
-}
-
 //Génere des bonbons aléatoirement sur les cases de début
 //Renvoye vrai si des bonbons ont été ajouté
 bool Niveau::completer(){
@@ -828,4 +802,9 @@ bool Niveau::completer(){
         }
     }
     return bonbonAjouter;
+}
+
+void Niveau::setViewer(QtQuick2ApplicationViewer* v){
+        viewer=v;
+        grille = viewer->rootObject()->findChild<QQuickItem *>("grilleDeJeux");
 }

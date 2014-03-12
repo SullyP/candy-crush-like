@@ -11,8 +11,7 @@ SOURCES += main.cpp \
     bonbon.cpp \
     niveau.cpp \
     case.cpp \
-    controleur.cpp \
-    global.cpp
+    controleur.cpp
 
 # Installation path
 # target.path =
@@ -30,8 +29,7 @@ HEADERS += \
     bonbon.h \
     niveau.h \
     case.h \
-    controleur.h \
-    global.h
+    controleur.h
 
 RESOURCES += \
     ressources.qrc
