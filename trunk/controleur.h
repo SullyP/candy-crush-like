@@ -7,7 +7,8 @@
 #include "case.h"
 #include "bonbon.h"
 #include "niveau.h"
-#include "global.h"
+
+#define NB_TOTAL_NIVEAU 7
 class Controleur : public QObject
 {
     Q_OBJECT
@@ -23,9 +24,9 @@ class Controleur : public QObject
     Q_PROPERTY(int nbTotalNiveau READ getNbTotalNiveau CONSTANT)
 public:
     explicit Controleur(QObject *parent = 0);
+    //GET
     int getResolutionBonbon() const;
     int getTailleBonbon() const;
-    void setTailleBonbon(int taille);
     int getNbColonne() const;
     int getScoreObjectif() const;
     int getScore() const;
@@ -33,9 +34,13 @@ public:
     int getNbMvt() const;
     int getNbTotalNiveau() const;
     bool getAnimationX() const;
-    void setAnimationX(bool b);
     bool getAnimationY() const;
+
+    //SET
+    void setTailleBonbon(int taille);
+    void setAnimationX(bool b);
     void setAnimationY(bool b);
+
     Q_INVOKABLE void chargerNiveau(int n);
     Q_INVOKABLE void selectionBonbon1(int x,int y);
     Q_INVOKABLE void selectionBonbon2(int x,int y);

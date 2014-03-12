@@ -2,9 +2,9 @@
 #define NIVEAU_H
 
 #include<QList>
+#include "qtquick2applicationviewer.h"
 #include"case.h"
 #include"bonbon.h"
-#include"global.h"
 #include <stdlib.h>
 #include <string>
 #include <fstream>
@@ -13,8 +13,15 @@
 
 class Niveau
 {
-
+private:
+    //viewer et grille pour la création des bonbons
+    const static QtQuick2ApplicationViewer* viewer;
+    static QQuickItem* grille;
 public:
+    //STATIC
+
+    static void setViewer(QtQuick2ApplicationViewer* v);
+
     Niveau();
     Niveau(int nnbNiveau);
     ~Niveau();
@@ -31,48 +38,13 @@ public:
     Bonbon::Couleur getCouleur (int lign, int col);
 
 
-    bool estVide (int lign, int col) const;
-    bool estBloc (int lign, int col) const;
-    bool sansBonbon (int lign, int col) const;
-    int index(int lign, int col) const;
-    bool estDebut(int lign, int col) const;
-    bool caseEncoreVidePossible();
-    bool caseDebutVide();
-
-    void remplir();
+    //Fonctions pour le déroulement du jeu (public)
     bool completer();
     bool estPossible(int x1, int y1, int x2, int y2);
-    bool commuterBonbon(int lign1, int col1, int lign2, int col2);
-
-    //combo
-    bool comboHorizontal (int lign, int col);
-    bool comboVertical (int lign, int col);
-    bool combo (int lign, int col);
-
-    //coup possible
-    bool coupPossible() const;
-    bool comboPossible(int lign, int col) const;
-    bool possibleHL(int lign, int col) const;
-    bool possibleVL(int lign, int col) const;
-    bool possibleHR(int lign, int col) const;
-    bool possibleVR(int lign, int col) const;
-
-
-    //Ajout/Suppresion Bonbon/Case
-    void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
-    void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);
-    void supprimerBonbon(int lign, int col);
-    void supprimerCase(int lign, int col);
-
-    //detruire
-    void detruireCombo(int lign, int col);
-    void detruireHorizontal(int lign, int col);
-    void detruireVertical(int lign, int col);
     bool detruire();
-
-    //tomber
+    bool commuterBonbon(int lign1, int col1, int lign2, int col2);
+    bool coupPossible() const;
     bool tomber();
-    bool tomberDuDessus(int lign, int col);
 
 private:
     int num_niveau;
@@ -87,6 +59,42 @@ private:
     int nb_lign;
     int nb_mvt;
     Bonbon::Couleur couleurHasard() const;
+
+    //Fonction auxiliaire de tomber
+    bool tomberDuDessus(int lign, int col);
+
+    //Fonctions auxiliaire de detruire
+    void detruireCombo(int lign, int col);
+    void detruireHorizontal(int lign, int col);
+    void detruireVertical(int lign, int col);
+
+    //Ajout/Suppresion Bonbon/Case
+    void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
+    void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);
+    void supprimerBonbon(int lign, int col);
+    void supprimerCase(int lign, int col);
+
+    //Fonctions auxiliaire de coupPossible
+    bool comboPossible(int lign, int col) const;
+    bool possibleHL(int lign, int col) const;
+    bool possibleVL(int lign, int col) const;
+    bool possibleHR(int lign, int col) const;
+    bool possibleVR(int lign, int col) const;
+
+    //Fonctions auxiliaire de combo
+    bool comboHorizontal (int lign, int col);
+    bool comboVertical (int lign, int col);
+
+    //Fonctions de tests bonbon/case
+    bool estVide (int lign, int col) const;
+    bool estBloc (int lign, int col) const;
+    bool sansBonbon (int lign, int col) const;
+    int index(int lign, int col) const;
+    bool estDebut(int lign, int col) const;
+
+    //Fonctions pour le déroulement du jeu (privé)
+    void remplir();
+    bool combo (int lign, int col);
 
 
 };
