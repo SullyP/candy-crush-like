@@ -27,6 +27,11 @@
         <file alias="violetSucre">images/violetSucre.svg</file>
         <file alias="bombe">images/bombe.svg</file>
         <file alias="home">images/home.png</file>
+        <file alias="explosion1">images/explosion01.png</file>
+        <file alias="explosion2">images/explosion02.png</file>
+        <file alias="explosion3">images/explosion03.png</file>
+        <file alias="explosion4">images/explosion04.png</file>
+        <file alias="explosion5">images/explosion05.png</file>
     </qresource>
     <qresource prefix="/levels">
         <file alias="1">levels/1.candy</file>

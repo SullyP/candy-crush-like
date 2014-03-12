@@ -4,7 +4,7 @@ import sweetcandy.bonbon 1.0
 Bonbon{
     property int colonne: 0
     property int ligne: -1 // permet d'avoir un effet "tombé du ciel" lors de l'animation
-    property bool creationTermine: false
+    property string etat: "enCreation"
 
     x: colonne*controleur.tailleBonbon
     y: ligne*controleur.tailleBonbon
@@ -12,7 +12,7 @@ Bonbon{
     height: controleur.tailleBonbon
 
     Behavior on x {
-        enabled: creationTermine && controleur.animationX
+        enabled: etat!="enCreation" && controleur.animationX
         PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
     }
 
@@ -21,7 +21,9 @@ Bonbon{
         PropertyAnimation { duration: 400; easing.type: Easing.OutBack}
     }
 
+
     Image{
+        id:img
         source:{
             var couleurString;
             var typeString;
@@ -79,13 +81,30 @@ Bonbon{
             }
 
             if(typeString === "bombe")
-                return "qrc:/images/bombe"
+                return "qrc:/images/bombe";
             else
-                return "qrc:/images/" + couleurString + typeString
+                return "qrc:/images/" + couleurString + typeString;
         }
 
         anchors.fill: parent
         anchors.margins: 2
         sourceSize.height: controleur.resolutionBonbon
     }
+
+    Image{
+        id: imgExplosion
+        opacity: etat=="destruction"? 1 : 0
+        source: "qrc:/images/explosion"+imgEnCours
+        anchors.centerIn: parent
+        sourceSize.height: controleur.resolutionBonbon*1.25
+
+        property int imgEnCours: 1
+
+        ParallelAnimation{
+            running:etat=="destruction"
+            NumberAnimation { target: img; property: "opacity"; to: 0; duration: 400 }
+            NumberAnimation { target: imgExplosion; property: "imgEnCours"; to: 5; duration: 400 }
+        }
+    }
+
 }
