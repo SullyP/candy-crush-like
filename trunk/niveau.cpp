@@ -264,7 +264,7 @@ Bonbon::Couleur Niveau::couleurHasard() const{
     case 4:
         couleur=Bonbon::Violet;
         break;
-    case 5:
+    default:
         couleur=Bonbon::Rose;
         break;
     }
@@ -360,7 +360,7 @@ bool Niveau::comboPossible(int lign, int col) const{
 
 //test sur rectangle 1x4 horizontal si 3 bonbon de la même couleur, un coup est possible
 bool Niveau::possibleHL(int lign, int col) const{
-    int rg,ja,ve,b,vi,rs = 0;
+    int rg=0,ja=0,ve=0,b=0,vi=0,rs=0;
     Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
     for(int i=0;i<4;i++){
         if(sansBonbon(lign, col+i)){
@@ -400,7 +400,7 @@ bool Niveau::possibleHL(int lign, int col) const{
 
 //test sur rectangle 1x4 vertical si 3 bonbon de la même couleur, un coup est possible
 bool Niveau::possibleVL(int lign, int col) const{
-    int rg,ja,ve,b,vi,rs = 0;
+    int rg=0,ja=0,ve=0,b=0,vi=0,rs=0;
     Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
     for(int i=0;i<4;i++){
         if(sansBonbon(lign+i, col)){
@@ -440,7 +440,7 @@ bool Niveau::possibleVL(int lign, int col) const{
 
 //test sur rectangle 2x3 horizontal si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
 bool Niveau::possibleHR(int lign, int col) const{
-    int rg,ja,ve,b,vi,rs = 0;
+    int rg=0,ja=0,ve=0,b=0,vi=0,rs=0;
     Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
     //test sur rectangle 2x3 horizontal si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
     for(int i=0;i<2;i++){
@@ -521,7 +521,7 @@ bool Niveau::possibleHR(int lign, int col) const{
 
 //test sur rectangle 2x3 vertical si 3 ou 4 bonbons de la même couleur, il peut y avoir un coup possible
 bool Niveau::possibleVR(int lign, int col) const{
-    int rg,ja,ve,b,vi,rs = 0;
+    int rg=0,ja=0,ve=0,b=0,vi=0,rs=0;
     Bonbon::Couleur tmpCouleur = Bonbon::Aucune;
     for(int i=0;i<3;i++){
         for(int j=0;j<2;j++){

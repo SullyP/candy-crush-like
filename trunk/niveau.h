@@ -5,10 +5,6 @@
 #include "qtquick2applicationviewer.h"
 #include"case.h"
 #include"bonbon.h"
-#include <stdlib.h>
-#include <string>
-#include <fstream>
-#include <iostream>
 #include <sstream>
 
 class Niveau
