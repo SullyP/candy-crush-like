@@ -192,7 +192,13 @@ Rectangle {
                                 }
                             }
 
-                            value: controleur.score
+                            value:{
+								if(controleur.score>controleur.scoreObjectif){
+									return controleur.scoreObjectif;
+								}else{
+									return controleur.score;
+								}
+							}
                         }
                     }
                 }
