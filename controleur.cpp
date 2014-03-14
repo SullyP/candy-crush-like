@@ -159,12 +159,21 @@ void Controleur::setAnimationX(bool b){
 
 void Controleur::deroulementJeu(){
     switch(etape){
-    case 0:
+    case -1:
+        //ETAPE -1: Vérification et réinistialisation avant etape 0
         x1SelBonbon=-1;
         y1SelBonbon=-1;
         x2SelBonbon=-1;
         y2SelBonbon=-1;
         coefScore=1;
+        /*while(!niveau->coupPossible()){
+            //redistribuer bonbon
+        }*/
+        timer.stop();
+        etape=0;
+        break;
+    case 0:
+        //ETAPE 0: Le joueur peut jouer
         timer.stop();
         break;
     case 1:
@@ -174,7 +183,7 @@ void Controleur::deroulementJeu(){
             etape++;
             emit nbMvtChanged();
         }else{
-            etape=0;
+            etape=-1;
         }
         timer.start(TEMPS_TIMER_ANIMATION);
         break;
@@ -187,11 +196,8 @@ void Controleur::deroulementJeu(){
             emit scoreChanged();
             etape++;
         }else{
-            etape=0;
+            etape=-1;
         }
-        /*        while(!niveau->coupPossible()){
-            //redistribuer bonbon
-        }*/
         timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 3:
@@ -199,7 +205,7 @@ void Controleur::deroulementJeu(){
         if(niveau->detruire()){
             etape++;
         }else{
-            etape=0;
+            etape=-1;
         }
         timer.start(TEMPS_TIMER_SANS_ANIMATION);
         break;
