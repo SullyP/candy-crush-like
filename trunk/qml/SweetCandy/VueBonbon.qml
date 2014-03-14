@@ -91,21 +91,25 @@ Bonbon{
         sourceSize.height: controleur.resolutionBonbon
     }
 
-    Image{
-        id: imgExplosion
-        opacity: 0
-        source: "qrc:/images/explosion"+imgEnCours
-        anchors.centerIn: parent
-        sourceSize.height: controleur.resolutionBonbon*1.25
+    Item{
+        height: 1.25*controleur.tailleBonbon
+        width: 1.25*controleur.tailleBonbon
 
-        property int imgEnCours: 1
+        Image{
+            id: imgExplosion
+            opacity: 0
+            source: "qrc:/images/explosion"+imgEnCours
+            anchors.fill: parent
+            anchors.centerIn: parent
 
-        ParallelAnimation{
-            running:etat=="destruction"
-            PropertyAction { target: imgExplosion; property: "opacity"; value:1 }
-            NumberAnimation { target: img; property: "opacity"; to: 0; duration: 400 }
-            NumberAnimation { target: imgExplosion; property: "imgEnCours"; to: 5; duration: 400 }
+            property int imgEnCours: 1
+
+            ParallelAnimation{
+                running:etat=="destruction"
+                PropertyAction { target: imgExplosion; property: "opacity"; value:1 }
+                NumberAnimation { target: img; property: "opacity"; to: 0; duration: 400 }
+                NumberAnimation { target: imgExplosion; property: "imgEnCours"; to: 5; duration: 400 }
+            }
         }
     }
-
 }
