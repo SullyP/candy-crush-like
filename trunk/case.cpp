@@ -64,3 +64,14 @@ void Case::setFranchissable(bool franchissable){
         emit franchissableChanged();
     }
 }
+
+void Case::setNiveauGelatine(int num){
+    if(niveauGelatine!=num){
+        niveauGelatine=num;
+        emit niveauGelatineChanged;
+    }
+}
+
+int Case::getNiveauGelatine(){
+  return niveauGelatine;
+}
