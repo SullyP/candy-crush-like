@@ -36,7 +36,7 @@ private:
     void setFin(bool fin);
     void setDebut(bool debut);
     void setFranchissable(bool franchissable);
-    vois setNiveauGelatine(int num);
+    void setNiveauGelatine(int num);
 signals:
     void franchissableChanged();
     void finChanged();
