@@ -17,7 +17,7 @@ CaseB{
             //Indicateur de debut
             anchors.top: parent.top
             width: parent.width
-            height: 1
+            height: 2
 
             Rectangle{
                 visible: debut
@@ -33,7 +33,7 @@ CaseB{
             //Indicateur de fin
             anchors.bottom: parent.bottom
             width: parent.width
-            height: 1
+            height: 2
 
             Rectangle{
                 visible: fin
@@ -42,6 +42,15 @@ CaseB{
                 anchors.leftMargin: controleur.tailleBonbon/6
                 color:"black"
             }
+        }
+        
+        Rectangle{
+            //Gelatine
+            opacity: niveauGelatine===0 ? 0 !(niveauGelatine===1 ? 0.4 ! 0.8)
+            anchors.centerIn:parent
+            width:controleur.tailleBonbon-5
+            height:controleur.tailleBonbon-5
+            color:"white"
         }
     }
 }
