@@ -12,12 +12,13 @@ class Case : public QQuickItem
     Q_PROPERTY(bool fin READ estFin NOTIFY finChanged)
     Q_PROPERTY(bool franchissable READ estFranchissable NOTIFY franchissableChanged)
     Q_PROPERTY(bool vide READ estVide)
-
+    Q_PROPERTY(bool niveauGelatine READ getNiveauGelatine NOTIFY niveauGelatineChanged)
 public:
     explicit Case (QQuickItem *parent = 0);
     Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon);
     //GET
     Bonbon* getBonbon();
+    int getNiveauGelatine();
     //Tests sur la case
     bool estVide() const;
     bool estDebut() const;
@@ -28,16 +29,19 @@ private:
     bool debut;
     bool fin;
     bool franchissable;
+    int niveauGelatine;
     //Fonctions accesible par la classe amie (niveau)
     //SET
     void setBonbon(Bonbon* bonbon);
     void setFin(bool fin);
     void setDebut(bool debut);
     void setFranchissable(bool franchissable);
+    vois setNiveauGelatine(int num);
 signals:
     void franchissableChanged();
     void finChanged();
     void debutChanged();
+    void niveauGelatineChanged();
 public slots:
 
 };
