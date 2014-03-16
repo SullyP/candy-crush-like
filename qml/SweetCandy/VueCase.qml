@@ -46,7 +46,7 @@ CaseB{
         
         Rectangle{
             //Gelatine
-            opacity: niveauGelatine===0 ? 0 !(niveauGelatine===1 ? 0.4 ! 0.8)
+            //opacity: niveauGelatine===0 ? 0 !(niveauGelatine===1 ? 0.4 ! 0.8)
             anchors.centerIn:parent
             width:controleur.tailleBonbon-5
             height:controleur.tailleBonbon-5
