@@ -872,9 +872,9 @@ void Niveau::compterScore(int coef){
         for(int j=0;j<nb_col;j++){
             if(estMarquer(i,j)){
                 //Reduction de 1 niveau de gelatine si la case en avait
-                if(liste.at(index(lign,col))->getNiveauGelatine()>0){
-                    int numGel=liste.at(index(lign,col))->getNiveauGelatine();
-                    liste.at(index(lign,col))->setNiveauGelatine(numGel--);
+                if(liste.at(index(i,j))->getNiveauGelatine()>0){
+                    int numGel=liste.at(index(i,j))->getNiveauGelatine();
+                    liste.at(index(i,j))->setNiveauGelatine(numGel--);
                     score=score+20*numGel;
                 }
                 if(getBonbon(i,j)->getType()==Bonbon::Normal){
