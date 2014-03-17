@@ -42,6 +42,7 @@ public:
     bool coupPossible() const;
     bool tomber();
     void compterScore(int coef);
+    void redistribuer();
 
 private:
     int num_niveau;

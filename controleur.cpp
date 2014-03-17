@@ -166,9 +166,12 @@ void Controleur::deroulementJeu(){
         x2SelBonbon=-1;
         y2SelBonbon=-1;
         coefScore=1;
-        /*while(!niveau->coupPossible()){
-            //redistribuer bonbon
-        }*/
+        if(!niveau->coupPossible()){
+            niveau->redistribuer();
+            etape=2;
+            timer.start(TEMPS_TIMER_ANIMATION);
+            break;
+        }
         timer.stop();
         etape=0;
         break;

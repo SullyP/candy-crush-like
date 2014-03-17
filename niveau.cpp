@@ -140,7 +140,7 @@ int Niveau::getNb_mvt() const{
 //premiere case lign=0 col=0.
 //Indique s'il n'y a pas de case définie
 bool Niveau::estVide (int lign, int col) const{
-    return (liste.at(index(lign,col)) == NULL);
+    return (index(lign,col) == -1 || liste.at(index(lign,col)) == NULL);
 }
 
 //Indique si la case est un Bloc (case non franchissable)
@@ -211,7 +211,7 @@ void Niveau::remplir(){
 bool Niveau::estPossible(int x1, int y1, int x2, int y2){
     if(getBonbon(x1,y1)!=NULL && getBonbon(x2,y2)!=NULL){
         //Si le coup est possible on renvoye vrai
-        if(combo(x1,y1) || combo(x2,y2)){
+        if(combo(x1,y1) || combo(x2,y2) || (getBonbon(x1,y1)->getType() != Bonbon::Normal && getBonbon(x2,y2)->getType() != Bonbon::Normal)){
             //et on décrémente les déplacements possibles
             nb_mvt--;
             return true;
@@ -344,18 +344,42 @@ bool Niveau::comboPossible(int lign, int col) const{
         return false;
     }
     if(getBonbon(lign, col)->getType()!=Bonbon::Normal){
-        if(!sansBonbon(lign, col+1)){
-            if(getBonbon(lign, col+1)->getType()!=Bonbon::Normal){
-                return true;
+        if(col+1<nb_col){
+            if(!sansBonbon(lign, col+1)){
+                if(getBonbon(lign, col+1)->getType()!=Bonbon::Normal){
+                    return true;
+                }
             }
         }
-        if(!sansBonbon(lign+1, col)){
-            if(getBonbon(lign+1, col)->getType()!=Bonbon::Normal){
-                return true;
+        if(lign+1<nb_lign){
+            if(!sansBonbon(lign+1, col)){
+                if(getBonbon(lign+1, col)->getType()!=Bonbon::Normal){
+                    return true;
+                }
             }
         }
     }
-    return(possibleHL(lign, col) || possibleVL(lign, col) || possibleHR(lign, col) || possibleVR(lign, col));
+    if(col+3<nb_col){
+        if(possibleHL(lign, col)){
+            return true;
+        }
+    }
+    if(lign+3<nb_lign){
+        if(possibleVL(lign, col)){
+            return true;
+        }
+    }
+    if(col+2<nb_col && lign+1<nb_lign){
+        if(possibleHR(lign, col)){
+            return true;
+        }
+    }
+    if(lign+2<nb_lign && col+1<nb_col){
+        if(possibleVR(lign, col)){
+            return true;
+        }
+    }
+    return false;
 }
 
 //test sur rectangle 1x4 horizontal si 3 bonbon de la même couleur, un coup est possible
@@ -883,6 +907,42 @@ void Niveau::compterScore(int coef){
                     score=score+80*coef;
                 }
             }
+        }
+    }
+}
+
+void Niveau::redistribuer(){
+    QList<Bonbon*> bonus;
+    int c=0;
+    int iT, jT;
+    for(int i=0; i<nb_lign; i++){
+        for(int j=0; j<nb_col; j++){
+            if(!sansBonbon(i, j)){
+                if(getBonbon(i,j)->getType() != Bonbon::Normal){
+                    bonus << getBonbon(i,j);
+                    c++;
+                }else {
+                    supprimerBonbon(i,j);
+                }
+            }
+        }
+    }
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
+                ajouterBonbon(i,j,couleurHasard());
+            }
+        }
+    }
+    while(c>0){
+        iT = rand() % nb_lign-1;
+        jT = rand() % nb_col-1;
+        c--;
+        if(!estVide(iT, jT) && getBonbon(iT, jT)->getType() == Bonbon::Normal){
+            supprimerBonbon(iT, jT);
+            liste.at(index(iT, jT))->setBonbon(bonus[c]);
+        }else {
+            c++;
         }
     }
 }
