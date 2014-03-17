@@ -53,6 +53,7 @@ private:
     QList<int> caseBloc;
     QList<int> caseDebut;
     QList<int> caseFin;
+    QList<int> caseGelatine;
     int nb_col;
     int nb_lign;
     int nb_mvt;
@@ -69,7 +70,7 @@ private:
 
     //Ajout/Suppresion Bonbon/Case
     void ajouterBonbon(int lign, int col,Bonbon::Couleur couleur, Bonbon::Type type = Bonbon::Normal);
-    void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true);
+    void ajouterCase(int lign, int col, bool debut=false, bool fin=false, bool franchissable=true, int niveauGelatine=0);
     void supprimerBonbon(int lign, int col);
     void supprimerCase(int lign, int col);
 

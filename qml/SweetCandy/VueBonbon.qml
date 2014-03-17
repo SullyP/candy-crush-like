@@ -87,7 +87,7 @@ Bonbon{
         }
 
         anchors.fill: parent
-        anchors.margins: 2
+        anchors.margins: controleur.tailleBonbon/20
         sourceSize.height: controleur.resolutionBonbon
     }
 

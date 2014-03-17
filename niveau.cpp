@@ -81,12 +81,18 @@ Niveau::Niveau(int nbNiveau){
                 etape++;
             break;
         case 11:
-            if(ligne!="case_fin:")
+            if(ligne!="case_gelatine:")
                 caseDebut.push_back(ligne.toInt());
             else
                 etape++;
             break;
         case 12:
+            if(ligne!="case_fin:")
+                caseGelatine.push_back(ligne.toInt());
+            else
+                etape++;
+            break;
+        case 13:
             caseFin.push_back(ligne.toInt());
 
         }
@@ -102,7 +108,7 @@ Niveau::Niveau(int nbNiveau){
             }else if(caseBloc.contains(index(i,j))){
                 ajouterCase(i,j,false,false,false);
             }else {
-                ajouterCase(i,j,caseDebut.contains(index(i,j)),caseFin.contains(index(i,j)));
+                ajouterCase(i,j,caseDebut.contains(index(i,j)),caseFin.contains(index(i,j)),true,((caseGelatine.contains(index(i,j)))? 2 : 0));
             }
         }
     }
@@ -639,13 +645,14 @@ void Niveau::ajouterBonbon(int ligne, int colonne,Bonbon::Couleur couleur, Bonbo
     }
 }
 
-void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool franchissable){
+void Niveau::ajouterCase(int ligne, int colonne, bool debut, bool fin, bool franchissable, int niveauGelatine){
     if(estVide(ligne,colonne)){
         QQmlComponent component(viewer->engine(),QUrl::fromLocalFile("qml/SweetCandy/VueCase.qml"));
         Case *curCell = qobject_cast<Case *>(component.create());
         curCell->setDebut(debut);
         curCell->setFin(fin);
         curCell->setFranchissable(franchissable);
+        curCell->setNiveauGelatine(niveauGelatine);
         curCell->setBonbon(NULL);
         curCell->setProperty("ligne",QVariant(ligne));
         curCell->setProperty("colonne",QVariant(colonne));
@@ -896,10 +903,11 @@ void Niveau::compterScore(int coef){
         for(int j=0;j<nb_col;j++){
             if(estMarquer(i,j)){
                 //Reduction de 1 niveau de gelatine si la case en avait
-                if(liste.at(index(i,j))->getNiveauGelatine()>0){
-                    int numGel=liste.at(index(i,j))->getNiveauGelatine();
-                    liste.at(index(i,j))->setNiveauGelatine(numGel--);
+                int numGel=liste.at(index(i,j))->getNiveauGelatine();
+                if(numGel>0){
+
                     score=score+20*numGel;
+                    liste.at(index(i,j))->setNiveauGelatine(numGel-1);
                 }
                 if(getBonbon(i,j)->getType()==Bonbon::Normal){
                     score=score+60*coef;

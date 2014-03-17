@@ -193,12 +193,12 @@ Rectangle {
                             }
 
                             value:{
-								if(controleur.score>controleur.scoreObjectif){
-									return controleur.scoreObjectif;
-								}else{
-									return controleur.score;
-								}
-							}
+                                if(controleur.score>controleur.scoreObjectif){
+                                    return controleur.scoreObjectif;
+                                }else{
+                                    return controleur.score;
+                                }
+                            }
                         }
                     }
                 }
@@ -238,8 +238,41 @@ Rectangle {
                     controleur.animationX=true;
                     controleur.animationY=true;
                 }
-
             }
+        }
+
+        Rectangle{
+            id:popUpJeux
+            opacity:0
+            anchors.centerIn: parent
+            width:ecran.width
+            height: textPopUp.paintedHeight
+            color:"white"
+
+            Text {
+                id:textPopUp
+                anchors.centerIn: parent
+                text: ""
+                font.family: "Helvetica"
+                font.pixelSize: controleur.tailleBonbon/2
+                color: "black"
+            }
+
+            Connections {
+                target: controleur
+                onRedistributionJeux:{
+                    textPopUp.text = "<center>Aucun déplacements possibles. <br> Redistribution.</center>";
+                    animPopUp.start();
+                }
+            }
+
+            SequentialAnimation{
+                id:animPopUp
+                NumberAnimation { target: popUpJeux; property: "opacity"; to: 1; duration: 200 }
+                PauseAnimation { duration: 3000 }
+                NumberAnimation {target: popUpJeux; property: "opacity"; to: 0; duration: 200 }
+            }
+
         }
     }
 }
