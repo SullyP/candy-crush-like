@@ -12,10 +12,9 @@ class Case : public QQuickItem
     Q_PROPERTY(bool fin READ estFin NOTIFY finChanged)
     Q_PROPERTY(bool franchissable READ estFranchissable NOTIFY franchissableChanged)
     Q_PROPERTY(bool vide READ estVide)
-    Q_PROPERTY(bool niveauGelatine READ getNiveauGelatine NOTIFY niveauGelatineChanged)
+    Q_PROPERTY(int niveauGelatine READ getNiveauGelatine NOTIFY niveauGelatineChanged)
 public:
     explicit Case (QQuickItem *parent = 0);
-    Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon);
     //GET
     Bonbon* getBonbon();
     int getNiveauGelatine();

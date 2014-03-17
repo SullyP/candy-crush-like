@@ -76,6 +76,8 @@ signals:
     void nbMvtChanged();
     void animationXChanged();
     void animationYChanged();
+    //Evenement Jeu
+    void redistributionJeux();
 public slots:
     void deroulementJeu();
 };

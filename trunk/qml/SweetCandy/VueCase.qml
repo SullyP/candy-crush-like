@@ -17,7 +17,7 @@ CaseB{
             //Indicateur de debut
             anchors.top: parent.top
             width: parent.width
-            height: 2
+            height: controleur.tailleBonbon/20
 
             Rectangle{
                 visible: debut
@@ -33,7 +33,7 @@ CaseB{
             //Indicateur de fin
             anchors.bottom: parent.bottom
             width: parent.width
-            height: 2
+            height: controleur.tailleBonbon/20
 
             Rectangle{
                 visible: fin
@@ -46,11 +46,15 @@ CaseB{
         
         Rectangle{
             //Gelatine
-            //opacity: niveauGelatine===0 ? 0 !(niveauGelatine===1 ? 0.4 ! 0.8)
-            anchors.centerIn:parent
-            width:controleur.tailleBonbon-5
-            height:controleur.tailleBonbon-5
+            opacity:niveauGelatine*0.5
+            anchors.fill: parent
+            anchors.margins: controleur.tailleBonbon/20
+            radius: controleur.tailleBonbon/6
             color:"white"
+
+            Behavior on opacity{
+                PropertyAnimation {duration: 200}
+            }
         }
     }
 }

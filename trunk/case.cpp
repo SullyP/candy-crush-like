@@ -8,16 +8,8 @@ Case::Case(QQuickItem *parent) :
     this->fin=false;
     this->franchissable=true;
     this->bonbon=NULL;
+    this->niveauGelatine=0;
 }
-
-Case::Case(bool debut, bool fin, bool franchissable,Bonbon* bonbon){
-    this->debut=debut;
-    this->fin=fin;
-    this->franchissable=franchissable;
-    this->bonbon=bonbon;
-}
-
-
 
 bool Case::estVide() const{
     return (NULL==bonbon);

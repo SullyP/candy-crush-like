@@ -1,6 +1,6 @@
 #include "controleur.h"
 
-#define TEMPS_TIMER_ANIMATION 450
+#define TEMPS_TIMER_ANIMATION 405
 #define TEMPS_TIMER_SANS_ANIMATION 1
 Controleur::Controleur(QObject *parent) :
     QObject(parent)
@@ -167,6 +167,7 @@ void Controleur::deroulementJeu(){
         y2SelBonbon=-1;
         coefScore=1;
         if(!niveau->coupPossible()){
+            emit redistributionJeux();
             niveau->redistribuer();
             etape=2;
             timer.start(TEMPS_TIMER_ANIMATION);
@@ -185,10 +186,11 @@ void Controleur::deroulementJeu(){
         if(niveau->estPossible(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
             emit nbMvtChanged();
+            timer.start(TEMPS_TIMER_SANS_ANIMATION);
         }else{
             etape=-1;
+            timer.start(TEMPS_TIMER_ANIMATION);
         }
-        timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 2:
         //ETAPE 2: 'Marquage' des bonbons
