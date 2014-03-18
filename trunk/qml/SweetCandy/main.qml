@@ -62,25 +62,14 @@ Rectangle {
                         MouseArea{
                             anchors.fill: parent
                             onClicked: {
+                                boutonPopUp.visible=false;
+                                popUpJeux.opacity=0;
                                 controleur.chargerNiveau(index+1);
                                 ecran.state="jeux";
                             }
                         }
                     }
                 }
-            }
-        }
-    }
-
-    Image{
-        visible: ecran.state=="jeux"
-        source: "qrc:/images/home"
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                ecran.state="mainMenu";
             }
         }
     }
@@ -201,6 +190,38 @@ Rectangle {
                             }
                         }
                     }
+
+                    Item{
+                        height:32
+                        width: parent.width
+                        anchors.bottom: parent.bottom
+                        Row{
+                            spacing: 5
+                            anchors.centerIn: parent
+                            Image{
+                                source: "qrc:/images/home"
+                                MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        boutonPopUp.visible=false;
+                                        popUpJeux.opacity=0;
+                                        ecran.state="mainMenu";
+                                    }
+                                }
+                            }
+                            Image{
+                                source: "qrc:/images/rejouer"
+                                MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        boutonPopUp.visible=false;
+                                        popUpJeux.opacity=0;
+                                        controleur.chargerNiveau(controleur.numNiveau);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -246,16 +267,55 @@ Rectangle {
             opacity:0
             anchors.centerIn: parent
             width:ecran.width
-            height: textPopUp.paintedHeight
+            height: textPopUp.paintedHeight+35
             color:"white"
 
-            Text {
-                id:textPopUp
-                anchors.centerIn: parent
-                text: ""
-                font.family: "Helvetica"
-                font.pixelSize: controleur.tailleBonbon/2
-                color: "black"
+            Item{
+                width:parent.width
+                height: textPopUp.paintedHeight
+                Text {
+                    id:textPopUp
+                    anchors.centerIn: parent
+                    text: ""
+                    font.family: "Helvetica"
+                    font.pixelSize: controleur.tailleBonbon/2
+                    color: "black"
+                }
+            }
+
+            Item{
+                id: boutonPopUp
+                visible: false
+                height:32
+                width: parent.width
+                anchors.bottom: parent.bottom
+                Row{
+
+                    spacing: 5
+                    anchors.centerIn: parent
+                    Image{
+                        source: "qrc:/images/home"
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                boutonPopUp.visible=false;
+                                popUpJeux.opacity=0;
+                                ecran.state="mainMenu";
+                            }
+                        }
+                    }
+                    Image{
+                        source: "qrc:/images/rejouer"
+                        MouseArea{
+                            anchors.fill: parent
+                            onClicked: {
+                                boutonPopUp.visible=false;
+                                popUpJeux.opacity=0;
+                                controleur.chargerNiveau(controleur.numNiveau);
+                            }
+                        }
+                    }
+                }
             }
 
             Connections {
@@ -263,6 +323,11 @@ Rectangle {
                 onRedistributionJeux:{
                     textPopUp.text = "<center>Aucun déplacements possibles. <br> Redistribution.</center>";
                     animPopUp.start();
+                }
+                onMsgFinNiveau:{
+                    textPopUp.text = msg;
+                    popUpJeux.opacity = 1;
+                    boutonPopUp.visible = true;
                 }
             }
 

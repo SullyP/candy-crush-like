@@ -158,6 +158,7 @@ void Controleur::setAnimationX(bool b){
 }
 
 void Controleur::deroulementJeu(){
+    QString msg;
     switch(etape){
     case -1:
         //ETAPE -1: Vérification et réinistialisation avant etape 0
@@ -166,6 +167,13 @@ void Controleur::deroulementJeu(){
         x2SelBonbon=-1;
         y2SelBonbon=-1;
         coefScore=1;
+        //Si le niveau est terminé.
+        msg = niveau->estFini();
+        if(msg!=""){
+            emit msgFinNiveau(msg);
+            timer.stop();
+            break;
+        }
         if(!niveau->coupPossible()){
             emit redistributionJeux();
             niveau->redistribuer();

@@ -32,6 +32,7 @@
         <file alias="explosion3">images/explosion03.png</file>
         <file alias="explosion4">images/explosion04.png</file>
         <file alias="explosion5">images/explosion05.png</file>
+        <file alias="rejouer">images/rejouer.png</file>
     </qresource>
     <qresource prefix="/levels">
         <file alias="1">levels/1.candy</file>

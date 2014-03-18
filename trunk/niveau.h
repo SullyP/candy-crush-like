@@ -43,6 +43,7 @@ public:
     bool tomber();
     void compterScore(int coef);
     void redistribuer();
+    QString estFini();
 
 private:
     int num_niveau;
