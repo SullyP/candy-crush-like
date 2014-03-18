@@ -213,11 +213,55 @@ void Niveau::remplir(){
 }
 
 //Renvoye vrai si le déplacement est possible, faux sinon.
-//Re-commute les bonbons si le déplacment n'est pas possible.
+//Re-commute les bonbons si le déplacement n'est pas possible.
+//Marque les bonbons si les deux bonbons intervertis sont spéciaux
 bool Niveau::estPossible(int x1, int y1, int x2, int y2){
     if(getBonbon(x1,y1)!=NULL && getBonbon(x2,y2)!=NULL){
-        //Si le coup est possible on renvoye vrai
-        if(combo(x1,y1) || combo(x2,y2) || (getBonbon(x1,y1)->getType() != Bonbon::Normal && getBonbon(x2,y2)->getType() != Bonbon::Normal)){
+        //Si le coup est possible entre deux bonbons spéciaux, ou s'il y a une bombe
+        if((getBonbon(x1,y1)->getType() != Bonbon::Normal && getBonbon(x2,y2)->getType() != Bonbon::Normal)
+                || (getBonbon(x1,y1)->getType() == Bonbon::Bombe || getBonbon(x2,y2)->getType() == Bonbon::Bombe)){
+            //Si c'est deux bombes
+            if(getBonbon(x1,y1)->getType() == Bonbon::Bombe && getBonbon(x2,y2)->getType() == Bonbon::Bombe){
+                //On explose tout
+                for(int i=0;i<nb_lign;i++){
+                    for(int j=0;j<nb_col;j++){
+                        if(getBonbon(i,j)!=NULL){
+                            getBonbon(i,j)->setType(Bonbon::Bombe);
+                            getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
+                        }
+                    }
+                }
+            }else{
+                getBonbon(x1,y1)->setProperty("etat",QVariant("aMarquer"));
+                getBonbon(x2,y2)->setProperty("etat",QVariant("aMarquer"));
+                if(getBonbon(x1,y1)->getType() == Bonbon::Bombe){
+                    Bonbon::Couleur couleur = getBonbon(x2,y2)->getCouleur();
+                    Bonbon::Type type = getBonbon(x2,y2)->getType();
+                    for(int i=0;i<nb_lign;i++){
+                        for(int j=0;j<nb_col;j++){
+                            if(getBonbon(i,j)!=NULL && getBonbon(i,j)->getCouleur()==couleur){
+                                getBonbon(i,j)->setType(type);
+                                getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
+                            }
+                        }
+                    }
+                }else if(getBonbon(x2,y2)->getType() == Bonbon::Bombe){
+                    Bonbon::Couleur couleur = getBonbon(x1,y1)->getCouleur();
+                    Bonbon::Type type = getBonbon(x1,y1)->getType();
+                    for(int i=0;i<nb_lign;i++){
+                        for(int j=0;j<nb_col;j++){
+                            if(getBonbon(i,j)!=NULL && getBonbon(i,j)->getCouleur()==couleur){
+                                getBonbon(i,j)->setType(type);
+                                getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
+                            }
+                        }
+                    }
+                }
+            }
+            nb_mvt--;
+            return true;
+            //Si le coup est possible on renvoye vrai
+        }else if(combo(x1,y1) || combo(x2,y2)){
             //et on décrémente les déplacements possibles
             nb_mvt--;
             return true;
@@ -775,6 +819,19 @@ bool Niveau::marquerDestruction(){
     bool bonbonMarquer = false;
     for(int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
+            if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && getBonbon(i,j)->property("etat")=="aMarquer"){
+                if(getBonbon(i,j)->getType()!=Bonbon::Bombe){
+                    marquerBonbon(i,j);
+                    bonbonMarquer = true;
+                }else{
+                    getBonbon(i,j)->setProperty("etat",QVariant("destruction"));
+                    bonbonMarquer = true;
+                }
+            }
+        }
+    }
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
             if(!estVide(i,j) && !estBloc(i,j) && !sansBonbon(i,j) && combo(i,j)){
                 marquerCombo(i,j);
                 bonbonMarquer = true;
@@ -970,4 +1027,12 @@ QString Niveau::estFini(){
         }
     }
     return res;
+}
+
+bool Niveau::estBombe(int lign,int col){
+    if(getBonbon(lign,col)!=NULL){
+        return (getBonbon(lign,col)->getType()==Bonbon::Bombe);
+    }else{
+        return false;
+    }
 }

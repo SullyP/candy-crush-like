@@ -44,6 +44,7 @@ public:
     void compterScore(int coef);
     void redistribuer();
     QString estFini();
+    bool estBombe(int lign,int col);
 
 private:
     int num_niveau;

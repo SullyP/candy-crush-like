@@ -194,7 +194,12 @@ void Controleur::deroulementJeu(){
         if(niveau->estPossible(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
             etape++;
             emit nbMvtChanged();
-            timer.start(TEMPS_TIMER_SANS_ANIMATION);
+            //Si l'un des deux bonbons est une bombe, alors animations.
+            if(niveau->estBombe(x1SelBonbon,y1SelBonbon) || niveau->estBombe(x2SelBonbon,y2SelBonbon)){
+                timer.start(TEMPS_TIMER_ANIMATION/2);
+            }else{
+                timer.start(TEMPS_TIMER_SANS_ANIMATION);
+            }
         }else{
             etape=-1;
             timer.start(TEMPS_TIMER_ANIMATION);
@@ -208,10 +213,11 @@ void Controleur::deroulementJeu(){
             coefScore=coefScore+0.5;
             emit scoreChanged();
             etape++;
+            timer.start(TEMPS_TIMER_ANIMATION);
         }else{
             etape=-1;
+            timer.start(TEMPS_TIMER_SANS_ANIMATION);
         }
-        timer.start(TEMPS_TIMER_ANIMATION);
         break;
     case 3:
         //ETAPE 3: Destruction des bonbons
