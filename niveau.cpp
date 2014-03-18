@@ -182,29 +182,31 @@ int Niveau::index(int lign, int col) const{
 
 //Remplissage de la grille de manière aléatoire, puis on change la couleur des bonbons qui forment un combo
 void Niveau::remplir(){
-    for(int i=0;i<nb_lign;i++){
-        for(int j=0;j<nb_col;j++){
-            if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
-                ajouterBonbon(i,j,couleurHasard());
-                Bonbon *b1,*b2,*b3,*b4;
-                bool comboColonne=false, comboLigne=false;
-                b1 = getBonbon(i, j - 1);
-                b2 = getBonbon(i, j - 2);
-                b3 = getBonbon(i-1,j);
-                b4 = getBonbon(i-2,j);
-                if(b1!=NULL && b2!=NULL)
-                    comboColonne=(b1->getCouleur() == getBonbon(i,j)->getCouleur() && b2->getCouleur()==getBonbon(i,j)->getCouleur());
-                if(b3!=NULL && b4!=NULL)
-                    comboLigne=(b3->getCouleur() == getBonbon(i,j)->getCouleur() && b4->getCouleur()==getBonbon(i,j)->getCouleur());
+    while(!coupPossible()){
+        for(int i=0;i<nb_lign;i++){
+            for(int j=0;j<nb_col;j++){
+                if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
+                    ajouterBonbon(i,j,couleurHasard());
+                    Bonbon *b1,*b2,*b3,*b4;
+                    bool comboColonne=false, comboLigne=false;
+                    b1 = getBonbon(i, j - 1);
+                    b2 = getBonbon(i, j - 2);
+                    b3 = getBonbon(i-1,j);
+                    b4 = getBonbon(i-2,j);
+                    if(b1!=NULL && b2!=NULL)
+                        comboColonne=(b1->getCouleur() == getBonbon(i,j)->getCouleur() && b2->getCouleur()==getBonbon(i,j)->getCouleur());
+                    if(b3!=NULL && b4!=NULL)
+                        comboLigne=(b3->getCouleur() == getBonbon(i,j)->getCouleur() && b4->getCouleur()==getBonbon(i,j)->getCouleur());
 
-                while(comboLigne || comboColonne){
-                    Bonbon::Couleur newCouleur = couleurHasard();
-                    if(newCouleur!=getBonbon(i,j)->getCouleur()){
-                        getBonbon(i,j)->setCouleur(newCouleur);
-                        if(b1!=NULL && b2!=NULL)
-                            comboColonne=(b1->getCouleur() == newCouleur && b2->getCouleur()==newCouleur);
-                        if(b3!=NULL && b4!=NULL)
-                            comboLigne=(b3->getCouleur() == newCouleur && b4->getCouleur()==newCouleur);
+                    while(comboLigne || comboColonne){
+                        Bonbon::Couleur newCouleur = couleurHasard();
+                        if(newCouleur!=getBonbon(i,j)->getCouleur()){
+                            getBonbon(i,j)->setCouleur(newCouleur);
+                            if(b1!=NULL && b2!=NULL)
+                                comboColonne=(b1->getCouleur() == newCouleur && b2->getCouleur()==newCouleur);
+                            if(b3!=NULL && b4!=NULL)
+                                comboLigne=(b3->getCouleur() == newCouleur && b4->getCouleur()==newCouleur);
+                        }
                     }
                 }
             }
@@ -564,27 +566,18 @@ bool Niveau::possibleHR(int lign, int col) const{
             }else {
                 tmpCouleur = Bonbon::Rose;
             }
-            if(getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur()){
-                return true;
-            }else if((getBonbon(lign, col)->getCouleur() == tmpCouleur) !=
-                     (getBonbon(lign+1, col)->getCouleur() == tmpCouleur)){
+            if(getBonbon(lign, col+1)->getCouleur() == tmpCouleur && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
+                if((getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur())
+                        && ((getBonbon(lign, col)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col)->getCouleur() == tmpCouleur))){
+                    return true;
+                }
+            }
+            if((getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
+                    && ((getBonbon(lign, col+1)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur))){
                 return true;
             }
         }
-        else if(rg==3){
-            tmpCouleur = Bonbon::Rouge;
-        }else if(ja==3){
-            tmpCouleur = Bonbon::Jaune;
-        }else if(ve==3){
-            tmpCouleur = Bonbon::Vert;
-        }else if(b==3){
-            tmpCouleur = Bonbon::Bleu;
-        }else if(vi==3){
-            tmpCouleur = Bonbon::Violet;
-        }else {
-            tmpCouleur = Bonbon::Rose;
-        }
-        if(getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
+        else if(getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
                 getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
                 getBonbon(lign, col+2)->getCouleur() != getBonbon(lign+1, col+2)->getCouleur()){
             return true;
@@ -644,27 +637,18 @@ bool Niveau::possibleVR(int lign, int col) const{
             }else {
                 tmpCouleur = Bonbon::Rose;
             }
-            if(getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur()){
-                return true;
-            }else if((getBonbon(lign, col)->getCouleur() == tmpCouleur) !=
-                     (getBonbon(lign, col+1)->getCouleur() == tmpCouleur)){
+            if(getBonbon(lign+1, col)->getCouleur() == tmpCouleur && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
+                if((getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur())
+                        && ((getBonbon(lign, col)->getCouleur() == tmpCouleur) || (getBonbon(lign, col+1)->getCouleur() == tmpCouleur))){
+                    return true;
+                }
+            }
+            if((getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
+                    && ((getBonbon(lign+1, col)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur))){
                 return true;
             }
         }
-        else if(rg==3){
-            tmpCouleur = Bonbon::Rouge;
-        }else if(ja==3){
-            tmpCouleur = Bonbon::Jaune;
-        }else if(ve==3){
-            tmpCouleur = Bonbon::Vert;
-        }else if(b==3){
-            tmpCouleur = Bonbon::Bleu;
-        }else if(vi==3){
-            tmpCouleur = Bonbon::Violet;
-        }else {
-            tmpCouleur = Bonbon::Rose;
-        }
-        if(getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur() &&
+        else if(getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur() &&
                 getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
                 getBonbon(lign+2, col)->getCouleur() != getBonbon(lign+2, col+1)->getCouleur()){
             return true;

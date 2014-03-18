@@ -176,7 +176,7 @@ void Controleur::deroulementJeu(){
         }
         if(!niveau->coupPossible()){
             emit redistributionJeux();
-            niveau->redistribuer();
+            //niveau->redistribuer();
             etape=2;
             timer.start(TEMPS_TIMER_ANIMATION);
             break;
