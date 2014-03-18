@@ -78,6 +78,7 @@ signals:
     void animationYChanged();
     //Evenement Jeu
     void redistributionJeux();
+    void msgFinNiveau(QString msg);
 public slots:
     void deroulementJeu();
 };

@@ -905,9 +905,11 @@ void Niveau::compterScore(int coef){
                 //Reduction de 1 niveau de gelatine si la case en avait
                 int numGel=liste.at(index(i,j))->getNiveauGelatine();
                 if(numGel>0){
-
                     score=score+20*numGel;
                     liste.at(index(i,j))->setNiveauGelatine(numGel-1);
+                    if((numGel-1)==0){
+                        caseGelatine.removeAll(index(i,j));
+                    }
                 }
                 if(getBonbon(i,j)->getType()==Bonbon::Normal){
                     score=score+60*coef;
@@ -953,4 +955,19 @@ void Niveau::redistribuer(){
             c++;
         }
     }
+}
+
+//Renvoye "" si le jeux n'est pas fini, le message à afficher sinon.
+QString Niveau::estFini(){
+    QString res="";
+    if(score_objectif==score && caseGelatine.isEmpty()){
+        res="Bravo, vous avez gagné.";
+    }else if(nb_mvt==0){
+        if(score_objectif!=score){
+            res="Perdu. <br> Vous n'avez pas atteint l'objectif.";
+        }else{
+            res="Perdu. <br> Il reste de la gélatine.";
+        }
+    }
+    return res;
 }
