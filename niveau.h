@@ -47,6 +47,8 @@ public:
     bool estSpecial(int lign, int col);
     void ajouterBonbonSpeciaux();
 
+    bool ajouterDeplace (int lign1, int col1, int lign2, int col2);
+
 private:
     int num_niveau;
     int score;
@@ -111,6 +113,7 @@ private:
     void creerRayeV(int lign, int col);
     void creerBombe(int lign, int col);
     void creerSucre(int lign, int col);
+    bool ajouterSpecialDeplace(int lign, int col);
 
 };
 
