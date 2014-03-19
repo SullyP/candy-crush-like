@@ -245,7 +245,8 @@ bool Niveau::estPossible(int x1, int y1, int x2, int y2){
                     for(int i=0;i<nb_lign;i++){
                         for(int j=0;j<nb_col;j++){
                             if(getBonbon(i,j)!=NULL && getBonbon(i,j)->getCouleur()==couleur){
-                                getBonbon(i,j)->setType(type);
+                                if(type!=Bonbon::Normal)
+                                    getBonbon(i,j)->setType(type);
                                 getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
                             }
                         }
@@ -256,7 +257,8 @@ bool Niveau::estPossible(int x1, int y1, int x2, int y2){
                     for(int i=0;i<nb_lign;i++){
                         for(int j=0;j<nb_col;j++){
                             if(getBonbon(i,j)!=NULL && getBonbon(i,j)->getCouleur()==couleur){
-                                getBonbon(i,j)->setType(type);
+                                if(type!=Bonbon::Normal)
+                                    getBonbon(i,j)->setType(type);
                                 getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
                             }
                         }
