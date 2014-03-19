@@ -179,9 +179,6 @@ void Controleur::deroulementJeu(){
             //emit pour afficher un message de redistribution
             emit redistributionJeux();
             niveau->redistribuer();
-            etape=2;
-            timer.start(TEMPS_TIMER_ANIMATION);
-            break;
         }
         timer.stop();
         etape=0;

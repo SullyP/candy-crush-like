@@ -181,6 +181,7 @@ int Niveau::index(int lign, int col) const{
 }
 
 //Remplissage de la grille de manière aléatoire, puis on change la couleur des bonbons qui forment un combo
+//La grille obtenue a au moins un coup possible.
 void Niveau::remplir(){
     while(!coupPossible()){
         for(int i=0;i<nb_lign;i++){
@@ -953,6 +954,7 @@ void Niveau::compterScore(int coef){
 }
 
 //Redistribue les bonbons sans créé de combos, et en gardant le même nombre et type de bonbons spéciaux
+//De plus grâce à l'appel à remplir(), la grille obtenue a au moins un coup possible.
 void Niveau::redistribuer(){
     QList<Bonbon*> bonus;
     int c=0;
@@ -995,7 +997,8 @@ void Niveau::redistribuer(){
 bool Niveau::plusAucuneGelatine(){
     for (int i = 0; i < caseGelatine.size(); i++) {
         int idBonbon = caseGelatine.at(i);
-        if(liste.at(idBonbon)!=NULL && (liste.at(idBonbon)->getNiveauGelatine())!=0){
+        if(idBonbon>=0 && idBonbon<=index(nb_lign-1,nb_col-1) &&
+                liste.at(idBonbon)!=NULL && (liste.at(idBonbon)->getNiveauGelatine())!=0){
             return false;
         }
     }
