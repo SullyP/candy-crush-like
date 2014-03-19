@@ -185,7 +185,8 @@ void Niveau::remplir(){
     while(!coupPossible()){
         for(int i=0;i<nb_lign;i++){
             for(int j=0;j<nb_col;j++){
-                if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
+                if(!estVide(i,j) && !estBloc(i,j)){
+                    supprimerBonbon(i,j);
                     ajouterBonbon(i,j,couleurHasard());
                     Bonbon *b1,*b2,*b3,*b4;
                     bool comboColonne=false, comboLigne=false;
@@ -229,6 +230,7 @@ bool Niveau::estPossible(int x1, int y1, int x2, int y2){
                     for(int j=0;j<nb_col;j++){
                         if(getBonbon(i,j)!=NULL){
                             getBonbon(i,j)->setType(Bonbon::Bombe);
+                            getBonbon(i,j)->setCouleur(Bonbon::Aucune);
                             getBonbon(i,j)->setProperty("etat",QVariant("aMarquer"));
                         }
                     }
@@ -283,15 +285,6 @@ bool Niveau::estPossible(int x1, int y1, int x2, int y2){
 Bonbon* Niveau::getBonbon(int lign, int col) const{
     if(index(lign,col)!=-1 && liste.at(index(lign,col))!=NULL)
         return liste.at(index(lign,col))->getBonbon();
-    else
-        return NULL;
-
-}
-
-//Retourne le bonbon à l'id spécifié, s'il existe
-Bonbon* Niveau::getBonbon(int id) const{
-    if(id!=-1 && liste.at(id)!=NULL)
-        return liste.at(id)->getBonbon();
     else
         return NULL;
 
@@ -948,9 +941,6 @@ void Niveau::compterScore(int coef){
                 if(numGel>0){
                     score=score+20*numGel;
                     liste.at(index(i,j))->setNiveauGelatine(numGel-1);
-                    if((numGel-1)==0){
-                        caseGelatine.removeAll(index(i,j));
-                    }
                 }
                 if(getBonbon(i,j)->getType()==Bonbon::Normal){
                     score=score+60*coef;
@@ -962,6 +952,7 @@ void Niveau::compterScore(int coef){
     }
 }
 
+//Redistribue les bonbons sans créé de combos, et en gardant le même nombre et type de bonbons spéciaux
 void Niveau::redistribuer(){
     QList<Bonbon*> bonus;
     int c=0;
@@ -980,31 +971,44 @@ void Niveau::redistribuer(){
     }
     for(int i=0;i<nb_lign;i++){
         for(int j=0;j<nb_col;j++){
-            if(!estVide(i,j) && !estBloc(i,j) && sansBonbon(i,j)){
-                ajouterBonbon(i,j,couleurHasard());
-            }
+            if(getBonbon(i,j)!=NULL)
+                liste.at(index(i,j))->setBonbon(NULL);
         }
     }
+    remplir();
     while(c>0){
         iT = rand() % nb_lign-1;
         jT = rand() % nb_col-1;
         c--;
         if(!estVide(iT, jT) && getBonbon(iT, jT)->getType() == Bonbon::Normal){
-            supprimerBonbon(iT, jT);
-            liste.at(index(iT, jT))->setBonbon(bonus[c]);
+            getBonbon(iT,jT)->setType(bonus[c]->getType());
+            if(bonus[c]->getType() == Bonbon::Bombe){
+                getBonbon(iT,jT)->setCouleur(Bonbon::Aucune);
+            }
+            delete bonus[c];
         }else {
             c++;
         }
     }
 }
 
+bool Niveau::plusAucuneGelatine(){
+    for (int i = 0; i < caseGelatine.size(); i++) {
+        int idBonbon = caseGelatine.at(i);
+        if(liste.at(idBonbon)!=NULL && (liste.at(idBonbon)->getNiveauGelatine())!=0){
+            return false;
+        }
+    }
+    return true;
+}
+
 //Renvoye "" si le jeux n'est pas fini, le message à afficher sinon.
 QString Niveau::estFini(){
     QString res="";
-    if(score_objectif==score && caseGelatine.isEmpty()){
+    if(score_objectif<=score && plusAucuneGelatine()){
         res="Bravo, vous avez gagné.";
     }else if(nb_mvt==0){
-        if(score_objectif!=score){
+        if(score_objectif>score){
             res="Perdu. <br> Vous n'avez pas atteint l'objectif.";
         }else{
             res="Perdu. <br> Il reste de la gélatine.";
@@ -1013,10 +1017,117 @@ QString Niveau::estFini(){
     return res;
 }
 
+//Indique si le bonbon de la case est une bombe
 bool Niveau::estBombe(int lign,int col){
     if(getBonbon(lign,col)!=NULL){
         return (getBonbon(lign,col)->getType()==Bonbon::Bombe);
     }else{
         return false;
+    }
+}
+
+//Indique si le bonbon de la case est spécial
+bool Niveau::estSpecial(int lign, int col){
+    if(getBonbon(lign,col)!=NULL){
+        return (getBonbon(lign,col)->getType()!=Bonbon::Normal);
+    }else{
+        return false;
+    }
+}
+
+//Combo Spéciaux////////////////////////////////////
+//combo de 4 bonbons allignés formant un bonbon rayé(qui supprime toute la ligne ou la colonne)
+//Horizontalement
+bool Niveau::comboRayeH(int lign, int col){
+    Bonbon::Couleur couleur=getCouleur(lign,col);
+    if (couleur==getCouleur(lign,col+1) && couleur==getCouleur(lign,col+2) && couleur==getCouleur(lign,col+3))
+        return true;
+    else
+        return false;
+}
+
+//Verticalement
+bool Niveau::comboRayeV(int lign, int col){
+    Bonbon::Couleur couleur=getCouleur(lign,col);
+    if ( couleur==getCouleur(lign+1,col) && couleur==getCouleur(lign+2,col) && couleur==getCouleur(lign+3,col))
+        return true;
+    else
+        return false;
+}
+
+//combo de 5 bonbons allignés formant un bonbon Bombe(qui supprime tous les bonbons de la même couleur que celui échangé)
+//Horizontal
+bool Niveau::comboBombeHori(int lign, int col){
+    Bonbon::Couleur couleur=getCouleur(lign,col);
+    if (comboRayeH(lign,col) && couleur==getCouleur(lign,col+4))
+        return true;
+
+    else
+        return false;
+}
+
+//vertical
+bool Niveau::comboBombeVerti(int lign, int col){
+    Bonbon::Couleur couleur=getCouleur(lign,col);
+    if (comboRayeV(lign,col) && couleur==getCouleur(lign+4,col))
+        return true;
+
+    else
+        return false;
+}
+
+//combo vertical et horizontal formant un bonbon sucré(qui supprime tous les bonbons autour de lui)
+bool Niveau::comboSucre(int lign, int col){
+    if(comboHorizontal(lign,col) && comboVertical(lign,col) && !comboRayeH(lign,col) && !comboRayeV(lign,col))
+        return true;
+    else
+        return false;
+}
+
+void Niveau::creerRayeH(int lign, int col){
+    if(getBonbon(lign,col)!=NULL){
+        getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
+        getBonbon(lign,col)->setType(Bonbon::RayureH);
+    }
+}
+
+void Niveau::creerRayeV(int lign, int col){
+    if(getBonbon(lign,col)!=NULL){
+        getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
+        getBonbon(lign,col)->setType(Bonbon::RayureV);
+    }
+}
+
+void Niveau::creerBombe(int lign, int col){
+    if(getBonbon(lign,col)!=NULL){
+        getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
+        getBonbon(lign,col)->setType(Bonbon::Bombe);
+        getBonbon(lign,col)->setCouleur(Bonbon::Aucune);
+    }
+}
+
+void Niveau::creerSucre(int lign, int col){
+    if(getBonbon(lign,col)!=NULL){
+        getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
+        getBonbon(lign,col)->setType(Bonbon::Sucre);
+    }
+}
+
+void Niveau::ajouterBonbonSpeciaux(){
+    for(int i=0;i<nb_lign;i++){
+        for(int j=0;j<nb_col;j++){
+            if(estMarquer(i,j)){
+                if(comboBombeHori(i,j))
+                    creerBombe(i,j+2);
+                else if(comboBombeVerti(i,j))
+                    creerBombe(i+2,j);
+                else if(comboRayeH(i,j))
+                    creerRayeH(i,j+1);
+                else if(comboRayeV(i,j))
+                    creerRayeV(i+1,j);
+                else if(comboSucre(i,j))
+                    creerSucre(i,j);
+            }
+        }
     }
 }

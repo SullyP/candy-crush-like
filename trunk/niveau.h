@@ -29,7 +29,6 @@ public:
     int getNb_lign() const;
     int getNb_mvt() const;
     Bonbon* getBonbon(int lign, int col) const;
-    Bonbon* getBonbon(int id) const;
     Bonbon::Couleur getCouleur (int lign, int col);
 
 
@@ -45,6 +44,8 @@ public:
     void redistribuer();
     QString estFini();
     bool estBombe(int lign,int col);
+    bool estSpecial(int lign, int col);
+    void ajouterBonbonSpeciaux();
 
 private:
     int num_niveau;
@@ -98,6 +99,18 @@ private:
     //Fonctions pour le déroulement du jeu (privé)
     void remplir();
     bool combo (int lign, int col);
+    bool plusAucuneGelatine();
+
+    //Fonctons de combo spéciaux
+    bool comboRayeH(int lign, int col);
+    bool comboRayeV(int lign, int col);
+    bool comboBombeHori(int lign, int col);
+    bool comboBombeVerti(int lign, int col);
+    bool comboSucre(int lign, int col);
+    void creerRayeH(int lign, int col);
+    void creerRayeV(int lign, int col);
+    void creerBombe(int lign, int col);
+    void creerSucre(int lign, int col);
 
 };
 
