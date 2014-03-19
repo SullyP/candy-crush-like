@@ -204,13 +204,19 @@ void Controleur::deroulementJeu(){
             etape=-1;
             timer.start(TEMPS_TIMER_ANIMATION);
         }
+
         break;
     case 2:
         //ETAPE 2: 'Marquage' des bonbons
         //Si des bonbons sont marqués
         if(niveau->marquerDestruction()){
             niveau->compterScore(coefScore);
-            niveau->ajouterBonbonSpeciaux();
+            if(niveau->ajouterDeplace(x1SelBonbon,y1SelBonbon,x2SelBonbon,y2SelBonbon)){
+                //le/les combos des bonbons déplacés sont effectués
+            }else{
+                //création des bonbons spéciaux lors de la recomplétion
+                niveau->ajouterBonbonSpeciaux();
+            }
             coefScore=coefScore+0.5;
             emit scoreChanged();
             etape++;
@@ -221,6 +227,7 @@ void Controleur::deroulementJeu(){
         }
         break;
     case 3:
+
         //ETAPE 3: Destruction des bonbons
         if(niveau->detruire()){
             etape++;

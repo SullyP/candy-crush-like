@@ -1045,7 +1045,8 @@ bool Niveau::estSpecial(int lign, int col){
 //Horizontalement
 bool Niveau::comboRayeH(int lign, int col){
     Bonbon::Couleur couleur=getCouleur(lign,col);
-    if (couleur==getCouleur(lign,col+1) && couleur==getCouleur(lign,col+2) && couleur==getCouleur(lign,col+3))
+    if (couleur==getCouleur(lign,col+1) && couleur==getCouleur(lign,col+2) && couleur==getCouleur(lign,col+3)
+            && !comboVertical(lign,col+1) && !comboVertical(lign,col+2) && !comboVertical(lign,col+3))
         return true;
     else
         return false;
@@ -1054,7 +1055,8 @@ bool Niveau::comboRayeH(int lign, int col){
 //Verticalement
 bool Niveau::comboRayeV(int lign, int col){
     Bonbon::Couleur couleur=getCouleur(lign,col);
-    if ( couleur==getCouleur(lign+1,col) && couleur==getCouleur(lign+2,col) && couleur==getCouleur(lign+3,col))
+    if ( couleur==getCouleur(lign+1,col) && couleur==getCouleur(lign+2,col) && couleur==getCouleur(lign+3,col)
+         && !comboHorizontal(lign+1,col) && !comboHorizontal(lign+2,col) && !comboHorizontal(lign+3,col))
         return true;
     else
         return false;
@@ -1083,7 +1085,7 @@ bool Niveau::comboBombeVerti(int lign, int col){
 
 //combo vertical et horizontal formant un bonbon sucré(qui supprime tous les bonbons autour de lui)
 bool Niveau::comboSucre(int lign, int col){
-    if(comboHorizontal(lign,col) && comboVertical(lign,col) && !comboRayeH(lign,col) && !comboRayeV(lign,col))
+    if(comboHorizontal(lign,col) && comboVertical(lign,col))
         return true;
     else
         return false;
@@ -1126,13 +1128,55 @@ void Niveau::ajouterBonbonSpeciaux(){
                     creerBombe(i,j+2);
                 else if(comboBombeVerti(i,j))
                     creerBombe(i+2,j);
-                else if(comboRayeH(i,j))
-                    creerRayeH(i,j+1);
-                else if(comboRayeV(i,j))
-                    creerRayeV(i+1,j);
                 else if(comboSucre(i,j))
                     creerSucre(i,j);
+                else if(comboRayeH(i,j))
+                    creerRayeH(i,j);
+                else if(comboRayeV(i,j))
+                    creerRayeV(i,j);
             }
         }
     }
+}
+
+//ajoute le bonbon spécial sur le bonbon déplacé
+bool Niveau::ajouterSpecialDeplace(int lign, int col){
+    bool creer=false;
+    if (col-2>=0 && comboBombeHori(lign,col-2)){
+        creerBombe(lign,col);
+        creer=true;
+    }
+    else if (lign-2>=0 && comboBombeVerti(lign-2,col)){
+        creerBombe(lign,col);
+        creer=true;
+    }
+    else if (comboHorizontal(lign,col) && comboVertical(lign,col)){
+        creerSucre(lign,col);
+        creer=true;
+    }
+    else if (comboHorizontal(lign,col)){
+        if(col-1>=0 && comboRayeH(lign,col-1)){
+            creerRayeH(lign,col);
+            creer=true;
+        }
+        else if(col-2>=0 && comboRayeH(lign,col-2)){
+            creerRayeH(lign,col);
+            creer=true;
+        }
+    }
+    else if (comboVertical(lign,col)){
+        if(lign-1>=0 && comboRayeV(lign-1,col)){
+            creerRayeV(lign,col);
+            creer=true;
+        }
+        else if (lign-2>=0 && comboRayeV(lign-2,col)){
+            creerRayeV(lign,col);
+            creer=true;
+        }
+    }
+    return creer;
+}
+
+bool Niveau::ajouterDeplace (int lign1, int col1, int lign2, int col2){
+    return(ajouterSpecialDeplace(lign1,col1) || ajouterSpecialDeplace(lign2,col2));
 }
