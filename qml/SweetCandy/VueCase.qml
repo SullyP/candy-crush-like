@@ -43,7 +43,7 @@ CaseB{
                 color:"black"
             }
         }
-        
+
         Rectangle{
             //Gelatine
             opacity:niveauGelatine*0.5

@@ -12,13 +12,13 @@ Bonbon{
     height: controleur.tailleBonbon
 
     Behavior on x {
-        enabled: etat!="enCreation" && controleur.animationX
-        PropertyAnimation { duration: 400; easing.type: Easing.OutBack }
+        enabled: (etat!="enCreation" && controleur.animationX) || xAnim.running===true
+        PropertyAnimation { id:xAnim; duration: 400; easing.type: Easing.OutBack}
     }
 
     Behavior on y {
-        enabled: controleur.animationY
-        PropertyAnimation { duration: 400; easing.type: Easing.OutBack}
+        enabled: controleur.animationY || yAnim.running===true
+        PropertyAnimation { id:yAnim; duration: 400; easing.type: Easing.OutBack}
     }
 
 
@@ -98,30 +98,29 @@ Bonbon{
 
         Image{
             id: imgExplosion
-            opacity: 0
+            opacity: (etat==="destruction" && type!==Bonbon.RayureH && type!==Bonbon.RayureV) ? 1 : 0
             source: "qrc:/images/explosion"+imgEnCours
             anchors.fill: parent
 
             property int imgEnCours: 1
 
             ParallelAnimation{
-                running:etat=="destruction" && type!==Bonbon.RayureH && type!==Bonbon.RayureV
-                PropertyAction { target: imgExplosion; property: "opacity"; value:1 }
+                running:etat==="destruction" && type!==Bonbon.RayureH && type!==Bonbon.RayureV
                 NumberAnimation { target: img; property: "opacity"; to: 0; duration: 400 }
                 NumberAnimation { target: imgExplosion; property: "imgEnCours"; to: 5; duration: 400 }
             }
 
             SequentialAnimation{
-                running:etat=="destruction" && type===Bonbon.RayureV
+                running:etat==="destruction" && type===Bonbon.RayureV
                 PropertyAction { target: img.parent; property: "ligne"; value:0 }
-                PauseAnimation { duration: 100 }
+                PauseAnimation { duration: 200 }
                 PropertyAction { target: img.parent; property: "ligne"; value:controleur.nbColonne-1 }
             }
 
             SequentialAnimation{
-                running:etat=="destruction" && type===Bonbon.RayureH
+                running:etat==="destruction" && type===Bonbon.RayureH
                 PropertyAction { target: img.parent; property: "colonne"; value:0 }
-                PauseAnimation { duration: 100 }
+                PauseAnimation { duration: 200 }
                 PropertyAction { target: img.parent; property: "colonne"; value:controleur.nbColonne-1 }
             }
         }

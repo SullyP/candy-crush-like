@@ -170,13 +170,15 @@ void Controleur::deroulementJeu(){
         //Si le niveau est terminé.
         msg = niveau->estFini();
         if(msg!=""){
+            //emit pour afficher un message de fin
             emit msgFinNiveau(msg);
             timer.stop();
             break;
         }
         if(!niveau->coupPossible()){
+            //emit pour afficher un message de redistribution
             emit redistributionJeux();
-            //niveau->redistribuer();
+            niveau->redistribuer();
             etape=2;
             timer.start(TEMPS_TIMER_ANIMATION);
             break;
@@ -195,7 +197,8 @@ void Controleur::deroulementJeu(){
             etape++;
             emit nbMvtChanged();
             //Si l'un des deux bonbons est une bombe, alors animations.
-            if(niveau->estBombe(x1SelBonbon,y1SelBonbon) || niveau->estBombe(x2SelBonbon,y2SelBonbon)){
+            if((niveau->estBombe(x1SelBonbon,y1SelBonbon) && niveau->estSpecial(x2SelBonbon,y2SelBonbon))
+                    || (niveau->estBombe(x2SelBonbon,y2SelBonbon) && niveau->estSpecial(x1SelBonbon,y1SelBonbon))){
                 timer.start(TEMPS_TIMER_ANIMATION/2);
             }else{
                 timer.start(TEMPS_TIMER_SANS_ANIMATION);
@@ -210,6 +213,7 @@ void Controleur::deroulementJeu(){
         //Si des bonbons sont marqués
         if(niveau->marquerDestruction()){
             niveau->compterScore(coefScore);
+            niveau->ajouterBonbonSpeciaux();
             coefScore=coefScore+0.5;
             emit scoreChanged();
             etape++;
