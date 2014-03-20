@@ -882,7 +882,7 @@ bool Niveau::tomberDuDessus(int lign, int col){
             (!estBloc(lign-1,col) && !estVide(lign-1,col))){
         //On cherche une case plus haut qui a un bonbon
         for(int curLign = lign-1; curLign>-1;curLign--){
-            if(estBloc(curLign,col)){
+            if(!estVide(curLign,col) && estBloc(curLign,col)){
                 //Si on tombe sur un bloc on ne peut pas faire tomber de bonbon
                 return false;
             }
