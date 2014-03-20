@@ -390,7 +390,7 @@ bool Niveau::coupPossible() const {
 bool Niveau::comboPossible(int lign, int col) const{
     if(sansBonbon(lign, col)){
         return false;
-    }else if(estBloc(lign, col)){
+    }else if(!estVide(lign, col) && estBloc(lign, col)){
     }else if(getBonbon(lign, col)->getType()!=Bonbon::Normal){
         if(col+1<nb_col){
             if(!sansBonbon(lign, col+1)){
@@ -437,7 +437,7 @@ bool Niveau::possibleHL(int lign, int col) const{
     for(int i=0;i<4;i++){
         if(sansBonbon(lign, col+i)){
             return false;
-        }else if(estBloc(lign, col+i)){
+        }else if(!estVide(lign, col+i) && estBloc(lign, col+i)){
             return false;
         }
         else{
@@ -481,7 +481,7 @@ bool Niveau::possibleVL(int lign, int col) const{
     for(int i=0;i<4;i++){
         if(sansBonbon(lign+i, col)){
             return false;
-        }else if( estBloc(lign+i, col)){
+        }else if(!estVide(lign+i, col) && estBloc(lign+i, col)){
             return false;
         }else {
             tmpCouleur = getBonbon(lign+i, col)->getCouleur();
@@ -526,7 +526,7 @@ bool Niveau::possibleHR(int lign, int col) const{
         for(int j=0;j<3;j++){
             if(sansBonbon(lign+i, col+j)){
                 bloc++;
-            }else if(estBloc(lign+i, col+j)){
+            }else if(!estVide(lign+i,col+j) && estBloc(lign+i, col+j)){
                 bloc++;
             }else {
                 tmpCouleur = getBonbon(lign+i, col+j)->getCouleur();
@@ -572,19 +572,20 @@ bool Niveau::possibleHR(int lign, int col) const{
             }else {
                 tmpCouleur = Bonbon::Rose;
             }
-            if(getBonbon(lign, col+1)->getCouleur() == tmpCouleur && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
-                if((getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur())
+            if(!sansBonbon(lign, col+1) && getBonbon(lign, col+1)->getCouleur() == tmpCouleur && !sansBonbon(lign+1, col+1) && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
+                if(!sansBonbon(lign+1, col) && !sansBonbon(lign, col) &&(getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur())
                         && ((getBonbon(lign, col)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col)->getCouleur() == tmpCouleur))){
                     return true;
                 }
             }
-            if((getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
+            if((!sansBonbon(lign, col+1) && !sansBonbon(lign+1, col+1) && getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
                     && ((getBonbon(lign, col+1)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur))){
                 return true;
             }
         }
         else if(bloc == 0){
-            if(getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
+            if(!sansBonbon(lign, col) && !sansBonbon(lign+1, col+1) && !sansBonbon(lign+1, col+2) && !sansBonbon(lign, col+1) && !sansBonbon(lign, col+2) &&
+                    getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
                     getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
                     getBonbon(lign, col+2)->getCouleur() != getBonbon(lign+1, col+2)->getCouleur()){
             return true;
@@ -608,10 +609,10 @@ bool Niveau::possibleHR(int lign, int col) const{
             for(int i=0;i<3;i++){
                 if(sansBonbon(lign, col+i)){
                     LBloc = 1;
-                }else if( estBloc(lign, col+i)){
+                }else if(!estVide(lign,col+i) && estBloc(lign, col+i)){
                     LBloc = 1;
                 }else if(getBonbon(lign, col+i)->getCouleur() == tmpCouleur){
-                    if(!estBloc(lign+1, col+i)){
+                    if(!estVide (lign+1, col+i) && !estBloc(lign+1, col+i)){
                         if(getBonbon(lign+1, col+i)->getCouleur() == tmpCouleur){
                             return false;
                         }
@@ -637,7 +638,7 @@ bool Niveau::possibleVR(int lign, int col) const{
         for(int j=0;j<2;j++){
             if(sansBonbon(lign+i, col+j)){
                 bloc++;
-            }else if(estBloc(lign+i, col+j)){
+            }else if(!estVide(lign+i, col+j) && estBloc(lign+i, col+j)){
                 bloc++;
             }else {
                 tmpCouleur = getBonbon(lign+i, col+j)->getCouleur();
@@ -683,18 +684,19 @@ bool Niveau::possibleVR(int lign, int col) const{
             }else {
                 tmpCouleur = Bonbon::Rose;
             }
-            if(getBonbon(lign+1, col)->getCouleur() == tmpCouleur && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
-                if((getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur())
+            if(!sansBonbon(lign+1, col) &&  !sansBonbon(lign+1, col+1) && getBonbon(lign+1, col)->getCouleur() == tmpCouleur && getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur){
+                if(!sansBonbon(lign, col) && !sansBonbon(lign, col+1) && (getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur())
                         && ((getBonbon(lign, col)->getCouleur() == tmpCouleur) || (getBonbon(lign, col+1)->getCouleur() == tmpCouleur))){
                     return true;
                 }
             }
-            if((getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
+            if(!sansBonbon(lign+1, col) && !sansBonbon(lign+1, col+1) && (getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur())
                     && ((getBonbon(lign+1, col)->getCouleur() == tmpCouleur) || (getBonbon(lign+1, col+1)->getCouleur() == tmpCouleur))){
                 return true;
             }
         }else if(bloc==0){
-            if(getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur() &&
+            if(!sansBonbon(lign, col) && !sansBonbon(lign, col+1) && !sansBonbon(lign+1, col) && !sansBonbon(lign+2, col) && !sansBonbon(lign+1, col+1) &&
+                    getBonbon(lign, col)->getCouleur() != getBonbon(lign, col+1)->getCouleur() &&
                     getBonbon(lign+1, col)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
                     getBonbon(lign+2, col)->getCouleur() != getBonbon(lign+2, col+1)->getCouleur()){
                 return true;
@@ -718,10 +720,10 @@ bool Niveau::possibleVR(int lign, int col) const{
         for(int i=0;i<3;i++){
             if(sansBonbon(lign+i, col)){
                 CBloc = 1;
-            }else if(estBloc(lign+i, col)){
+            }else if(!estVide(lign+i, col) && estBloc(lign+i, col)){
                 CBloc = 1;
-            }else if(getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
-                if(!estBloc(lign+i, col+1)){
+            }else if(!sansBonbon(lign+i, col+i) && getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
+                if(!estVide(lign+i, col+1) && !estBloc(lign+i, col+1)){
                     if(getBonbon(lign+i, col+1)->getCouleur() == tmpCouleur){
                         return false;
                     }
