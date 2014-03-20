@@ -8,7 +8,7 @@
 #include "bonbon.h"
 #include "niveau.h"
 
-#define NB_TOTAL_NIVEAU 20
+#define NB_TOTAL_NIVEAU 22
 class Controleur : public QObject
 {
     Q_OBJECT
