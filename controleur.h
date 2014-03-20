@@ -8,7 +8,7 @@
 #include "bonbon.h"
 #include "niveau.h"
 
-#define NB_TOTAL_NIVEAU 7
+#define NB_TOTAL_NIVEAU 20
 class Controleur : public QObject
 {
     Q_OBJECT
@@ -79,6 +79,7 @@ signals:
     //Evenement Jeu
     void redistributionJeux();
     void msgFinNiveau(QString msg);
+    void msgDebutNiveau();
 public slots:
     void deroulementJeu();
 };

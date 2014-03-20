@@ -882,6 +882,10 @@ bool Niveau::tomberDuDessus(int lign, int col){
             (!estBloc(lign-1,col) && !estVide(lign-1,col))){
         //On cherche une case plus haut qui a un bonbon
         for(int curLign = lign-1; curLign>-1;curLign--){
+            if(estBloc(curLign,col)){
+                //Si on tombe sur un bloc on ne peut pas faire tomber de bonbon
+                return false;
+            }
             if(!sansBonbon(curLign,col)){
                 Bonbon* b = getBonbon(curLign,col);
                 liste[index(lign,col)]->setBonbon(b);
@@ -996,7 +1000,7 @@ void Niveau::redistribuer(){
     }
 }
 
-bool Niveau::plusAucuneGelatine(){
+bool Niveau::plusAucuneGelatine() const{
     for (int i = 0; i < caseGelatine.size(); i++) {
         int idBonbon = caseGelatine.at(i);
         if(idBonbon>=0 && idBonbon<=index(nb_lign-1,nb_col-1) &&
@@ -1023,7 +1027,7 @@ QString Niveau::estFini(){
 }
 
 //Indique si le bonbon de la case est une bombe
-bool Niveau::estBombe(int lign,int col){
+bool Niveau::estBombe(int lign,int col) const{
     if(getBonbon(lign,col)!=NULL){
         return (getBonbon(lign,col)->getType()==Bonbon::Bombe);
     }else{
@@ -1032,7 +1036,7 @@ bool Niveau::estBombe(int lign,int col){
 }
 
 //Indique si le bonbon de la case est spécial
-bool Niveau::estSpecial(int lign, int col){
+bool Niveau::estSpecial(int lign, int col) const{
     if(getBonbon(lign,col)!=NULL){
         return (getBonbon(lign,col)->getType()!=Bonbon::Normal);
     }else{
