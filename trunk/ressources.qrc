@@ -55,5 +55,7 @@
         <file alias="18">levels/18.candy</file>
         <file alias="19">levels/19.candy</file>
         <file alias="20">levels/20.candy</file>
+        <file alias="21">levels/21.candy</file>
+        <file alias="22">levels/22.candy</file>
     </qresource>
 </RCC>
