@@ -988,7 +988,7 @@ void Niveau::redistribuer(){
         iT = rand() % nb_lign-1;
         jT = rand() % nb_col-1;
         c--;
-        if(!estVide(iT, jT) && getBonbon(iT, jT)->getType() == Bonbon::Normal){
+        if(!sansBonbon(iT,jT) && getBonbon(iT, jT)->getType() == Bonbon::Normal){
             getBonbon(iT,jT)->setType(bonus[c]->getType());
             if(bonus[c]->getType() == Bonbon::Bombe){
                 getBonbon(iT,jT)->setCouleur(Bonbon::Aucune);
