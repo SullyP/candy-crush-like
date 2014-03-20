@@ -42,5 +42,18 @@
         <file alias="5">levels/5.candy</file>
         <file alias="6">levels/6.candy</file>
         <file alias="7">levels/7.candy</file>
+        <file alias="8">levels/8.candy</file>
+        <file alias="9">levels/9.candy</file>
+        <file alias="10">levels/10.candy</file>
+        <file alias="11">levels/11.candy</file>
+        <file alias="12">levels/12.candy</file>
+        <file alias="13">levels/13.candy</file>
+        <file alias="14">levels/14.candy</file>
+        <file alias="15">levels/15.candy</file>
+        <file alias="16">levels/16.candy</file>
+        <file alias="17">levels/17.candy</file>
+        <file alias="18">levels/18.candy</file>
+        <file alias="19">levels/19.candy</file>
+        <file alias="20">levels/20.candy</file>
     </qresource>
 </RCC>

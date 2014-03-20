@@ -43,10 +43,10 @@ public:
     void compterScore(int coef);
     void redistribuer();
     QString estFini();
-    bool estBombe(int lign,int col);
-    bool estSpecial(int lign, int col);
+    bool estBombe(int lign,int col) const;
+    bool estSpecial(int lign, int col) const;
     void ajouterBonbonSpeciaux();
-
+    bool plusAucuneGelatine() const;
     bool ajouterDeplace (int lign1, int col1, int lign2, int col2);
 
 private:
@@ -101,7 +101,6 @@ private:
     //Fonctions pour le déroulement du jeu (privé)
     void remplir();
     bool combo (int lign, int col);
-    bool plusAucuneGelatine();
 
     //Fonctons de combo spéciaux
     bool comboRayeH(int lign, int col);

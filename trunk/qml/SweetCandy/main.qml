@@ -329,12 +329,16 @@ Rectangle {
                     popUpJeux.opacity = 1;
                     boutonPopUp.visible = true;
                 }
+                onMsgDebutNiveau:{
+                    textPopUp.text = "<center>Détruisez toute la gélatine !</center>";
+                    animPopUp.start();
+                }
             }
 
             SequentialAnimation{
                 id:animPopUp
                 NumberAnimation { target: popUpJeux; property: "opacity"; to: 1; duration: 200 }
-                PauseAnimation { duration: 3000 }
+                PauseAnimation { duration: 2200 }
                 NumberAnimation {target: popUpJeux; property: "opacity"; to: 0; duration: 200 }
             }
 

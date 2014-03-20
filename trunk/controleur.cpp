@@ -100,6 +100,10 @@ void Controleur::chargerNiveau(int n){
     etape=0;
     coefScore=1;
     timer.stop();
+
+    //Si le niveau comporte de la gélatine, on affiche un message
+    if(!niveau->plusAucuneGelatine())
+        emit msgDebutNiveau();
 }
 
 void Controleur::selectionBonbon1(int x,int y){
