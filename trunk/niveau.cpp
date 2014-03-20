@@ -588,7 +588,7 @@ bool Niveau::possibleHR(int lign, int col) const{
                     getBonbon(lign, col)->getCouleur() != getBonbon(lign+1, col)->getCouleur() &&
                     getBonbon(lign, col+1)->getCouleur() != getBonbon(lign+1, col+1)->getCouleur() &&
                     getBonbon(lign, col+2)->getCouleur() != getBonbon(lign+1, col+2)->getCouleur()){
-            return true;
+                return true;
             }
         }else if(bloc > 0){
             int nbL1 = 0;
@@ -702,41 +702,41 @@ bool Niveau::possibleVR(int lign, int col) const{
                 return true;
             }
         }else if(bloc > 0){
-        int nbC1 = 0;
-        int CBloc = 2;
-        if(rg==3){
-            tmpCouleur = Bonbon::Rouge;
-        }else if(ja==3){
-            tmpCouleur = Bonbon::Jaune;
-        }else if(ve==3){
-            tmpCouleur = Bonbon::Vert;
-        }else if(b==3){
-            tmpCouleur = Bonbon::Bleu;
-        }else if(vi==3){
-            tmpCouleur = Bonbon::Violet;
-        }else {
-            tmpCouleur = Bonbon::Rose;
-        }
-        for(int i=0;i<3;i++){
-            if(sansBonbon(lign+i, col)){
-                CBloc = 1;
-            }else if(!estVide(lign+i, col) && estBloc(lign+i, col)){
-                CBloc = 1;
-            }else if(!sansBonbon(lign+i, col+i) && getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
-                if(!estVide(lign+i, col+1) && !estBloc(lign+i, col+1)){
-                    if(getBonbon(lign+i, col+1)->getCouleur() == tmpCouleur){
-                        return false;
+            int nbC1 = 0;
+            int CBloc = 2;
+            if(rg==3){
+                tmpCouleur = Bonbon::Rouge;
+            }else if(ja==3){
+                tmpCouleur = Bonbon::Jaune;
+            }else if(ve==3){
+                tmpCouleur = Bonbon::Vert;
+            }else if(b==3){
+                tmpCouleur = Bonbon::Bleu;
+            }else if(vi==3){
+                tmpCouleur = Bonbon::Violet;
+            }else {
+                tmpCouleur = Bonbon::Rose;
+            }
+            for(int i=0;i<3;i++){
+                if(sansBonbon(lign+i, col)){
+                    CBloc = 1;
+                }else if(!estVide(lign+i, col) && estBloc(lign+i, col)){
+                    CBloc = 1;
+                }else if(!sansBonbon(lign+i, col+i) && getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
+                    if(!estVide(lign+i, col+1) && !estBloc(lign+i, col+1)){
+                        if(getBonbon(lign+i, col+1)->getCouleur() == tmpCouleur){
+                            return false;
+                        }
                     }
+                    nbC1++;
                 }
-                nbC1++;
+            }
+            if((nbC1 == 2) && (CBloc == 2)){
+                return true;
+            }else if((nbC1 == 1) && (CBloc == 1)){
+                return true;
             }
         }
-        if((nbC1 == 2) && (CBloc == 2)){
-            return true;
-        }else if((nbC1 == 1) && (CBloc == 1)){
-            return true;
-        }
-    }
     }
     return false;
 }
@@ -1232,39 +1232,41 @@ void Niveau::ajouterBonbonSpeciaux(){
     }
 }
 
-//ajoute le bonbon spécial sur le bonbon déplacé
+//ajoute le bonbon spécial sur le bonbon déplacé sauf si celui-ci est déjà spécial
 bool Niveau::ajouterSpecialDeplace(int lign, int col){
     bool creer=false;
-    if (col-2>=0 && comboBombeHori(lign,col-2)){
-        creerBombe(lign,col);
-        creer=true;
-    }
-    else if (lign-2>=0 && comboBombeVerti(lign-2,col)){
-        creerBombe(lign,col);
-        creer=true;
-    }
-    else if (comboHorizontal(lign,col) && comboVertical(lign,col)){
-        creerSucre(lign,col);
-        creer=true;
-    }
-    else if (comboHorizontal(lign,col)){
-        if(col-1>=0 && comboRayeH(lign,col-1)){
-            creerRayeH(lign,col);
+    if (getBonbon(lign,col)->getType()==Bonbon::Normal){
+        if (col-2>=0 && comboBombeHori(lign,col-2)){
+            creerBombe(lign,col);
             creer=true;
         }
-        else if(col-2>=0 && comboRayeH(lign,col-2)){
-            creerRayeH(lign,col);
+        else if (lign-2>=0 && comboBombeVerti(lign-2,col)){
+            creerBombe(lign,col);
             creer=true;
         }
-    }
-    else if (comboVertical(lign,col)){
-        if(lign-1>=0 && comboRayeV(lign-1,col)){
-            creerRayeV(lign,col);
+        else if (comboHorizontal(lign,col) && comboVertical(lign,col)){
+            creerSucre(lign,col);
             creer=true;
         }
-        else if (lign-2>=0 && comboRayeV(lign-2,col)){
-            creerRayeV(lign,col);
-            creer=true;
+        else if (comboHorizontal(lign,col)){
+            if(col-1>=0 && comboRayeH(lign,col-1)){
+                creerRayeH(lign,col);
+                creer=true;
+            }
+            else if(col-2>=0 && comboRayeH(lign,col-2)){
+                creerRayeH(lign,col);
+                creer=true;
+            }
+        }
+        else if (comboVertical(lign,col)){
+            if(lign-1>=0 && comboRayeV(lign-1,col)){
+                creerRayeV(lign,col);
+                creer=true;
+            }
+            else if (lign-2>=0 && comboRayeV(lign-2,col)){
+                creerRayeV(lign,col);
+                creer=true;
+            }
         }
     }
     return creer;
