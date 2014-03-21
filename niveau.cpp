@@ -584,7 +584,8 @@ bool Niveau::possibleHR(int lign, int col) const{
             }
         }else {
             int nbL1 = 0;
-            int LBloc = 2;
+            int LBloc = 0;
+            bool DejaB = false;
             if(rg==3){
                 tmpCouleur = Bonbon::Rouge;
             }else if(ja==3){
@@ -600,13 +601,30 @@ bool Niveau::possibleHR(int lign, int col) const{
             }
             for(int i=0;i<3;i++){
                 if(sansBonbon(lign, col+i)){
-                    LBloc = 1;
+                    if(DejaB && LBloc != 1){
+                        return false;
+                    } else{
+                        LBloc = 1;
+                        DejaB = true;
+                    }
                 }else if(!estVide(lign,col+i) && estBloc(lign, col+i)){
-                    LBloc = 1;
-                }else if(getBonbon(lign, col+i)->getCouleur() == tmpCouleur){
+                    if(DejaB && LBloc != 1){
+                        return false;
+                    } else{
+                        LBloc = 1;
+                        DejaB = true;
+                    }
+                }else if(!sansBonbon(lign, col+i) && getBonbon(lign, col+i)->getCouleur() == tmpCouleur){
                     if(!estVide (lign+1, col+i) && !estBloc(lign+1, col+i)){
                         if(getBonbon(lign+1, col+i)->getCouleur() == tmpCouleur){
                             return false;
+                        }
+                    } else if(estVide (lign+1, col+i) || estBloc(lign+1, col+i)){
+                        if(DejaB && LBloc != 2){
+                            return false;
+                        }else {
+                            DejaB = true;
+                            LBloc = 2;
                         }
                     }
                     nbL1++;
@@ -615,6 +633,8 @@ bool Niveau::possibleHR(int lign, int col) const{
             if((nbL1 == 2) && (LBloc == 2)){
                 return true;
             }else if((nbL1 == 1) && (LBloc == 1)){
+                return true;
+            }else if(LBloc == 0){
                 return true;
             }
         }
@@ -688,7 +708,8 @@ bool Niveau::possibleVR(int lign, int col) const{
             }
         }else {
             int nbC1 = 0;
-            int CBloc = 2;
+            int CBloc = 0;
+            bool DejaB = false;
             if(rg==3){
                 tmpCouleur = Bonbon::Rouge;
             }else if(ja==3){
@@ -704,21 +725,40 @@ bool Niveau::possibleVR(int lign, int col) const{
             }
             for(int i=0;i<3;i++){
                 if(sansBonbon(lign+i, col)){
-                    CBloc = 1;
+                    if(DejaB && CBloc != 1){
+                        return false;
+                    } else{
+                        CBloc = 1;
+                        DejaB = true;
+                    }
                 }else if(!estVide(lign+i, col) && estBloc(lign+i, col)){
-                    CBloc = 1;
-                }else if(!sansBonbon(lign+i, col+i) && getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
+                    if(DejaB && CBloc != 1){
+                        return false;
+                    } else{
+                        CBloc = 1;
+                        DejaB = true;
+                    }
+                }else if(!sansBonbon(lign+i, col) && getBonbon(lign+i, col)->getCouleur() == tmpCouleur){
                     if(!estVide(lign+i, col+1) && !estBloc(lign+i, col+1)){
                         if(getBonbon(lign+i, col+1)->getCouleur() == tmpCouleur){
                             return false;
                         }
+                    } else if(!estVide(lign+i, col+1) && !estBloc(lign+i, col+1)){
+                        if(DejaB && CBloc != 2){
+                            return false;
+                        }else {
+                            DejaB = true;
+                            CBloc = 2;
+                        }
+                        nbC1++;
                     }
-                    nbC1++;
                 }
             }
             if((nbC1 == 2) && (CBloc == 2)){
                 return true;
             }else if((nbC1 == 1) && (CBloc == 1)){
+                return true;
+            }else if(CBloc == 0){
                 return true;
             }
         }
