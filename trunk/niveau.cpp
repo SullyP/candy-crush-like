@@ -1298,5 +1298,7 @@ bool Niveau::ajouterSpecialDeplace(int lign, int col){
 }
 
 bool Niveau::ajouterDeplace (int lign1, int col1, int lign2, int col2){
-    return(ajouterSpecialDeplace(lign1,col1) || ajouterSpecialDeplace(lign2,col2));
+    bool d1=ajouterSpecialDeplace(lign1,col1);
+    bool d2=ajouterSpecialDeplace(lign2,col2);
+    return( d1 || d2 );
 }
