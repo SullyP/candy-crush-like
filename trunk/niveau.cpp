@@ -1213,6 +1213,8 @@ void Niveau::creerRayeH(int lign, int col){
     if(getBonbon(lign,col)!=NULL){
         getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
         getBonbon(lign,col)->setType(Bonbon::RayureH);
+        getBonbon(lign,col)->setProperty("ligne",QVariant(lign));
+        getBonbon(lign,col)->setProperty("colonne",QVariant(col));
     }
 }
 
@@ -1220,6 +1222,8 @@ void Niveau::creerRayeV(int lign, int col){
     if(getBonbon(lign,col)!=NULL){
         getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
         getBonbon(lign,col)->setType(Bonbon::RayureV);
+        getBonbon(lign,col)->setProperty("ligne",QVariant(lign));
+        getBonbon(lign,col)->setProperty("colonne",QVariant(col));
     }
 }
 
@@ -1228,6 +1232,8 @@ void Niveau::creerBombe(int lign, int col){
         getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
         getBonbon(lign,col)->setType(Bonbon::Bombe);
         getBonbon(lign,col)->setCouleur(Bonbon::Aucune);
+        getBonbon(lign,col)->setProperty("ligne",QVariant(lign));
+        getBonbon(lign,col)->setProperty("colonne",QVariant(col));
     }
 }
 
@@ -1235,6 +1241,8 @@ void Niveau::creerSucre(int lign, int col){
     if(getBonbon(lign,col)!=NULL){
         getBonbon(lign,col)->setProperty("etat",QVariant("normal"));
         getBonbon(lign,col)->setType(Bonbon::Sucre);
+        getBonbon(lign,col)->setProperty("ligne",QVariant(lign));
+        getBonbon(lign,col)->setProperty("colonne",QVariant(col));
     }
 }
 
@@ -1260,7 +1268,6 @@ void Niveau::ajouterBonbonSpeciaux(){
 //ajoute le bonbon spécial sur le bonbon déplacé sauf si celui-ci est déjà spécial
 bool Niveau::ajouterSpecialDeplace(int lign, int col){
     bool creer=false;
-    if (getBonbon(lign,col)->getType()==Bonbon::Normal){
         if (col-2>=0 && comboBombeHori(lign,col-2)){
             creerBombe(lign,col);
             creer=true;
@@ -1293,7 +1300,6 @@ bool Niveau::ajouterSpecialDeplace(int lign, int col){
                 creer=true;
             }
         }
-    }
     return creer;
 }
 
